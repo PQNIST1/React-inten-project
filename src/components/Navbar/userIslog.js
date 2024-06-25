@@ -8,7 +8,7 @@ const Userlog = () => {
             onMouseLeave={() => setIsHovered(false)}
             className="my-auto  flex ml-14  pb-2 ">
             <div className="h-12 my-auto mr-3 mt-2">
-                <img src="https://i.imgur.com/ZI1BmOM.png" alt="avatar" className="h-10" />
+                <img src="https://i.imgur.com/ZI1BmOM.png" alt="avatar" className="h-10 w-10 rounded-full" />
             </div>
             <div className="">
                 <div className="flex hover:text-yellow-400 font-bold">

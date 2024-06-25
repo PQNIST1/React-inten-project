@@ -7,7 +7,10 @@ module.exports = {
     extend: {
       colors: {
         customColor: 'rgb(15 23 42 / <alpha-value>)',
-      }
+      },
+      skew: {
+        "25":'25deg'
+      },
     },
   },
   variants: {

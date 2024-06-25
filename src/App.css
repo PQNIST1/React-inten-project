@@ -45,3 +45,28 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+.custom-carousel .carousel .control-dots {
+  top: 85%;
+  bottom: auto;
+  display: flex;
+  justify-content: center;
+}
+/* styles.css */
+.video-responsive {
+  position: relative;
+}
+
+.video-responsive iframe,
+.video-responsive img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-responsive .absolute {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
