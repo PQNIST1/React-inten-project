@@ -9,7 +9,7 @@ const Footer = () => {
     const data1 = dataCinema;
     const data2 = dataSupport;
     return (
-        <div className="w-full h-96 mt-20" style={{ backgroundImage: `url(https://i.imgur.com/4wpUhOR.jpeg)` }}>
+        <div className="w-full h-96" style={{ backgroundImage: `url(https://i.imgur.com/4wpUhOR.jpeg)` }}>
             <div className="w-5/6 flex m-auto py-14 px-10">
                 <div className=" w-60">
                     <Link to={"/"}>

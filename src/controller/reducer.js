@@ -1,7 +1,7 @@
 // store/rootReducer.js
 import { combineReducers } from '@reduxjs/toolkit';
-import modalReducer from './modal';
-import tabReducer from './tab';
+import modalReducer from './SliceReducer/modal';
+import tabReducer from './SliceReducer/tab';
 
 
 const rootReducer = combineReducers({

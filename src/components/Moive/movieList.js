@@ -1,6 +1,5 @@
 import React from "react";
 import MoviesTabs from "./tasks";
-import MoiveListing from "./movies";
 
 const MoiveList = () => {
     return (

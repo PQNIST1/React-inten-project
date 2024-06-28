@@ -1,5 +1,5 @@
 import React from "react";
-import MovieFeature from "./hoverFeature";
+import MovieFeature from "./ImageHover/hoverFeature";
 
 const MoiveHover = () => {
     return (

@@ -23,9 +23,9 @@ const Login = () => {
                 <div className="h-full w-1/2  px-16 m-auto flex">
                     <div className="my-auto">
                         <div className="flex mb-10">
-                            <Link to="/">
+                            <a href="/">
                                 <img className="w-20 h-20" src="https://i.imgur.com/utVCQHK.png" alt="Logo" />
-                            </Link>
+                            </a>
                             <p className="uppercase m-auto"><span className="font-bold text-5xl 
                         text-white ">Movie</span> <span className="text-3xl text-gray-400">booking</span></p>
                         </div>

@@ -12,7 +12,7 @@ const WebFeature = () => {
   };
 
   return (
-    <div className="video-responsive w-5/6 m-auto h-96 mt-10">
+    <div className="video-responsive w-5/6 m-auto h-96 mt-10 mb-20">
       {isVideoPlaying ? (
         <YouTube
           videoId='l3oHhZCuTA4'

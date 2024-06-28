@@ -1,5 +1,5 @@
 import React from "react";
-import MoiveHover from "./movieHover";
+import MoiveHover from "../movieHover";
 import MiniFeature from "./movieFeature";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const MovieFeature = ({ title, data }) => {
             <h1 className="border-l-4 border-blue-800 px-2 mb-3 hover:text-orange-400 uppercase">{title}</h1>
             <div className="grid grid-cols-4 gap-4">
                 {data.map(item => (
-                    <Link to='/'>
+                    <Link to='/detail'>
                         <MiniFeature />
                     </Link>
                 ))}

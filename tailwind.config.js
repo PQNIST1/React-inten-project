@@ -11,6 +11,13 @@ module.exports = {
       skew: {
         "25":'25deg'
       },
+      height: {
+        "15":'60px',
+      },
+      width: {
+        "22":'88px',
+        "424":'424px',
+      }
     },
   },
   variants: {

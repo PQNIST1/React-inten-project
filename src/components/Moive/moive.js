@@ -12,8 +12,8 @@ const Moive = () => {
     return (
         <div className="w-5/6 h-auto mx-auto mt-20 flex-col text-center">
             <MoiveList />
-            {activeTab === 'tab1' && <MoiveListing data={data} />}
-            {activeTab === 'tab2' && <MoiveListing data={data1} />}
+            {activeTab === 'profile' && <MoiveListing data={data} />}
+            {activeTab === 'history' && <MoiveListing data={data1} />}
            
 
         </div>

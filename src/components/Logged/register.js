@@ -1,9 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faEyeSlash, faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
+import { faMobileScreen } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 const Register = () => {
@@ -37,9 +37,9 @@ const Register = () => {
                 <div className="h-full w-1/2  px-16 m-auto flex">
                     <div className="my-auto space-y-10">
                         <div className="flex">
-                            <Link to="/">
+                            <a href="/">
                                 <img className="w-20 h-20" src="https://i.imgur.com/utVCQHK.png" alt="Logo" />
-                            </Link>
+                            </a>
                             <p className="uppercase m-auto"><span className="font-bold text-5xl 
                     text-white ">Movie</span> <span className="text-3xl text-gray-400">booking</span></p>
                         </div>
@@ -53,6 +53,11 @@ const Register = () => {
                             <div className="w-full border h-10 rounded hover:border-blue-500 px-2 flex">
                                 <FontAwesomeIcon icon={faEnvelope} className="my-auto mr-2 text-lg" />
                                 <input placeholder="Nhập email của bạn....." className="bg-transparent border-none h-full focus:outline-none w-full " required type="email"></input>
+                            </div>
+                            <label>Số điện thoại:</label>
+                            <div className="w-full border h-10 rounded hover:border-blue-500 px-2 flex">
+                                <FontAwesomeIcon icon={faMobileScreen} className="my-auto mr-2 text-lg" />
+                                <input placeholder="Nhập số điện thoại của bạn....." className="bg-transparent border-none h-full focus:outline-none w-full " required type="email"></input>
                             </div>
                             <label>Mật khẩu:</label>
                             <div className="w-full border h-10 rounded hover:border-blue-500 px-2 flex">

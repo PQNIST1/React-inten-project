@@ -1,7 +1,7 @@
 // components/VideoModal.js
 import React, { useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeModal } from '../../controller/modal';
+import { closeModal } from '../../controller/SliceReducer/modal';
 import YouTube from 'react-youtube';
 
 const VideoModal = () => {

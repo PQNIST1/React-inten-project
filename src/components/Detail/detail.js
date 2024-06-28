@@ -1,10 +1,9 @@
 import React from "react";
-import Nav from "../components/Navbar/nav";
-import Footer from "../components/Footer/footer";
-import WebFeature from "../components/Footer/webFeature";
+import Nav from "../Navbar/nav";
+import Footer from "../Footer/footer";
 import TrailerDetail from "./trailerDetail";
 import { useSelector } from "react-redux";
-import VideoModal from "../components/Moive/VideoModal";
+import VideoModal from "../Moive/VideoModal";
 import ContentDetail from "./ContentDetail";
 
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { openModal } from "../controller/modal";
+import { openModal } from "../../controller/SliceReducer/modal";
 
 const TrailerDetail = () => {
     const dispatch = useDispatch();

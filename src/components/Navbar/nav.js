@@ -6,7 +6,7 @@ import Search from "./search";
 import Userlog from "./userIslog";
 import Logged from "./Task/logged";
 const Nav = () => {
-    const isLogged = false;
+    const isLogged = true;
     return (
         <div className="flex w-10/12 mx-auto pt-3  text-gray-400 font-sans">
            <Logo/>
