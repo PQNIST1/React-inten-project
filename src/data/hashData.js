@@ -125,6 +125,3 @@ const showtimesData = {
 const dates = Object.keys(showtimesData);
 
 export { dataPreview, dataSlide, dataShowing, dataComming, dataCinema, dataSupport, dataGender, dataActor, dataDirector, showtimesData, dates };
- {/* <img src="https://cdn.galaxycine.vn/media/2024/3/29/menuboard-coonline-2024-combo1-min_1711699834430.jpg" alt="" className="h-20 rounded" />
-            <img src="https://cdn.galaxycine.vn/media/2024/3/29/menuboard-coonline-2024-combo2-min_1711699866349.jpg" alt="" className="h-20 rounded" />
-            <img src="https://cdn.galaxycine.vn/media/2024/3/29/menuboard-coonline-2024-combo2-copy-min_1711699849615.jpg" alt="" className="h-20 rounded" /> */}

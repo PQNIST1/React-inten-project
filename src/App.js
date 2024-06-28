@@ -7,7 +7,7 @@ import Register from './components/Logged/register';
 import MovieDetail from './components/Detail/detail'
 import More from './components/More/more';
 import UserInfo from './components/Info/userInfo';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { setActiveTab } from './controller/SliceReducer/tab';
 import TicketDetail from './components/Info/Booking/ticketDetail';
 import Room from './components/MovieBooking/Room/room';

@@ -23,7 +23,6 @@ const HistoryBooking = () => {
                         <div className="ml-32">
                             <img src="https://i.imgur.com/utVCQHK.png" alt="" className="h-32" />
                         </div>
-
                     </div>
                 </div>
             </Link>

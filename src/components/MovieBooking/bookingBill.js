@@ -1,11 +1,27 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { handleNext,handlePrev } from "../../controller/SliceReducer/tab";
-import SeatBill from "./seatBill";
+import { useDispatch, useSelector } from "react-redux";
+import { handleNext, handlePrev } from "../../controller/SliceReducer/tab";
+import { useNavigate } from "react-router-dom";
+
 
 const BookingBill = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const activeTab = useSelector((state) => state.tab.activeTab);
+    const tabs = useSelector((state) => state.tab.tabs);
+
+    const handlePrevClick = () => {
+        const currentIndex = tabs.indexOf(activeTab);
+        if (currentIndex === 0) {
+            navigate('/detail');
+        } else {
+            dispatch(handlePrev());
+        }
+    };
+
+    const handleNextClick = () => {
+        dispatch(handleNext());
+    };
     return (
         <div className="space-y-5">
             <div className=" flex">
@@ -21,7 +37,10 @@ const BookingBill = () => {
                 <p className="font-bold text-lg">Cinema Center - Rạp 2</p>
                 <p className="text-lg">Suất: <span className="font-bold">11:30</span> - Thứ Năm, <span className="font-bold">27/6/2024</span></p>
             </div>
-            <SeatBill/>
+            {/* <SeatBill />
+            <div className="border-t-2 border-dotted h-full pt-5 space-y-1">
+                <FoodBill />
+            </div> */}
             <div className="border-t-2 border-dotted h-full pt-5">
                 <div className="flex text-lg font-bold">
                     <div className="w-1/2">
@@ -33,8 +52,8 @@ const BookingBill = () => {
                 </div>
             </div>
             <div className="flex">
-                <button  onClick={() => dispatch(handlePrev())}  className="w-1/2 text-orange-400 text-lg p-2 hover:text-white">Quay lại</button>
-                <button onClick={() => dispatch(handleNext())}  className="w-1/2 text-white text-lg bg-orange-400 rounded p-2 hover:bg-orange-300">Tiếp tục</button>
+                <button onClick={handlePrevClick} className="w-1/2 text-orange-400 text-lg p-2 hover:text-white">Quay lại</button>
+                <button onClick={handleNextClick} className="w-1/2 text-white text-lg bg-orange-400 rounded p-2 hover:bg-orange-300">Tiếp tục</button>
             </div>
         </div>
 

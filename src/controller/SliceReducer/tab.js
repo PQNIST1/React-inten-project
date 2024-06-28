@@ -5,7 +5,7 @@ export const tabSlice = createSlice({
   name: 'tab',
   initialState: {
     activeTab: 'profile',
-    tabs,
+    tabs: tabs,
   },
   reducers: {
     setActiveTab: (state, action) => {
@@ -21,7 +21,7 @@ export const tabSlice = createSlice({
       const currentIndex = state.tabs.indexOf(state.activeTab);
       if (currentIndex > 0) {
         state.activeTab = state.tabs[currentIndex - 1];
-      }
+      } 
     },
   },
 

@@ -1,5 +1,4 @@
 import React from "react";
-import MoiveHover from "../movieHover";
 import MiniFeature from "./movieFeature";
 import { Link } from "react-router-dom";
 
