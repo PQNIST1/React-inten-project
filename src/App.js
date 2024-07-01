@@ -11,6 +11,7 @@ import { useDispatch} from 'react-redux';
 import { setActiveTab } from './controller/SliceReducer/tab';
 import TicketDetail from './components/Info/Booking/ticketDetail';
 import Room from './components/MovieBooking/Room/room';
+import MovieCategory from './components/Category/movieCategory';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function App() {
           <Route path="/info" element={<UserInfo />} />
           <Route path="/ticket" element={<TicketDetail />} />
           <Route path="/booking" element={<Room />} />
+          <Route path="/category" element={<MovieCategory/>} />
         </Routes>
       </div>
     </Router>

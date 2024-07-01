@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleNext, handlePrev } from "../../controller/SliceReducer/tab";
+import { handleNext, handlePrev, setActiveTab } from "../../../controller/SliceReducer/tab";
 import { useNavigate } from "react-router-dom";
 
 
@@ -13,7 +13,8 @@ const BookingBill = () => {
     const handlePrevClick = () => {
         const currentIndex = tabs.indexOf(activeTab);
         if (currentIndex === 0) {
-            navigate('/detail');
+            navigate('/');
+            dispatch(setActiveTab('profile'))
         } else {
             dispatch(handlePrev());
         }
@@ -37,10 +38,6 @@ const BookingBill = () => {
                 <p className="font-bold text-lg">Cinema Center - Rạp 2</p>
                 <p className="text-lg">Suất: <span className="font-bold">11:30</span> - Thứ Năm, <span className="font-bold">27/6/2024</span></p>
             </div>
-            {/* <SeatBill />
-            <div className="border-t-2 border-dotted h-full pt-5 space-y-1">
-                <FoodBill />
-            </div> */}
             <div className="border-t-2 border-dotted h-full pt-5">
                 <div className="flex text-lg font-bold">
                     <div className="w-1/2">
@@ -53,7 +50,9 @@ const BookingBill = () => {
             </div>
             <div className="flex">
                 <button onClick={handlePrevClick} className="w-1/2 text-orange-400 text-lg p-2 hover:text-white">Quay lại</button>
-                <button onClick={handleNextClick} className="w-1/2 text-white text-lg bg-orange-400 rounded p-2 hover:bg-orange-300">Tiếp tục</button>
+                <button onClick={handleNextClick} className="w-1/2 text-white text-lg bg-orange-400 rounded p-2 hover:bg-orange-300">
+                    {activeTab === 'comfirm' ? 'Thanh toán' : 'Tiếp tục'}
+                </button>
             </div>
         </div>
 

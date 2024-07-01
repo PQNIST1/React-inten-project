@@ -1,10 +1,13 @@
 import React from "react";
 import BookingTabs from "./bookingTab";
-import RomCtr from "./Room/roomCtr";
-import TimeBooking from "./timeBooking";
+import RomCtr from "../Room/roomCtr";
+import TimeBooking from "../timeBooking";
 import BookingBill from "./bookingBill";
 import { useSelector } from "react-redux";
-import FoodList from "./foodList";
+import FoodList from "../Food/foodList";
+import Payment from "../Payment/payment";
+import Comfirm from "../Comfirm/comfirm";
+import MovieDrop from "../Drop/moiveDrop";
 
 
 const Seat = () => {
@@ -25,8 +28,11 @@ const Booking = () => {
             <BookingTabs />
             <div className="flex">
                 <div className="w-4/6">
+                    {activeTab === 'movie' && <MovieDrop />}
                     {activeTab === 'seat' && <Seat />}
                     {activeTab === 'food' && <FoodList />}
+                    {activeTab === 'payment' && <Payment />}
+                    {activeTab === 'comfirm' && <Comfirm />}
                 </div>
                 <div className=" w-1/3">
                     <BookingBill />

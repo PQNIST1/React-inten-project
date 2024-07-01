@@ -1,6 +1,6 @@
 // tabSlice.js
 import { createSlice } from '@reduxjs/toolkit';
-const tabs = ['seat','food', 'payment', 'comfirm'];
+const tabs = ['movie','seat','food', 'payment', 'comfirm'];
 export const tabSlice = createSlice({
   name: 'tab',
   initialState: {

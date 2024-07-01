@@ -20,7 +20,7 @@ const VideoModal = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  },);
 
   if (!isModalOpen) {
     return null;

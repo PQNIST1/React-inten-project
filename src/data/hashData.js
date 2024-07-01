@@ -46,28 +46,28 @@ const dataSlide = [
 
 const dataShowing = [
   {
-    id: 1, image: "https://i.imgur.com/YbaibkW.jpeg"
+    id: 1, image: "https://i.imgur.com/YbaibkW.jpeg", name: "Những mảnh ghép cảm xúc",
   },
   {
-    id: 2, image: "https://i.imgur.com/lwcVJQi.jpeg"
+    id: 2, image: "https://i.imgur.com/lwcVJQi.jpeg", name: "Kẻ trộm mặt trăng 4"
   },
   {
-    id: 3, image: "https://i.imgur.com/KYTi79U.jpeg"
+    id: 3, image: "https://i.imgur.com/KYTi79U.jpeg", name: "Vùng Đất Câm Lặng: Ngày Một"
   },
   {
-    id: 4, image: "https://i.imgur.com/tjmvV18.jpeg"
+    id: 4, image: "https://i.imgur.com/tjmvV18.jpeg", name: "Cửu Long Thành Trại: Vây Thành"
   },
   {
-    id: 5, image: "https://i.imgur.com/YbaibkW.jpeg"
+    id: 5, image: "https://i.imgur.com/YbaibkW.jpeg", name: "Hai Khoảng Trời Song Song"
   },
   {
-    id: 6, image: "https://i.imgur.com/XuFBXkO.jpeg"
+    id: 6, image: "https://i.imgur.com/XuFBXkO.jpeg", name: "Gia Tài Của Ngoại"
   },
   {
-    id: 7, image: "https://i.imgur.com/KYTi79U.jpeg"
+    id: 7, image: "https://i.imgur.com/KYTi79U.jpeg", name: "Mùa hè đẹp nhất"
   },
   {
-    id: 8, image: "https://i.imgur.com/tjmvV18.jpeg"
+    id: 8, image: "https://i.imgur.com/tjmvV18.jpeg", name: "Chờ nơi pháo hoa rực rỡ"
   },
 ];
 const dataComming = [

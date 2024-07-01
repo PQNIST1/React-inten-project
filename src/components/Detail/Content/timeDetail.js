@@ -67,7 +67,6 @@ const TimeDetail = () => {
                 <h1 className="mr-10 capitalize inline ml-3 text-white my-auto">xuất chiếu: {displayDate} ({getDayOfWeek(new Date(selectedDate))})</h1>
             </div>
             <TimeSlider times={showtimesData[selectedDate]} selectedTime={selectedTime} onTimeSelect={handleTimeSelect} />
-            {/* <Slider times={showtimesData[selectedDate]} selectedTime={selectedTime} onTimeSelect={handleTimeSelect} />
             {/* <div className="text-center my-4">
                 <p>Selected Date: {selectedDate}</p>
                 <p>Day of Week: {getDayOfWeek(new Date(selectedDate))}</p>

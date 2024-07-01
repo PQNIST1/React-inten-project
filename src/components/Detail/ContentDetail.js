@@ -13,14 +13,16 @@ const ContentDetail = () => {
 
             <div className=" w-2/3">
                 <div className="flex mb-14">
-                    <div className="w-72">    
+                    <div className="w-72">
                     </div>
                     <TextDetail />
                 </div>
-                <MainDetail/>
-                <TimeDetail/>
+                <MainDetail />
+                <TimeDetail />
             </div>
-            <MoiveContent/>
+            <div className="w-1/3">
+                <MoiveContent />
+            </div>
         </div>
     )
 }

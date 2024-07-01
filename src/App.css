@@ -70,3 +70,6 @@ body {
   align-items: center;
   justify-content: center;
 }
+.list {
+  overflow:over;
+}
