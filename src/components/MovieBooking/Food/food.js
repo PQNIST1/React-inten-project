@@ -1,21 +1,24 @@
 import React from "react";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addFood,removeFood } from "../../../controller/SliceReducer/booking";
+import { useSelector } from "react-redux";
 
 
 const Food = ({data}) => {
     const dispatch = useDispatch();
-    const [count, setCount] = useState(0);
+    const selectedFood = useSelector((state) => state.movie.selectedFood);
+    const foodItem = selectedFood.find((item) => item.foodId === data.name);
+    const quantity = foodItem ? foodItem.quantity : 0;
+
+  
 
     const handleIncrement = (foodId) => {
-        setCount(count + 1);
+       
         dispatch(addFood({ foodId, quantity: 1 }));
     };
 
     const handleDecrement = (foodId) => {
-        if (count > 0) {
-            setCount(count - 1);
+        if (quantity > 0) {
             dispatch(removeFood({ foodId, quantity: 1 }));
         }
     };
@@ -33,7 +36,7 @@ const Food = ({data}) => {
             <div>
                 <button className="px-2" onClick={()=>handleDecrement(data.name)}>-</button>
             </div>
-            <p>{count}</p>
+            <p>{quantity}</p>
             <div>
                 <button className="px-2" onClick={()=>handleIncrement(data.name)}>+</button>
             </div>

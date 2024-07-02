@@ -15,6 +15,7 @@ const BookingBill = () => {
     const activeTab = useSelector((state) => state.tab.activeTab);
     const tabs = useSelector((state) => state.tab.tabs);
     const selectedSingleSeats = useSelector((state) => state.movie.selectedSingleSeats);
+    const selectedRadio = useSelector((state) => state.radio.selectedOption);
     const selectedDate = useSelector((state) => state.movie.selectedDate);
     const selectedTime = useSelector((state) => state.movie.selectedTime);
     const selectedMovieName = useSelector((state) => state.movie.selectedMovieName);
@@ -41,7 +42,7 @@ const BookingBill = () => {
             dispatch(handleNext()); 
         } else if ( activeTab === 'food') {
             dispatch(handleNext());
-        } else if ( activeTab === 'payment') {
+        } else if ( activeTab === 'payment' && selectedRadio !== '' ) {
             dispatch(handleNext());
         }
     };
@@ -64,7 +65,7 @@ const BookingBill = () => {
             </div>
             <div className="flex">
                 <button onClick={handlePrevClick} className="w-1/2 text-orange-400 text-lg p-2 hover:text-white">Quay lại</button>
-                <button onClick={handleNextClick} className={`w-1/2 text-white text-lg bg-orange-400 rounded p-2 hover:bg-orange-300 ${selectedMovieName !== '' && selectedDate !== '' && getTotal > 0 ? '' : 'cursor-not-allowed'}`}>
+                <button onClick={handleNextClick} className="w-1/2 text-white text-lg bg-orange-400 rounded p-2 hover:bg-orange-300">
                     {activeTab === 'comfirm' ? 'Thanh toán' : 'Tiếp tục'}
                 </button>
             </div>

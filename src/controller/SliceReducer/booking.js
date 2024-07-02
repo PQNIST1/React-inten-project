@@ -14,7 +14,7 @@ const initialState = {
 };
 
 const movieSlice = createSlice({
-  name: 'app',
+  name: 'movie',
   initialState,
   reducers: {
     setSelectedDate: (state, action) => {
