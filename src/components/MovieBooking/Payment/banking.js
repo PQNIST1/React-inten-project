@@ -1,13 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedOption } from "../../../controller/SliceReducer/radio";
+import { setPaymentMethod } from "../../../controller/SliceReducer/payment";
 
 const Banking = ({option, value, img}) => {
     const selectedOption = useSelector((state) => state.radio.selectedOption);
     const dispatch = useDispatch();
-
+    const handleSelectPaymentMethod = (name, image) => {
+        dispatch(setPaymentMethod({ name, image }));
+      };
     const handleOptionChange = (event) => {
         dispatch(setSelectedOption(event.target.value));
+      
     };
     return (
         <div className="">
@@ -16,6 +20,7 @@ const Banking = ({option, value, img}) => {
                     type="radio"
                     value={value}
                     checked={selectedOption === value}
+                    onClick={()=>handleSelectPaymentMethod(option,img)}
                     onChange={handleOptionChange}
                     className="form-radio"
                 />

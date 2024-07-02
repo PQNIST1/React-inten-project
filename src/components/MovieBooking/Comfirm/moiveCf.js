@@ -1,38 +1,41 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import Seat from "../Bill/seat";
 
 const MovieCf = () => {
+    const SingleSeats = useSelector((state) => state.movie.selectedSingleSeats);
+    const date = useSelector((state) => state.movie.selectedDate);
+    const Time = useSelector((state) => state.movie.selectedTime);
+    const MovieName = useSelector((state) => state.movie.selectedMovieName);
+    const MovieImg = useSelector((state) => state.movie.selectedMovieImg);
+    const DoubleSeats = useSelector((state) => state.movie.selectedDoubleSeats);
+    const VipSeats = useSelector((state) => state.movie.selectedVipSeats);
+    const getTotal = SingleSeats.length + DoubleSeats.length + VipSeats.length;
+
     return (
         <div className="w-1/2">
             <div className="space-y-5">
-                <div className="flex">
-                    <img src="https://cdn.galaxycine.vn/media/2024/6/4/mua-he-dep-nhat-2_1717486022304.jpg" alt="" className="rounded h-52" />
-                    <div>
-                        <div className="flex ml-5">
-                            <p className="text-lg font-bold w-40 ">Mùa hè đẹp nhất</p>
-                            <span className=" bg-orange-500 text-white font-bold rounded h-7 px-2">T18</span>
-                        </div>
-                    </div>
-
+                <div className="font-bold text-lg">
+                    <p>Ghế</p>
                 </div>
+               
                 <div>
-                    <div className="space-y-2 mt-3">
-                        <p><span className=" font-bold">Cinema Center</span> - Rạp 2</p>
-                        <p><span className=" font-bold">Xuất: 11:30</span> - Thứ Năm, 27/6/2024</p>
-                    </div>
+                    {SingleSeats.length === 0 ? null : <Seat data={SingleSeats} title={'Ghế đơn'} />}
+                    {DoubleSeats.length === 0 ? null : <Seat data={DoubleSeats} title={'Ghế đôi'} />}
+                    {VipSeats.length === 0 ? null : <Seat data={VipSeats} title={'Ghế Vip'} />}
                 </div>
-
-                <div className="border-t-2 border-dotted pt-5">
-                    <p><span className="font-bold">Ghế</span> - N10, N11</p>
-                </div>
+               
                 <div className="flex border-t-2 border-dotted py-5 space-x-11">
                   
                     <div className="">
                         <p className="font-bold">Số lượng</p>
-                        <p>2</p>
+                        <p>{getTotal}</p>
                     </div>
                     <div className="capitalize">
                         <p className="font-bold">Tổng cộng</p>
-                        <p>140.000 VNĐ</p>
+                        <p className="">
+                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(70000 * getTotal)}
+                        </p>
                     </div>
                 </div>
             </div>

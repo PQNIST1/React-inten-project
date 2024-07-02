@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Box from "./box";
 import BoxSub from "./boxSub";
 import { dataCinema, dataPreview, dataSupport } from "../../data/hashData";

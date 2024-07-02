@@ -113,15 +113,50 @@ const dataDirector = [
   },
 ];
 const showtimesData = {
-  '2024-06-26': ['10:00 AM', '1:00 PM', '4:00 PM', '7:00 PM', '10:00 PM'],
-  '2024-06-25': ['10:00 AM', '1:00 PM', '4:00 PM', '7:00 PM', '10:00 PM'],
-  '2024-06-27': ['11:00 AM', '2:00 PM', '5:00 PM', '8:00 PM'],
-  '2024-06-28': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
-  '2024-06-29': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
-  '2024-06-30': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
-  '2024-07-01': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
+  // '2024-07-02': ['11:00 AM', '2:00 PM', '5:00 PM', '8:00 PM'],
+  '2024-07-05': ['10:00 AM', '1:00 PM', '4:00 PM', '7:00 PM', '10:00 PM'],
+  '2024-07-06': ['10:00 AM', '1:00 PM', '4:00 PM', '7:00 PM'],
+  '2024-07-07': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM', '10:00 PM'],
+  '2024-07-08': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
+  '2024-07-09': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM',],
+  '2024-07-10': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
 
 };
 const dates = Object.keys(showtimesData);
 
-export { dataPreview, dataSlide, dataShowing, dataComming, dataCinema, dataSupport, dataGender, dataActor, dataDirector, showtimesData, dates };
+
+const foods  = [
+  {
+    id:"1", name:'iCombo 1 Big STD', detail:"01 Ly nước ngọt size L + 01 Hộp bắp", price:'70.000'
+  },
+  {
+    id:"2", name:'iCombo 1 Big Extra STD', detail:"1 Ly nước ngọt size L + 01 Hộp bắp + 1 Snack", price:'70.000'
+  },
+  {
+    id:"3", name:'iCombo 2 Big Extra STD', detail:"02 Ly nước ngọt size L + 01 Hộp bắp + 1 Snack", price:'70.000'
+  },
+  {
+    id:"4", name:'iCombo 2 Big STD', detail:"02 Ly nước ngọt size L + 01 Hộp bắp", price:'70.000'
+  },
+];
+const payment = [
+  {
+    id:'1', name:'HSBC/Payoo - ATM/VISA/MASTER/JCB/QRCODE', img:'https://cdn.galaxycine.vn/media/2020/10/20/hsbc-icon_1603203578522.png'
+  },
+  {
+    id:'2', name:'Ví ShopeePay', img:'https://cdn.galaxycine.vn/media/2022/4/29/shopee-pay_1651229746140.png'
+  },
+  {
+    id:'3', name:'Ví Điện Tử MoMo', img:'https://cdn.galaxycine.vn/media/2020/10/20/momo-icon_1603203874499.png'
+  },
+  {
+    id:'4', name:'ZaloPay', img:'https://cdn.galaxycine.vn/media/2022/12/2/icon-96x96_1669977824597.png'
+  },
+  {
+    id:'5', name:'VNPAY', img:'https://cdn.galaxycine.vn/media/2021/12/2/download_1638460623615.png'
+  },
+]
+
+
+
+export { dataPreview, dataSlide, dataShowing, dataComming, dataCinema, dataSupport, dataGender, dataActor, dataDirector, showtimesData, dates, foods, payment };

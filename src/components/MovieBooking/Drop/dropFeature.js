@@ -4,7 +4,7 @@ import DropImg from "./dropImg";
 const DropFeature = ({data, select}) => {
    
     return (
-        <div className="">      
+        <div className="h-72 w-44">      
             <DropImg data={data} select={select}/>
             <p className="text-left capitalize text-gray-400 mt-2 text-base font-bold">{data.name}</p>
         </div>

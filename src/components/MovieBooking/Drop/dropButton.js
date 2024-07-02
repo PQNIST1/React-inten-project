@@ -3,18 +3,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { dataShowing } from '../../../data/hashData';
 import DropFeature from './dropFeature';
+import { useDispatch } from 'react-redux';
+import { setSelectedMovieImg, setSelectedMovieName } from '../../../controller/SliceReducer/booking';
 
 const Dropdown = () => {
 
     const data = dataShowing;
-
+    const dispatch = useDispatch();
     const [selectedOption, setSelectedOption] = useState('');
 
     const [isOpen, setIsOpen] = useState(false);
 
     const handleToggle = () => setIsOpen(!isOpen);
-    const handleSelect = (option) => {
+    const handleSelect = (option, img) => {
         setSelectedOption(option);
+        dispatch(setSelectedMovieName(option));
+        dispatch(setSelectedMovieImg(img));
         const timer = setTimeout(() => {
             setIsOpen(false);
         }, 500); 
@@ -38,9 +42,9 @@ const Dropdown = () => {
                     </div>
                     {isOpen && (
                         <div className="">
-                            <div className="grid grid-cols-4 gap-7 mt-6 mx-3">
+                            <div className="grid grid-cols-4 gap-4 mt-6 mx-3">
                                 {data.map(item => (
-                                    <button onClick={() => { handleSelect(item.name) }}  className=''>
+                                    <button onClick={() => { handleSelect(item.name,item.image) }}  className=''>
                                         <DropFeature data={item} select={selectedOption}/>
                                     </button>
                                 ))}

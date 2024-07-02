@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import SingleSeat from './Seat/SingleSeat';
 import DoubleSeat from './Seat/doubleSeat';
 import VipSeat from './Seat/vipSeat';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSelectedDoubleSeats, setSelectedSingleSeats, setSelectedVipSeats } from '../../../controller/SliceReducer/booking';
 
 const SeatSelector = () => {
-  const [selectedSingleSeats, setSelectedSingleSeats] = useState([]);
-  const [selectedDoubleSeats, setSelectedDoubleSeats] = useState([]);
-  const [selectedVipSeats, setSelectedVipSeats] = useState([]);
+  const dispatch = useDispatch();
+  const selectedSingleSeats = useSelector((state)=> state.movie.selectedSingleSeats);
+  const selectedDoubleSeats = useSelector((state)=> state.movie.selectedDoubleSeats);
+  const selectedVipSeats = useSelector((state)=> state.movie.selectedVipSeats);
   const maxSeats = 5;
 
   const rows = Array.from({ length: 9 }, (_, i) => String.fromCharCode(66 + i)).reverse(); // ['A', 'B', ..., 'I']
@@ -50,10 +53,10 @@ const SeatSelector = () => {
     }
 
     if (allSeatsSelected) {
-      setSelectedDoubleSeats(selectedDoubleSeats.filter(seat => !seatsToToggle.includes(seat)));
+      dispatch(setSelectedDoubleSeats(selectedDoubleSeats.filter(seat => !seatsToToggle.includes(seat))));
     } else {
       if (getTotalSelectedSeats() + 2 <= maxSeats) {
-        setSelectedDoubleSeats([...selectedDoubleSeats, ...seatsToToggle]);
+        dispatch(setSelectedDoubleSeats([...selectedDoubleSeats, ...seatsToToggle]));
       } else {
         alert(`You can only select up to ${maxSeats} seats.`);
       }
@@ -76,13 +79,13 @@ const SeatSelector = () => {
   const updateSelectedSeats = (type, seats) => {
     switch (type) {
       case 'single':
-        setSelectedSingleSeats(seats);
+        dispatch(setSelectedSingleSeats(seats));
         break;
       case 'double':
-        setSelectedDoubleSeats(seats);
+        dispatch(setSelectedDoubleSeats(seats));
         break;
       case 'vip':
-        setSelectedVipSeats(seats);
+        dispatch(setSelectedVipSeats(seats));
         break;
       default:
         break;
@@ -133,32 +136,6 @@ const SeatSelector = () => {
         {renderSeats(rows, cols, 'single', SingleSeat)}
         {renderSeats(vipRows, vipCols, 'vip', VipSeat)}
       </div>
-      {/* <div className="mt-4">
-        <h2 className="text-xl font-semibold">Selected Seats:</h2>
-        <div className="mt-2">
-          {getTotalSelectedSeats() > 0 ? (
-            <>
-              <div>
-                <h3>Single Seats:</h3>
-                {selectedSingleSeats.length > 0 ? selectedSingleSeats.join(', ') : 'None'}
-              </div>
-              <div>
-                <h3>Double Seats:</h3>
-                {selectedDoubleSeats.length > 0 ? selectedDoubleSeats.filter((seat, index) => index % 2 === 0).map((seat, index) => `${seat},${selectedDoubleSeats[index * 2 + 1]}`).join(', ') : 'None'}
-              </div>
-              <div>
-                <h3>VIP Seats:</h3>
-                {selectedVipSeats.length > 0 ? selectedVipSeats.join(', ') : 'None'}
-              </div>
-            </>
-          ) : (
-            <p>No seats selected</p>
-          )}
-        </div>
-        <div className="mt-2">
-          <p>Total Seats: {getTotalSelectedSeats()}</p>
-        </div>
-      </div> */}
     </div>
   );
 };

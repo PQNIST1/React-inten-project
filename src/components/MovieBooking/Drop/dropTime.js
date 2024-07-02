@@ -3,10 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import TimeDetail from "../../Detail/Content/timeDetail";
+import { useSelector } from "react-redux";
 
 const DropTime = () => {
     const [isOpen, setIsOpen] = useState(false);
     const handleToggle = () => setIsOpen(!isOpen);
+    const isSelected = useSelector((state) => (state.movie.selectedMovieName));
     return (
         <div className="inline-block text-left w-full">
             <div>
@@ -19,7 +21,7 @@ const DropTime = () => {
                             <FontAwesomeIcon icon={faCaretDown} />
                         </div>
                     </div>
-                    {isOpen && (
+                    {isOpen && isSelected !== ''  && (
                         <div className="mt-5">
                             <TimeDetail />
                         </div>

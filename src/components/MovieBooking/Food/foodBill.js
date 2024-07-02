@@ -1,19 +1,15 @@
 import React from "react";
+import FoodBillDetail from "./foodBillDetail";
+import { useSelector } from "react-redux";
 
 const FoodBill = () => {
+    const selectedFood = useSelector(state => state.movie.selectedFood)
     return (
-
-        <div className="">
-            <div className="flex">
-                <div className="w-1/2">
-                    <p className=""><span className="font-bold">1x</span> iCombo 1 Big STD</p>
-                </div>
-                <div className="w-1/2 flex justify-end">
-                    <p className="">70.000 <span className="border-b-2  ">đ</span></p>
-                </div>
-            </div>
+        <div className="border-t-2 border-dotted pt-5">
+        {selectedFood.map((food)=>(
+            <FoodBillDetail data={food}/>
+        ))}
         </div>
-
     )
 }
 export default FoodBill;
