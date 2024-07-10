@@ -4,10 +4,12 @@ import { handleNext, handlePrev, setActiveTab } from "../../../controller/SliceR
 import { useNavigate } from "react-router-dom";
 import MovieBill from "./movieBill";
 import MovieNull from "./movieNull";
+import { clearBooking } from "../../../controller/SliceReducer/booking";
+
 
 
 const getTotalFoodPrice = (selectedFood) => {
-    return selectedFood.reduce((total, food) => total + (food.quantity), 0);
+    return selectedFood.reduce((total, food) => total + (food.price * food.quantity), 0);
 };
 const BookingBill = () => {
     const dispatch = useDispatch();
@@ -24,12 +26,15 @@ const BookingBill = () => {
     const selectedVipSeats = useSelector((state) => state.movie.selectedVipSeats);
     const selectedFood = useSelector(state => state.movie.selectedFood);
     const totalFoodPrice = getTotalFoodPrice(selectedFood);
-    const getTotal = selectedSingleSeats.length + selectedDoubleSeats.length + selectedVipSeats.length + totalFoodPrice;
+    const getTotal = selectedSingleSeats.length + selectedDoubleSeats.length + selectedVipSeats.length;
     const handlePrevClick = () => {
         const currentIndex = tabs.indexOf(activeTab);
         if (currentIndex === 0) {
             navigate('/');
             dispatch(setActiveTab('profile'))
+        } else if (currentIndex === 1) {
+            dispatch(clearBooking());
+            dispatch(handlePrev());
         } else {
             dispatch(handlePrev());
         }
@@ -58,7 +63,7 @@ const BookingBill = () => {
                     </div>
                     <div className="w-1/2 flex justify-end">
                         <p className="text-orange-400">
-                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(70000 * getTotal)}
+                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(70000 * getTotal + totalFoodPrice)}
                         </p>
                     </div>
                 </div>

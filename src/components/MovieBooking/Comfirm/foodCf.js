@@ -3,12 +3,16 @@ import Food from "../../Info/Booking/foodDetail";
 import { useSelector } from "react-redux";
 
 const getTotalFoodPrice = (selectedFood) => {
+    return selectedFood.reduce((total, food) => total + (food.price * food.quantity), 0);
+};
+const getTotalFood = (selectedFood) => {
     return selectedFood.reduce((total, food) => total + (food.quantity), 0);
 };
 
 const FoodCf = () => {
     const foods = useSelector((state)=> state.movie.selectedFood);
-    const getTotal = getTotalFoodPrice(foods);
+    const getTotalPrice = getTotalFoodPrice(foods);
+    const getTotal = getTotalFood(foods);
     return (
         <div className="w-1/2">
             <div className="pl-5">
@@ -26,7 +30,7 @@ const FoodCf = () => {
                     <div className="capitalize">
                         <p className="font-bold">Tổng cộng</p>
                         <p className="">
-                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(70000 * getTotal)}
+                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(getTotalPrice)}
                         </p>
                     </div>
                 </div>

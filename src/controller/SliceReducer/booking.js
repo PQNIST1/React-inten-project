@@ -48,12 +48,12 @@ const movieSlice = createSlice({
       state.selectedFood = action.payload;
     },
     addFood: (state, action) => {
-      const { foodId, quantity } = action.payload;
+      const { foodId, quantity, price, image } = action.payload;
       const existingFood = state.selectedFood.find(item => item.foodId === foodId);
       if (existingFood) {
         existingFood.quantity += quantity;
       } else {
-        state.selectedFood.push({ foodId, quantity });
+        state.selectedFood.push({ foodId, quantity, price, image });
       }
     },
     removeFood: (state, action) => {
@@ -66,6 +66,18 @@ const movieSlice = createSlice({
           state.selectedFood = state.selectedFood.filter(item => item.foodId !== foodId);
         }
       }
+    },
+    clearBooking: (state) => {
+      state.selectedDate= '';
+      state.showtimes= {};
+      state.selectedTime= '';
+      state.selectedSingleSeats= [];
+      state.selectedDoubleSeats= [];
+      state.selectedVipSeats= [];
+      state.selectedMovieId= '';
+      state.selectedMovieName= '';
+      state.selectedMovieImg= '';
+      state.selectedFood= [];
     },
   },
 });
@@ -83,6 +95,7 @@ export const {
   setSelectedFood,
   addFood,
   removeFood,
+  clearBooking,
 } = movieSlice.actions;
 
 export default movieSlice.reducer;

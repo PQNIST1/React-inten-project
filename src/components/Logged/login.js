@@ -1,14 +1,36 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { faUser, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { faEye } from "@fortawesome/free-regular-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logginUser } from "../../controller/SliceReducer/loggin";
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const { loading, error, user } = useSelector((state) => state.loggin);
+
+    const formData = {
+        "username": name,
+        "password": password,
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(logginUser(formData));
+    };
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, [user, navigate]);
+
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -29,11 +51,12 @@ const Login = () => {
                             <p className="uppercase m-auto"><span className="font-bold text-5xl 
                         text-white ">Movie</span> <span className="text-3xl text-gray-400">booking</span></p>
                         </div>
-                        <form className="text-white flex flex-col space-y-3">
-                            <label>Email:</label>
+                        <form className="text-white flex flex-col space-y-3" onSubmit={handleSubmit}>
+                            <label>Tên đăng nhập:</label>
                             <div className="w-full border h-10 rounded hover:border-blue-500 px-2 flex">
-                                <FontAwesomeIcon icon={faEnvelope} className="my-auto mr-2 text-lg" />
-                                <input placeholder="Nhập email của bạn....." className="bg-transparent border-none h-full focus:outline-none w-full " required type="email"></input>
+                                <FontAwesomeIcon icon={faUser} className="my-auto mr-2 text-lg" />
+                                <input id="name" name="name" value={name} onChange={(e) => setName(e.target.value)}
+                                    placeholder="Nhập tên đăng nhập của bạn....." className="bg-transparent border-none h-full focus:outline-none w-full " required type="text"></input>
                             </div>
                             <label>Mật khẩu:</label>
                             <div className="w-full border h-10 rounded hover:border-blue-500 px-2 flex">
@@ -43,9 +66,22 @@ const Login = () => {
                                     onChange={(e) => setPassword(e.target.value)}></input>
                                 <button type="button" onClick={togglePasswordVisibility} className="my-auto mr-2 text-lg"><FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} /></button>
                             </div>
-                            <button type="submit" className="bg-blue-700 rounded h-10 px-3 py-2 hover:bg-blue-500">Đăng nhập</button>
+                            {error && error.error && <p style={{ color: 'red' }}>{error.error}</p>}
+                            <button type="submit" className=" rounded h-10 hover:bg-blue-500 bg-indigo-500">
+                                {loading ? (
+                                    <div className="flex justify-center items-center">
+                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <p>Đang đăng nhập....</p>
+                                    </div>
+                                ) : (
+                                    'Đăng nhập'
+                                )}
+                            </button>
                             <Link className="h-full w-full" to={'/register'}>
-                                <button type="button" className="bg-blue-700 rounded px-5 py-2 hover:bg-blue-500 h-full w-full">Đăng ký</button>
+                                <button type="button" className="bg-indigo-500 rounded px-5 py-2 hover:bg-blue-500 h-full w-full">Đăng ký</button>
                             </Link>
                         </form>
                         <div className="mx-auto text-center">

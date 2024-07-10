@@ -5,6 +5,11 @@ import tabReducer from './SliceReducer/tab';
 import radioReducer from './SliceReducer/radio';
 import movieReducer from './SliceReducer/booking'
 import paymentReducer from './SliceReducer/payment';
+import logginReducer from './SliceReducer/loggin';
+import userReducer from './SliceReducer/getUser';
+import dataReducer from './SliceReducer/moive';
+import foodReducer from './SliceReducer/food';
+import addFoodReducer from './SliceReducer/addFood';
 
 const rootReducer = combineReducers({
   modal: modalReducer,
@@ -12,6 +17,11 @@ const rootReducer = combineReducers({
   radio: radioReducer,
   movie: movieReducer,
   payment: paymentReducer,
+  loggin: logginReducer,
+  user: userReducer,
+  data: dataReducer,
+  food: foodReducer,
+  addFood: addFoodReducer,
 });
 
 export default rootReducer;

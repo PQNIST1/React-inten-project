@@ -1,6 +1,11 @@
 import React from "react";
 import MoviesTabs from "./tasks";
 
+
+
+
+
+
 const MoiveList = () => {
     return (
         <div className="h-8 flex">

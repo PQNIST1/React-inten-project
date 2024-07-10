@@ -1,9 +1,15 @@
-import React from "react";
+import React, {useEffect} from "react";
 import CategoryFilter from "./categoryFilter";
 import CategoryList from "./categoryList";
 import MoiveContent from "../Detail/Content/Main/MovieContent"
+import { useDispatch } from "react-redux";
+import { getMovie } from "../../controller/SliceReducer/moive";
 
 const Category = () => {
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(getMovie()); 
+    }, [dispatch])
     return (
         <div className="w-5/6 m-auto mt-5 mb-10">
             <div className="border-l-4 border-blue-800 font-bold h-full">

@@ -8,7 +8,7 @@ const FoodBillDetail = ({ data }) => {
             </div>
             <div className="w-1/2 flex justify-end">
                 <p className="">
-                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(70000 * data.quantity)}
+                    {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.price * data.quantity)}
                 </p>
 
             </div>

@@ -9,10 +9,10 @@ const FoodBooking = () => {
         <div className="w-1/2  h-96 pl-5">
             <p className="text-lg font-bold mb-2">Đồ ăn</p>
             <div className="h-96">
+                {/* <Food />
                 <Food />
                 <Food />
-                <Food />
-                <Food />
+                <Food /> */}
             </div>
             <div className="border-t-2 border-dotted flex space-x-20 pt-5 mt-5 ">
                 <div className="">

@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveTab } from "../../controller/SliceReducer/tab";
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Tab = ({ title, isActive, onClick, link }) => {
     return (
@@ -15,6 +16,16 @@ const Tab = ({ title, isActive, onClick, link }) => {
 
 
 const UserAvatar = () => {
+    const userInfo = useSelector((state) => state.user.userInfo);
+    const [data, setData] = useState({});
+    const status = useSelector((state) => state.user.status);
+
+    useEffect(() => {
+        if (status === 'succeeded') {
+            setData(userInfo);
+        }
+    }, [status, userInfo]);
+
     const activeTab = useSelector((state) => state.tab.activeTab);
     const dispatch = useDispatch();
 
@@ -28,10 +39,12 @@ const UserAvatar = () => {
                     <img src="https://i.imgur.com/ZI1BmOM.png" alt="avatar" className="h-full w-full rounded-full" />
                 </div>
                 <div className="">
-                    <div className="flex hover:text-yellow-400 font-bold justify-center items-center">
-                        <img src="https://i.imgur.com/vsSqNTa.png" alt="avatar" className="h-16" />
-                        <p className="text-2xl">Phạm Quốc Nguyên</p>
-                    </div>
+                    {data.data && (
+                        <div className="flex hover:text-yellow-400 font-bold justify-center items-center">
+                            <img src="https://i.imgur.com/vsSqNTa.png" alt="avatar" className="h-16" />
+                            <p className="text-2xl">{data.data.user.userName}</p>
+                        </div>
+                    )}
                     <div className="flex hover:text-yellow-400 items-center">
                         <img src="https://i.imgur.com/Kfno3ND.png" alt="avatar" className="h-8 px-1 mt-1" />
                         <p className="text-2xl">0 Stars</p>

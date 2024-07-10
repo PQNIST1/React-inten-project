@@ -5,11 +5,15 @@ export const tabSlice = createSlice({
   name: 'tab',
   initialState: {
     activeTab: 'profile',
+    activeMovieTab: "tab1",
     tabs: tabs,
   },
   reducers: {
     setActiveTab: (state, action) => {
       state.activeTab = action.payload;
+    },
+    setActiveMovieTab: (state, action) => {
+      state.activeMovieTab = action.payload;
     },
     handleNext: (state) => {
       const currentIndex = state.tabs.indexOf(state.activeTab);
@@ -27,6 +31,6 @@ export const tabSlice = createSlice({
 
 });
 
-export const { setActiveTab, handleNext, handlePrev } = tabSlice.actions;
+export const { setActiveTab, setActiveMovieTab, handleNext, handlePrev } = tabSlice.actions;
 
 export default tabSlice.reducer;

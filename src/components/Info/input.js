@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-const InputChange = ({ icon, title }) => {
+const InputChange = ({ icon, title, value }) => {
     const [isEditing, setIsEditing] = useState(false);
     const handleEditClick = () => {
         setIsEditing(!isEditing);
@@ -17,7 +17,7 @@ const InputChange = ({ icon, title }) => {
                         <input  className="bg-transparent border-none h-full focus:outline-none w-full " required type="text"></input>
 
                     ) : (
-                        <p className="my-auto">Phạm Quốc Nguyên</p>
+                        <p className="my-auto">{value}</p>
                     )}
                 </div>
                 {isEditing ? (

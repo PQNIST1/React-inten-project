@@ -6,11 +6,13 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
 
 const MoiveListing = ({ data }) => {
+  
   return (
     <div className="">
       <div className="grid grid-cols-4 gap-7 mt-6">
         {data.map(item => (
-            <LargeFeature data={item} />
+            <LargeFeature data={item.object} />
+            
         ))}
       </div>
       <Link to={'/more'}>

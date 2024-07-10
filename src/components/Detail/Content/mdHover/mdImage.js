@@ -1,16 +1,24 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import MidMini from "./mdHover";
+import { ImgController } from "../../../../controller/SliceReducer/img";
 
-const MidImg = ({data}) => {
+const MidImg = ({data, path}) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [imageSrc, setImageSrc] = useState('');
+    useEffect(() => {
+        const imgData = data.image;
+        const imageUrl = ImgController(imgData);
+        setImageSrc(imageUrl);
+        return () => URL.revokeObjectURL(imageUrl);
+    }, [data]);
     return (
         <div onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="relative overflow-hidden h-full w-full">
-            <img className="rounded-lg w-full h-full object-cover" src={data.image} alt="" />
+            <img className="rounded-lg w-full h-full object-cover" src={imageSrc} alt="" />
             <div className="bg-black h-6 -right-2 w-20 absolute bottom-12 opacity-60  skew-x-[25deg]">
             </div>
             <div className="absolute bottom-12 right-5 mb-0 w-10 flex ">
@@ -20,7 +28,7 @@ const MidImg = ({data}) => {
             <div className="h-8 w-10 absolute bottom-0 right-0 m-1.5 bg-orange-500 rounded items-center flex justify-center">
                 <p className="text-center text-white font-bold font-sans">T18</p>
             </div>
-            {isHovered && <MidMini />}
+            {isHovered && <MidMini path={path}/>}
         </div>
     )
 }

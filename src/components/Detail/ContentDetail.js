@@ -3,21 +3,30 @@ import TextDetail from "./Content/TextDetail";
 import MainDetail from "./Content/Main/mainDetail";
 import TimeDetail from "./Content/timeDetail";
 import MoiveContent from "./Content/Main/MovieContent";
+import { useEffect, useState } from "react";
+import { ImgController } from "../../controller/SliceReducer/img";
 
-const ContentDetail = () => {
+const ContentDetail = ({ data }) => {
+    const [imageSrc, setImageSrc] = useState('');
+    useEffect(() => {
+        const imgData = data.image;
+        const imageUrl = ImgController(imgData);
+        setImageSrc(imageUrl);
+        return () => URL.revokeObjectURL(imageUrl);
+    }, [data]);
     return (
         <div className="w-5/6   m-auto relative  flex mb-20">
             <div className="border-2 rounded w-72 h-96 absolute -top-14 box-content left-0">
-                <img src="https://cdn.galaxycine.vn/media/2024/6/7/gtcn-500_1717732724699.jpg" alt="" className="w-72 h-96 object-fill rounded" />
+                <img src={imageSrc} alt="" className="w-72 h-96 object-fill rounded" />
             </div>
 
             <div className=" w-2/3">
                 <div className="flex mb-14">
                     <div className="w-72">
                     </div>
-                    <TextDetail />
+                    <TextDetail data={data}/>
                 </div>
-                <MainDetail />
+                <MainDetail data={data} />
                 <TimeDetail />
             </div>
             <div className="w-1/3">

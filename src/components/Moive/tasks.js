@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setActiveTab } from "../../controller/SliceReducer/tab";
+import { setActiveMovieTab } from "../../controller/SliceReducer/tab";
 
 const Tab = ({ title, isActive, onClick }) => {
   return (
@@ -14,24 +14,24 @@ const Tab = ({ title, isActive, onClick }) => {
 };
 
 const MoviesTabs = () => {
-  const activeTab = useSelector((state) => state.tab.activeTab);
+  const activeTab = useSelector((state) => state.tab.activeMovieTab);
   const dispatch = useDispatch();
 
   const handleTabClick = (tab) => {
-    dispatch(setActiveTab(tab));
+    dispatch(setActiveMovieTab(tab));
   };
 
   return (
     <div className="flex space-x-4">
       <Tab
         title="Đang chiếu"
-        isActive={activeTab === "profile"}
-        onClick={() => handleTabClick("profile")}
+        isActive={activeTab === "tab1"}
+        onClick={() => handleTabClick("tab1")}
       />
       <Tab
         title="Sắp chiếu"
-        isActive={activeTab === "history"}
-        onClick={() => handleTabClick("history")}
+        isActive={activeTab === "tab2"}
+        onClick={() => handleTabClick("tab2")}
       />
     </div>
   );

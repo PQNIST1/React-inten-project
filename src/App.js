@@ -12,6 +12,7 @@ import { setActiveTab } from './controller/SliceReducer/tab';
 import TicketDetail from './components/Info/Booking/ticketDetail';
 import Room from './components/MovieBooking/Room/room';
 import MovieCategory from './components/Category/movieCategory';
+import AddFood from './components/Admin/AddFood/addFood';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/detail" element={<MovieDetail />} />
+          <Route path="/detail/:prama" element={<MovieDetail />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/more" element={<More />} />
@@ -44,6 +45,7 @@ function App() {
           <Route path="/ticket" element={<TicketDetail />} />
           <Route path="/booking" element={<Room />} />
           <Route path="/category" element={<MovieCategory/>} />
+          <Route path="/add" element={<AddFood/>} />
         </Routes>
       </div>
     </Router>

@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HoverMini from "./hoverMini";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { ImgController } from "../../../../../controller/SliceReducer/img";
 
-const MiniImg = () => {
+const MiniImg = ({data}) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [imageSrc, setImageSrc] = useState('');
+    useEffect(() => {
+        const imgData = data.image;
+        const imageUrl = ImgController(imgData);
+        setImageSrc(imageUrl);
+        return () => URL.revokeObjectURL(imageUrl);
+    }, [data]);
     return (
         <div onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="relative overflow-hidden h-52">
-            <img className="rounded w-full h-full object-cover" src="https://i.imgur.com/lwcVJQi.jpeg" alt="" />
+            <img className="rounded w-full h-full object-cover" src={imageSrc} alt="" />
             <div className="bg-black h-5 -right-2 w-16 absolute bottom-10 opacity-60  skew-x-[25deg]">
 
             </div>
@@ -20,7 +28,7 @@ const MiniImg = () => {
             <div className="absolute bottom-0 right-0 bg-orange-500 text-white rounded p-1 font-sans font-bold m-1 text-sm">
                 <p className="">T18</p>
             </div>
-            {isHovered && <HoverMini />}
+            {isHovered && <HoverMini data={data} />}
         </div>
     )
 }

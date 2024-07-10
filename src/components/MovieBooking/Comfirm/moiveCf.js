@@ -4,10 +4,7 @@ import Seat from "../Bill/seat";
 
 const MovieCf = () => {
     const SingleSeats = useSelector((state) => state.movie.selectedSingleSeats);
-    const date = useSelector((state) => state.movie.selectedDate);
-    const Time = useSelector((state) => state.movie.selectedTime);
-    const MovieName = useSelector((state) => state.movie.selectedMovieName);
-    const MovieImg = useSelector((state) => state.movie.selectedMovieImg);
+    
     const DoubleSeats = useSelector((state) => state.movie.selectedDoubleSeats);
     const VipSeats = useSelector((state) => state.movie.selectedVipSeats);
     const getTotal = SingleSeats.length + DoubleSeats.length + VipSeats.length;

@@ -5,27 +5,31 @@ import { faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import MoiveProduct from "./Main/MoiveProduct";
 import { dataActor, dataDirector, dataGender } from '../../../data/hashData';
+import { formatDate } from "../../../controller/SliceReducer/img";
 
-const TextDetail = () => {
-    const data = dataGender;
+const TextDetail = ({ data }) => {
+    const data0 = dataGender;
     const data1 = dataActor;
     const data2 = dataDirector;
+    const date = formatDate(data.releaseDate);
     return (
-        <div className="pt-7 pl-5  space-y-2 ">
+        <div className="pt-7 pl-5  space-y-2 w-2/3">
             <div className="flex">
-                <h1 className="capitalize text-2xl font-bold text-white">gia tài của ngoại</h1>
-                <div className="bg-orange-500 w-9 h-6 text-white font-bold rounded text-center my-auto ml-4">
+                <div className="w-3/4">
+                    <h1 className="capitalize text-2xl font-bold text-white">{data.name}</h1>
+                </div>
+                <div className="bg-orange-500 w-9 h-6 text-white font-bold rounded text-center ml-4 mt-2">
                     <p className="m-auto">T13</p>
                 </div>
             </div>
             <div className="flex text-sm">
                 <div className="flex">
                     <FontAwesomeIcon icon={faClock} color="orange" className="h-4 my-auto" />
-                    <p className="mx-1">127 phút</p>
+                    <p className="mx-1">{data.duration} phút</p>
                 </div>
                 <div className="flex ml-5">
                     <FontAwesomeIcon icon={faCalendar} color="orange" className="h-4 my-auto" />
-                    <p className="mx-1">06/06/2024</p>
+                    <p className="mx-1">{date}</p>
                 </div>
             </div>
             <div className="flex space-x-1">
@@ -40,9 +44,9 @@ const TextDetail = () => {
                 <p>Nhà sản xuất:</p>
                 <p className="capitalize font-bold">GDH 559</p>
             </div>
-            <MoiveProduct data={data} title={"Thể loại"}/>
-            <MoiveProduct data={data2} title={"Đạo diễn"}/>
-            <MoiveProduct data={data1} title={"Diễn viên"}/> 
+            <MoiveProduct data={data0} title={"Thể loại"} />
+            <MoiveProduct data={data2} title={"Đạo diễn"} />
+            <MoiveProduct data={data1} title={"Diễn viên"} />
         </div>
     )
 }

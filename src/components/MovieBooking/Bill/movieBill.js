@@ -2,14 +2,22 @@ import React from "react";
 import { getDayOfWeek } from "../../Detail/Content/Time/dateCtr/datecontroller";
 import Seat from "./seat";
 import FoodBill from "../Food/foodBill";
+import { useEffect,useState } from "react";
+import { ImgController } from "../../../controller/SliceReducer/img";
 
 const MovieBill = ({ date, time, name, img, sseats, dseats, vseats, food, active }) => {
-
+    const [imageSrc, setImageSrc] = useState('');
+    useEffect(() => {
+        const imgData = img;
+        const imageUrl = ImgController(imgData);
+        setImageSrc(imageUrl);
+        return () => URL.revokeObjectURL(imageUrl);
+      }, [img]);
     return (
         <div className="space-y-5">
 
             <div className=" flex">
-                <img src={img} alt="" className="h-52 w-40 object-cover rounded" />
+                <img src={imageSrc} alt="" className="h-52 w-40 object-cover rounded" />
                 <div className="capitalize ml-3">
                     <div className="flex">
                         <p className="text-lg font-bold">{name}</p>

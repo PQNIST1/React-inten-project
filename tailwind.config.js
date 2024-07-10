@@ -13,6 +13,8 @@ module.exports = {
       },
       height: {
         "15":'60px',
+        "512":'512px',
+        "448":'448px',
       },
       width: {
         "22":'88px',

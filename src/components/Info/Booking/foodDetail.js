@@ -1,13 +1,22 @@
 import React from "react";
+import { useEffect, useState } from "react";
+import {ImgController} from '../../../controller/SliceReducer/img';
 
-const Food = ({data}) => {
+const Food = ({ data }) => {
+    const [imageSrc, setImageSrc] = useState('');
+    useEffect(() => {
+        const imgData = data.image;
+        const imageUrl = ImgController(imgData);
+        setImageSrc(imageUrl);
+        return () => URL.revokeObjectURL(imageUrl);
+    }, [data]);
     return (
         <div className="flex mb-4">
-            <img src="https://cdn.galaxycine.vn/media/2024/3/29/menuboard-coonline-2024-combo1-copy-min_1711699814762.jpg" alt="" className="h-20 rounded" />
+            <img src={imageSrc} alt="" className="h-20 rounded" />
             <div className="text-sm ml-2">
                 <p className="font-bold">{data.foodId}</p>
-                <p >01 Ly nước ngọt size L + 01 Hộp bắp</p>
-                <p className="font-bold">Giá: 89.000 ₫  - <span>SL: {data.quantity}</span></p>
+                <p className="font-bold">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.price)} - <span>SL: {data.quantity}</span></p>
+
             </div>
         </div>
     )
