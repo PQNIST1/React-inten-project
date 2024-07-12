@@ -10,6 +10,7 @@ import userReducer from './SliceReducer/getUser';
 import dataReducer from './SliceReducer/moive';
 import foodReducer from './SliceReducer/food';
 import addFoodReducer from './SliceReducer/addFood';
+import seatReducer from './SliceReducer/seat';
 
 const rootReducer = combineReducers({
   modal: modalReducer,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   data: dataReducer,
   food: foodReducer,
   addFood: addFoodReducer,
+  seat: seatReducer,
 });
 
 export default rootReducer;

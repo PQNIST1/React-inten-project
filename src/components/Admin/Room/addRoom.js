@@ -1,52 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setName, setPrice, setImage, addFood, clearForm } from '../../../controller/SliceReducer/addFood';
+import { setName, clearForm,  setPrice, addRoom } from '../../../controller/SliceReducer/addFood';
 
-
-const FoodForm = () => {
+const AddRoom = () => {
     const dispatch = useDispatch();
     const form = useSelector((state) => state.addFood);
-    const { name, price, image, loading, error, success } = form;
-    const [fileInputKey, setFileInputKey] = useState(Date.now());
+    const { name, loading, error, success, price } = form;
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        if (name === 'image') {
-            dispatch(setImage(files[0]));
-        } else if (name === 'name') {
+        const { name, value } = e.target;
+        if (name === 'name') {
             dispatch(setName(value));
-        } else if (name === 'price') {
+        } else if (name === "code") {
             dispatch(setPrice(value));
         }
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = new FormData();
-        data.append('name', name);
-        data.append('price', price);
-        data.append('file', image);
-        dispatch(addFood(data));
+        const data = {
+            "name": name,
+            "code": price,
+            "createdAt": "",
+            "updatedAt": ""
+        }
+        dispatch(addRoom(data));
         dispatch(clearForm());
-        setFileInputKey(Date.now());
     };
     return (
         <div>
-            <div className="dark:bg-gray-900 bg-gray-100 flex justify-center items-center">
+            <div className="dark:bg-gray-900 bg-gray-100 flex justify-center items-center mt-10 mb-10">
                 <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 rounded-md shadow-lg">
-                    <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Thêm đồ ăn</h2>
+                    <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Thêm phòng</h2>
                     <form className="" onSubmit={handleSubmit}>
                         <div className="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md px-8  py-8 space-y-5">
                             <div>
-                                <label htmlFor="name">Tên</label>
+                                <label htmlFor="name">Tên phòng</label>
                                 <input id="name" name="name" value={name} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
                             </div>
                             <div>
-                                <label htmlFor="price">Giá</label>
-                                <input id="price" name="price" value={price} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="number" required></input>
-                            </div>
-                            <div>
-                                <label htmlFor="image">Hình ảnh</label>
-                                <input key={fileInputKey}  id="image" name="image" onChange={handleChange} className="mt-2 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-teal-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-teal-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60" type="file" required></input>
+                                <label htmlFor="name">Mã phòng</label>
+                                <input id="code" name="code" value={price} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
                             </div>
                         </div>
                         <button type="submit" className="mb-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-md w-full mt-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:ring-opacity-50">
@@ -70,4 +63,4 @@ const FoodForm = () => {
         </div>
     )
 }
-export default FoodForm;
+export default AddRoom;

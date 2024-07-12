@@ -124,6 +124,47 @@ export const deleteActor = createAsyncThunk('auth/deleteActor', async (id, { rej
   }
 });
 
+export const addRoom = createAsyncThunk('auth/addRoom', async (formData, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
+  try {
+    const response = await axios.post('http://localhost:8080/api/v1/room', formData, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const deleteRoom = createAsyncThunk('auth/deleteRoom', async (id, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
+  try {
+      const response = await axios.delete(`http://localhost:8080/api/v1/room/${id}`, {
+          headers: {
+              'Authorization': `Bearer ${accessToken}`
+          }
+      });
+      return response.data;
+  } catch (error) {
+      if (!error.response) {
+          throw error;
+      }
+      return rejectWithValue(error.response.data);
+  }
+});
+
+
 const addFoodSlice = createSlice({
   name: 'addFood',
   initialState: {
@@ -181,6 +222,19 @@ const addFoodSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+      .addCase(addRoom.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(addRoom.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(addRoom.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(deleteFood.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -217,6 +271,19 @@ const addFoodSlice = createSlice({
         state.success = true;
       })
       .addCase(deleteActor.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteRoom.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deleteRoom.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(deleteRoom.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -9,6 +9,8 @@ import ContTabs from "../tabs";
 import FoodAddCtr from "./foodAddCtr";
 import AddCategoryCtr from "../AddCategoryAndActor/addCategoryCtr";
 import AddActorCtr from "../AddCategoryAndActor/Actor/AddActorCtr";
+import AddRoomCtr from "../Room/addRoomCtr";
+import AddSeatCtr from "../Seat/addSeatCtr";
 
 const AddFood = () => {
     const dispatch = useDispatch();
@@ -24,6 +26,8 @@ const AddFood = () => {
         {activeTab === 'food' && <FoodAddCtr />}
         {activeTab === 'category' && <AddCategoryCtr />}
         {activeTab === 'actor' && <AddActorCtr />}
+        {activeTab === 'room' && <AddRoomCtr/>}
+        {activeTab === 'seat-type' && <AddSeatCtr/>}
         
         <Footer />
        

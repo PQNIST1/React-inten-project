@@ -13,6 +13,7 @@ import TicketDetail from './components/Info/Booking/ticketDetail';
 import Room from './components/MovieBooking/Room/room';
 import MovieCategory from './components/Category/movieCategory';
 import AddFood from './components/Admin/AddFood/addFood';
+import MovieAdd from './components/Admin/AddMovie/addMovie';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ function App() {
           <Route path="/booking" element={<Room />} />
           <Route path="/category" element={<MovieCategory/>} />
           <Route path="/add" element={<AddFood/>} />
+          <Route path="/add/movie" element={<MovieAdd/>} />
         </Routes>
       </div>
     </Router>

@@ -38,6 +38,17 @@ export const getActor = createAsyncThunk('auth/getActor', async (_, { rejectWith
   }
 });
 
+export const getRoom = createAsyncThunk('auth/getRoom', async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get('http://localhost:8080/api/v1/room');
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
 
 
 const foodSlice = createSlice({
@@ -46,6 +57,7 @@ const foodSlice = createSlice({
     data: [],
     data1:[],
     data2:[],
+    data3:[],
     status: 'idle',
     error: null,
   },
@@ -84,6 +96,18 @@ const foodSlice = createSlice({
         state.data2 = action.payload;
       })
       .addCase(getActor.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Có lỗi xảy ra';
+      }) 
+      .addCase(getRoom.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(getRoom.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.data3 = action.payload;
+      })
+      .addCase(getRoom.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Có lỗi xảy ra';
       });

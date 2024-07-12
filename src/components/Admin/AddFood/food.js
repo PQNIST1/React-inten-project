@@ -31,8 +31,8 @@ const Food = ({ data }) => {
 
             </div>
             <div className=" w-1/3 h-24  flex text-2xl space-x-5 ">
-                <button className="hover:text-blue-700"><FontAwesomeIcon icon={faPenToSquare} /></button>
-                <button onClick={() => handleDelete(data.id)} className="hover:text-blue-700"><FontAwesomeIcon icon={faTrashCan} /></button>
+                <button className="hover:text-blue-700"><FontAwesomeIcon icon={faPenToSquare}  className="text-indigo-500" /></button>
+                <button onClick={() => handleDelete(data.id)} className="hover:text-blue-700"><FontAwesomeIcon icon={faTrashCan} className="text-red-600"/></button>
             </div>
         </div>
     )

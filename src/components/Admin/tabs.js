@@ -22,8 +22,8 @@ const ContTabs = () => {
   };
 
   return (
-    <div className="mx-auto w-96 mt-5 ">
-      <div className="flex space-x-4  ">
+    <div className="mx-auto w-1/2 mt-5 ">
+      <div className="flex space-x-4 ">
         <Tab
           title="Thêm đồ ăn"
           isActive={activeTab === "food"}
@@ -38,6 +38,21 @@ const ContTabs = () => {
           title="Thêm diễn viên"
           isActive={activeTab === "actor"}
           onClick={() => handleTabClick("actor")}
+        />
+         <Tab
+          title="Thêm phòng"
+          isActive={activeTab === "room"}
+          onClick={() => handleTabClick("room")}
+        />
+         <Tab
+          title="Thêm ghế"
+          isActive={activeTab === "seat-type"}
+          onClick={() => handleTabClick("seat-type")}
+        />
+         <Tab
+          title="Thêm thời gian"
+          isActive={activeTab === "time"}
+          onClick={() => handleTabClick("time")}
         />
       </div>
     </div>

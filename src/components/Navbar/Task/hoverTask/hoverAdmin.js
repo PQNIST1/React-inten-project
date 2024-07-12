@@ -36,7 +36,7 @@ const AdminHover = () => {
                    <p className="capitalize mx-auto">Thêm</p>
                 </div>
             </Link>
-            <Link to="/info/#history">
+            <Link to="/add/movie">
                 <div className="hover:text-blue-700 flex px-2 hover:bg-yellow-300 hover:border-l-4 hover:border-orange-400 text-center">
                 <FontAwesomeIcon icon={faFilm} className="my-auto"/>
                    <p className="capitalize mx-auto">phim</p>
