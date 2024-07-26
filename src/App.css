@@ -45,3 +45,71 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+.custom-carousel .carousel .control-dots {
+  top: 85%;
+  bottom: auto;
+  display: flex;
+  justify-content: center;
+}
+/* styles.css */
+.video-responsive {
+  position: relative;
+}
+
+.video-responsive iframe,
+.video-responsive img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-responsive .absolute {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.list {
+  overflow:over;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.input-date {
+  background-color: transparent;
+}
+.input-date .rmdp-input {
+  height: 40px !important;
+  width: 208px !important;
+  background: transparent;
+}
+
+.rmdp-input {
+  height: 40px !important;
+  width: 250px !important;
+  background: transparent;
+}
+.custom {
+  background-color: transparent;
+}
+.custom p {
+ 
+  width:  120px;
+}
+
+
+
