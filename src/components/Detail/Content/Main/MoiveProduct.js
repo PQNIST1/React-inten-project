@@ -5,15 +5,17 @@ const MoiveProduct = ({ data, title }) => {
     return (
         <div className="flex">
             <div className="w-20">
-                <p className="">{title}:</p>
+                <p>{title}:</p>
             </div>
-            <div className="flex-wrap  justify-center w-96">
+            <div className="flex-wrap w-96 flex">
                 {data.map((item, index) => (
-                    <>
-                        <Link to={'/category'}>
-                            <button key={index} className="bg-orange-500 capitalize text-white rounded mr-1 p-1 mt-1 hover:bg-orange-400">{item.gender}</button>
+                    <div key={index}>
+                        <Link to='/category'>
+                            <button className="bg-orange-500 capitalize text-white rounded mr-1 p-1 mt-1 hover:bg-orange-400">
+                                {item.name}
+                            </button>
                         </Link>
-                    </>
+                    </div>
                 ))}
             </div>
         </div>

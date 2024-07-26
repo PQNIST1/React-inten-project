@@ -2,16 +2,16 @@ import { useState, useEffect } from "react";
 import React from "react";
 import Select from "react-tailwindcss-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getActor } from "../../../../controller/SliceReducer/food";
+import { getActor } from "../../../../controller/SliceReducer/addActor";
 import { addDirector } from "../../../../controller/SliceReducer/moive";
 
 
 const DirectorSelect = () => {
     const dispatch = useDispatch();
-    const actors = useSelector((state) => state.food.data2);
+    const actors = useSelector((state) => state.actor.data);
     const [data, setData] = useState([]);
     const [data1, setData1] = useState([]);
-    const status = useSelector((state) => state.food.status);
+    const status = useSelector((state) => state.actor.status);
     const form = useSelector((state) => state.data);
     const {director} = form;
 
@@ -30,7 +30,7 @@ const DirectorSelect = () => {
     }, [status, actors]);
     useEffect(() => {
         if (data && data.data) {
-            const newData = data.data.map((item) => item.object);
+            const newData = data.data.content.map((item) => item.object);
             setData1(newData);
         }
     }, [data]);

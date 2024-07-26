@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccessToken } from "../../controller/SliceReducer/loggin";
 import { getUser } from "../../controller/SliceReducer/getUser";
+import { getMovie } from "../../controller/SliceReducer/moive";
 
 
 const Nav = () => {
@@ -20,6 +21,7 @@ const Nav = () => {
         if (accessToken) {
             dispatch(setAccessToken());
             dispatch(getUser());
+            dispatch(getMovie());
         }
     }, [dispatch, accessToken]);
     

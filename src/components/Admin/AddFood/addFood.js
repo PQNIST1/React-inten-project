@@ -11,6 +11,8 @@ import AddCategoryCtr from "../AddCategoryAndActor/addCategoryCtr";
 import AddActorCtr from "../AddCategoryAndActor/Actor/AddActorCtr";
 import AddRoomCtr from "../Room/addRoomCtr";
 import AddSeatCtr from "../Seat/addSeatCtr";
+import SpecialDayCtr from "../SpecialDay/addSpecialDayCtr";
+import ShowTimeCtr from "../AddShowTime/showTimeCtr";
 
 const AddFood = () => {
     const dispatch = useDispatch();
@@ -28,7 +30,8 @@ const AddFood = () => {
         {activeTab === 'actor' && <AddActorCtr />}
         {activeTab === 'room' && <AddRoomCtr/>}
         {activeTab === 'seat-type' && <AddSeatCtr/>}
-        
+        {activeTab === 'time' && <SpecialDayCtr/>}
+        {activeTab === 'showTime' && <ShowTimeCtr/>}
         <Footer />
        
     </div>

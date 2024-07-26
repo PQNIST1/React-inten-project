@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import React from "react";
 import Select from "react-tailwindcss-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategory } from "../../../../controller/SliceReducer/food";
+import { getCategory } from "../../../../controller/SliceReducer/addCategory";
 import { addGenre } from "../../../../controller/SliceReducer/moive";
 
 
@@ -10,10 +10,10 @@ const CategorySelect = () => {
     const form = useSelector((state) => state.data);
     const { genres } = form;
     const dispatch = useDispatch();
-    const categorys = useSelector((state) => state.food.data1);
+    const categorys = useSelector((state) => state.category.data);
     const [data, setData] = useState([]);
     const [data1, setData1] = useState([]);
-    const status = useSelector((state) => state.food.status);
+    const status = useSelector((state) => state.category.status);
 
 
     const handleChange = value => {
@@ -30,7 +30,7 @@ const CategorySelect = () => {
     }, [status, categorys]);
     useEffect(() => {
         if (data && data.data) {
-            const newData = data.data.map((item) => item.object);
+            const newData = data.data.content.map((item) => item.object);
             setData1(newData);
         }
     }, [data, dispatch]);

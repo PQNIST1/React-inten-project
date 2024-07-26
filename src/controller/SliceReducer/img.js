@@ -9,6 +9,27 @@ export const ImgController = (imgData) => {
     const imageUrl = URL.createObjectURL(blob);
     return imageUrl;
 } 
+
+export const ImgFileController = (imgData) => {
+    const binaryString = atob(imgData);
+    const byteArray = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+        byteArray[i] = binaryString.charCodeAt(i);
+    }
+
+    const blob = new Blob([byteArray], { type: 'image/jpeg' });
+    const file = new File([blob], 'image.jpg', { type: 'image/jpeg' });
+    return file;
+}
+
+
+export const  splitDateTime = (dateTimeString) => {
+    const [date, timeWithSeconds] = dateTimeString.split('T');
+    const time = timeWithSeconds.split('.')[0].slice(0, 5); // Lấy giờ và phút
+    return `${date} ${time}`;
+  }
+
+
 export const formatDate = (inputDateStr) => {
     // Tạo đối tượng Date từ chuỗi ngày tháng ban đầu
     const inputDate = new Date(inputDateStr);

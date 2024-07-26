@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import AddSearch from "../AddFood/addSearch";
 import Pagination from "../AddFood/page";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getRoom } from "../../../controller/SliceReducer/food";
+import { getRoom } from "../../../controller/SliceReducer/addRoom";
 import Room from "./room";
 
 
 const RoomList = () => {
     const dispatch = useDispatch();
-    const rooms = useSelector((state) => state.food.data3);
-    const form = useSelector((state) => state.addFood);
+    const rooms = useSelector((state) => state.room.data);
+    const form = useSelector((state) => state.room);
     const [data, setData] = useState([]);
-    const status = useSelector((state) => state.food.status);
-    const { success } = form;
-    const [itemsPerPage] = useState(5);
+    const [filter, setFilterData] = useState([]);
+    const { success, status } = form;
+    const [itemsPerPage] = useState(4);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
-
+    const { searchQuery } = useSelector((state) => state.seacrh);
     useEffect(() => {
         dispatch(getRoom());
     }, [dispatch]);
@@ -33,17 +34,25 @@ const RoomList = () => {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     useEffect(() => {
         if (data.data) {
-            setCurrentItems(data.data.slice(indexOfFirstItem, indexOfLastItem));
+            const filteredData = data.data.content.slice().filter((item) =>
+                item.object.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilterData(filteredData);
         }
-    }, [data.data, indexOfFirstItem, indexOfLastItem, status]);
+    }, [data.data, searchQuery]);
+
+    useEffect(() => {
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentFilteredItems = filter.slice(indexOfFirstItem, indexOfLastItem);
+        setCurrentItems(currentFilteredItems);
+    }, [filter, currentPage, itemsPerPage]);
     return (
         <div className=" flex flex-col">
             <div className="flex mb-5">
-                <p className="font-bold text-lg my-auto">Thể loại</p>
+                <p className="font-bold text-lg my-auto">Phòng</p>
                 <AddSearch />
             </div>
             {data.data && (
@@ -52,23 +61,35 @@ const RoomList = () => {
                         <table className=" min-w-full">
                             <thead>
                                 <tr className=" text-gray-400 bg-gray-50 bg-opacity-10">
-                                    <th scope="col" className=" w-1/3 p-5 text-left text-sm leading-6 font-semibold capitalize"> Tên phòng </th>
-                                    <th scope="col" className=" w-1/3 p-5 text-left text-sm leading-6 font-semibold  capitalize"> Mã phòng </th>
-                                    <th scope="col" className=" w-1/3 p-5 text-left text-sm leading-6 font-semibold  capitalize"> Actions </th>
+                                    <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold capitalize"> Tên </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold  capitalize"> Mã </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold capitalize"> Tạo </th>
+                                    <th scope="col" className=" p-5 text-left text-sm leading-6 font-semibold capitalize"> Sửa </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold  capitalize"> Actions </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-300 capitalize">
                                 {currentItems.map((item) => (
-                                    <Room key={item.object.id} data={item.object} />
+                                    <Room key={item.object.id} data={item.object} pp={item}/>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                    <Pagination
-                        currentPage={currentPage}
-                        totalPages={Math.ceil(data.data.length / itemsPerPage)}
-                        onPageChange={handlePageChange}
-                    />
+                    <div className="flex">
+                        <div className="w-1/2">
+                            <Link to={'/create/seat'}>
+                                <button className="h-10 border rounded px-5 bg-orange-400 text-white">Tạo ghế cho phòng</button>
+
+                            </Link>
+                        </div>
+                        <div className="w-1/2"> <Pagination
+                            currentPage={currentPage}
+                            totalPages={Math.ceil(filter.length / itemsPerPage)}
+                            onPageChange={handlePageChange}
+                        /></div>
+
+                    </div>
+
                 </>
 
             )}

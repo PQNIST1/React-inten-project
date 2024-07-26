@@ -14,6 +14,8 @@ import Room from './components/MovieBooking/Room/room';
 import MovieCategory from './components/Category/movieCategory';
 import AddFood from './components/Admin/AddFood/addFood';
 import MovieAdd from './components/Admin/AddMovie/addMovie';
+import SeatCtr from './components/Admin/Room/CreatSeat/creatSeatCtr';
+import RoomSeat from './components/Admin/Room/Seats/roomSeat';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
@@ -22,9 +24,10 @@ const ScrollToTop = () => {
   React.useEffect(() => {
     window.scrollTo(0, 0);
     if (pathname && pathname.hash) {
-      const hash = pathname.hash.replace('#', '');
-      if (hash) {
-        dispatch(setActiveTab(hash));
+      const hash = window.location.hash;
+      const section = hash.split('?')[0].replace('#', '');
+      if (section) {
+        dispatch(setActiveTab(section));
       }
     }
   }, [ dispatch, pathname]);
@@ -48,6 +51,8 @@ function App() {
           <Route path="/category" element={<MovieCategory/>} />
           <Route path="/add" element={<AddFood/>} />
           <Route path="/add/movie" element={<MovieAdd/>} />
+          <Route path="/create/seat" element={<SeatCtr/>} />
+          <Route path="/room/seat/:prama" element={<RoomSeat/>} />
         </Routes>
       </div>
     </Router>

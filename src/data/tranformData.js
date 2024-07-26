@@ -21,7 +21,6 @@ export const NormalizedMovieNames = (movies) => {
 };
 
 export const findName = (movies, prama) => {
-    console.log(movies,prama);
     const foundMovie = movies.find(movie => movie.name.toLowerCase() === prama.toLowerCase());
     return foundMovie.movie;
 };

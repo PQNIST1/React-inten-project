@@ -89,10 +89,26 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 
+.input-date {
+  background-color: transparent;
+}
+.input-date .rmdp-input {
+  height: 40px !important;
+  width: 208px !important;
+  background: transparent;
+}
+
 .rmdp-input {
   height: 40px !important;
-  width: 221px !important;
+  width: 250px !important;
   background: transparent;
+}
+.custom {
+  background-color: transparent;
+}
+.custom p {
+ 
+  width:  120px;
 }
 
 

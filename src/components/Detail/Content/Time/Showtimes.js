@@ -7,9 +7,9 @@ const TimeSlider = ({ times, selectedTime, onTimeSelect }) => {
   const location = useLocation();
   const pathname = location.pathname.split('/')[1];
   return (
-    <div className="flex-wrap py-2">
-      {times.map((time) => (
-        <>
+    <div className="flex-wrap py-2 flex">
+      {times.map((time, index) => (
+        <div key={index}>
           {pathname === 'detail' ? (
             <Link to={'/booking/#seat'}>
               <button
@@ -27,8 +27,9 @@ const TimeSlider = ({ times, selectedTime, onTimeSelect }) => {
               {time}
             </button>
           )}
-        </>
+        </div>
       ))}
+
     </div>
   );
 };

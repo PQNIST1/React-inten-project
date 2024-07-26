@@ -21,21 +21,21 @@ const Dropdown = () => {
         dispatch(setSelectedMovieImg(img));
         const timer = setTimeout(() => {
             setIsOpen(false);
-        }, 500); 
-    
+        }, 500);
+
         // Xóa timeout nếu component unmount trước khi timeout kết thúc
         return () => clearTimeout(timer);
     };
     useEffect(() => {
         if (status === 'succeeded') {
-            setData(movies.data);
+            setData(movies.data.content);
         }
     }, [status, movies]);
 
     return (
         <div className="inline-block text-left w-full">
             <div>
-                <div  className='w-full  border text-white font-bold p-2'>
+                <div className='w-full  border text-white font-bold p-2'>
                     <div onClick={handleToggle} className='flex'>
                         <div className='w-3/4'>
                             {selectedOption ? `Chọn phim - ${selectedOption}` : 'Chọn phim'}
@@ -47,10 +47,12 @@ const Dropdown = () => {
                     {isOpen && (
                         <div className="">
                             <div className="grid grid-cols-4 gap-4 mt-6 mx-3">
-                                {data.map(item => (
-                                    <button onClick={() => { handleSelect(item.object.name,item.object.image) }}  className=''>
-                                        <DropFeature data={item} select={selectedOption}/>
-                                    </button>
+                                {data.map((item, index) => (
+                                    <div key={index}>
+                                        <button onClick={() => handleSelect(item.object.name, item.object.image)} className=''>
+                                            <DropFeature data={item} select={selectedOption} />
+                                        </button>
+                                    </div>
                                 ))}
                             </div>
                         </div>

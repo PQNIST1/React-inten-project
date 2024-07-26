@@ -19,11 +19,10 @@ const Moive = () => {
 
     useEffect(() => {
         if (data && data.data) {
-            setSliceData(data.data.slice(0, 8));
-            setSliceData1(data.data.slice(0, 8).reverse());
+            setSliceData(data.data.content.slice(0, 8));
+            setSliceData1(data.data.content.slice(0, 8).reverse());
         }
-    }, [data]);
-
+    }, [data]); 
     return (
         <div className="w-5/6 h-auto mx-auto mt-20 flex-col text-center">
             <MoiveList />

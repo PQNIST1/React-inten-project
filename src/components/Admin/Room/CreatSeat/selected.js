@@ -1,36 +1,35 @@
-import { useState, useEffect } from "react";
-import React from "react";
+import React, { useState, useEffect }  from "react";
 import Select from "react-tailwindcss-select";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategory } from "../../../controller/SliceReducer/food";
-import { setType_id } from "../../../controller/SliceReducer/seat";
+import { getRoom } from "../../../../controller/SliceReducer/addRoom";
+import { setRoom } from "../../../../controller/SliceReducer/addShowTime";
 
 
-const SeatSelect = () => {
-    const form = useSelector((state) => state.seat);
-    const { type_id } = form;
+const RoomSelect = () => {
+    const form = useSelector((state) => state.showTime);
+    const { room } = form;
     const dispatch = useDispatch();
-    const seats = useSelector((state) => state.seat.data);
+    const rooms = useSelector((state) => state.room.data);
     const [data, setData] = useState([]);
     const [data1, setData1] = useState([]);
-    const status = useSelector((state) => state.seat.status);
+    const status = useSelector((state) => state.room.status);
 
 
     const handleChange = value => {
-        dispatch(setType_id(value)); 
+        dispatch(setRoom(value)); 
     };
     useEffect(() => {
-        dispatch(getCategory());
+        dispatch(getRoom());
     }, [dispatch]);
 
     useEffect(() => {
         if (status === 'succeeded') {
-            setData(seats);
+            setData(rooms);
         }
-    }, [status, seats]);
+    }, [status, rooms]);
     useEffect(() => {
         if (data && data.data) {
-            const newData = data.data.map((item) => item.object);
+            const newData = data.data.content.map((item) => item.object);
             setData1(newData);
         }
     }, [data, dispatch]);
@@ -44,11 +43,12 @@ const SeatSelect = () => {
             {data1 && (
                 <>
                     <Select
-                        value={type_id}
+                        value={room}
                         onChange={handleChange}
                         options={options}
+                        isMultiple={false}
                         isClearable={true}
-                        placeholder="Ghế"
+                        placeholder="Phòng"
                         isSearchable={true}
                     />
                 </>
@@ -57,4 +57,4 @@ const SeatSelect = () => {
     );
 };
 
-export default SeatSelect;
+export default RoomSelect;

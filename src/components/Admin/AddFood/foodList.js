@@ -10,12 +10,13 @@ const FoodList = () => {
     const foods = useSelector((state) => state.food.data);
     const form = useSelector((state) => state.addFood);
     const [data, setData] = useState([]);
+    const [filter, setFilterData] = useState([]);
     const status = useSelector((state) => state.food.status);
     const { success } = form;
     const [itemsPerPage] = useState(4);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
-
+    const { searchQuery } = useSelector((state) => state.seacrh);
     useEffect(() => {
         dispatch(getFood());
     }, [dispatch]);
@@ -32,13 +33,21 @@ const FoodList = () => {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     useEffect(() => {
         if (data.data) {
-            setCurrentItems(data.data.slice(indexOfFirstItem, indexOfLastItem).reverse());
+            const filteredData = data.data.content.filter((item) =>
+                item.object.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilterData(filteredData);
         }
-    }, [data.data, indexOfFirstItem, indexOfLastItem, status]);
+    }, [data.data, searchQuery]);
+
+    useEffect(() => {
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentFilteredItems = filter.slice(indexOfFirstItem, indexOfLastItem);
+        setCurrentItems(currentFilteredItems);
+    }, [filter, currentPage, itemsPerPage]);
     return (
         <div className="w-full space-y-5">
             <div className="flex mb-5">
@@ -49,13 +58,13 @@ const FoodList = () => {
                 <>
                     <div className="h-448">
                         {currentItems.map((item) => (
-                            <Food key={item.object.id} data={item.object} />
+                            <Food key={item.object.id} data={item.object} pp={item} />
                         ))}
                     </div>
 
                     <Pagination
                         currentPage={currentPage}
-                        totalPages={Math.ceil(data.data.length / itemsPerPage)}
+                        totalPages={Math.ceil(filter.length / itemsPerPage)}
                         onPageChange={handlePageChange}
                     />
                 </>

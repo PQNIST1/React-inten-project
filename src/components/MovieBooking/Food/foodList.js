@@ -21,7 +21,7 @@ const FoodList = () => {
             <p className="font-bold text-lg">Chọn Combo</p>
             {data.data && (
                 <>
-                    {data.data.map((item) => (
+                    {data.data.content.map((item) => (
                         <Food key={item.object.id} data={item.object} />
                     ))}
                 </>

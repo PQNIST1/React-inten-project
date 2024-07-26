@@ -9,7 +9,7 @@ export const addFood = createAsyncThunk('auth/addFood', async (formData, { rejec
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/food', formData, {
+    const response = await axios.post('http://localhost:8080/api/v1/foods', formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -29,7 +29,7 @@ export const deleteFood = createAsyncThunk('auth/deleteFood', async (id, { rejec
       return rejectWithValue('No access token found');
   }
   try {
-      const response = await axios.delete(`http://localhost:8080/api/v1/food/${id}`, {
+      const response = await axios.delete(`http://localhost:8080/api/v1/foods/${id}`, {
           headers: {
               'Authorization': `Bearer ${accessToken}`
           }
@@ -43,114 +43,13 @@ export const deleteFood = createAsyncThunk('auth/deleteFood', async (id, { rejec
   }
 });
 
-
-export const addCategory = createAsyncThunk('auth/addCategory', async (formData, { rejectWithValue }) => {
-  const accessToken = localStorage.getItem('accessToken');
-  if (!accessToken) {
-    return rejectWithValue('No access token found');
-  }
-  try {
-    const response = await axios.post('http://localhost:8080/api/v1/genre', formData, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    if (!error.response) {
-      throw error;
-    }
-    return rejectWithValue(error.response.data);
-  }
-});
-
-export const deleteCategory = createAsyncThunk('auth/deleteCategory', async (id, { rejectWithValue }) => {
+export const editFood = createAsyncThunk('auth/updateFood', async ( { id, data }, { rejectWithValue }) => {
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
       return rejectWithValue('No access token found');
   }
   try {
-      const response = await axios.delete(`http://localhost:8080/api/v1/genre/${id}`, {
-          headers: {
-              'Authorization': `Bearer ${accessToken}`
-          }
-      });
-      return response.data;
-  } catch (error) {
-      if (!error.response) {
-          throw error;
-      }
-      return rejectWithValue(error.response.data);
-  }
-});
-
-export const addActor = createAsyncThunk('auth/addActor', async (formData, { rejectWithValue }) => {
-  const accessToken = localStorage.getItem('accessToken');
-  if (!accessToken) {
-    return rejectWithValue('No access token found');
-  }
-  try {
-    const response = await axios.post('http://localhost:8080/api/v1/cast', formData, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    if (!error.response) {
-      throw error;
-    }
-    return rejectWithValue(error.response.data);
-  }
-});
-
-export const deleteActor = createAsyncThunk('auth/deleteActor', async (id, { rejectWithValue }) => {
-  const accessToken = localStorage.getItem('accessToken');
-  if (!accessToken) {
-      return rejectWithValue('No access token found');
-  }
-  try {
-      const response = await axios.delete(`http://localhost:8080/api/v1/cast/${id}`, {
-          headers: {
-              'Authorization': `Bearer ${accessToken}`
-          }
-      });
-      return response.data;
-  } catch (error) {
-      if (!error.response) {
-          throw error;
-      }
-      return rejectWithValue(error.response.data);
-  }
-});
-
-export const addRoom = createAsyncThunk('auth/addRoom', async (formData, { rejectWithValue }) => {
-  const accessToken = localStorage.getItem('accessToken');
-  if (!accessToken) {
-    return rejectWithValue('No access token found');
-  }
-  try {
-    const response = await axios.post('http://localhost:8080/api/v1/room', formData, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    if (!error.response) {
-      throw error;
-    }
-    return rejectWithValue(error.response.data);
-  }
-});
-
-export const deleteRoom = createAsyncThunk('auth/deleteRoom', async (id, { rejectWithValue }) => {
-  const accessToken = localStorage.getItem('accessToken');
-  if (!accessToken) {
-      return rejectWithValue('No access token found');
-  }
-  try {
-      const response = await axios.delete(`http://localhost:8080/api/v1/room/${id}`, {
+      const response = await axios.put(`http://localhost:8080/api/v1/foods/${id}`, data, {
           headers: {
               'Authorization': `Bearer ${accessToken}`
           }
@@ -173,13 +72,19 @@ const addFoodSlice = createSlice({
     image: null,
     loading: false,
     error: null,
-    success: false
+    success: false,
+    id: '',
+    isEdit: false,
   },
   reducers: {
     setName: (state, action) => { state.name = action.payload },
     setPrice: (state, action) => { state.price = action.payload },
     setImage: (state, action) => { state.image = action.payload },
-    clearForm: (state) => {state.name = ''; state.price = ''; state.image = null; }
+    setEdit: (state, action) => { state.isEdit = action.payload },
+    setId: (state, action) => { state.id = action.payload },
+    setSuccess: (state) => { state.success = false },
+    setError : (state) => { state.error = null},
+    clearForm: (state) => {state.name = ''; state.price = ''; state.image = null; state.isEdit = false; state.id = ''; }
   },
   extraReducers: (builder) => {
     builder
@@ -196,45 +101,6 @@ const addFoodSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(addCategory.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = false;
-      })
-      .addCase(addCategory.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-      })
-      .addCase(addCategory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(addActor.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = false;
-      })
-      .addCase(addActor.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-      })
-      .addCase(addActor.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(addRoom.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = false;
-      })
-      .addCase(addRoom.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-      })
-      .addCase(addRoom.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
       .addCase(deleteFood.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -248,48 +114,22 @@ const addFoodSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(deleteCategory.pending, (state) => {
+      .addCase(editFood.pending, (state) => {
         state.loading = true;
         state.error = null;
         state.success = false;
       })
-      .addCase(deleteCategory.fulfilled, (state, action) => {
+      .addCase(editFood.fulfilled, (state, action) => {
         state.loading = false;
         state.success = true;
       })
-      .addCase(deleteCategory.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteActor.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = false;
-      })
-      .addCase(deleteActor.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-      })
-      .addCase(deleteActor.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-      .addCase(deleteRoom.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-        state.success = false;
-      })
-      .addCase(deleteRoom.fulfilled, (state, action) => {
-        state.loading = false;
-        state.success = true;
-      })
-      .addCase(deleteRoom.rejected, (state, action) => {
+      .addCase(editFood.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { setName, setPrice, setImage, clearForm } = addFoodSlice.actions;
+export const { setName, setPrice, setImage, clearForm, setEdit, setError, setId, setSuccess } = addFoodSlice.actions;
 
 export default addFoodSlice.reducer;

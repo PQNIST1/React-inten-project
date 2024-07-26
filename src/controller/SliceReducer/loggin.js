@@ -6,7 +6,7 @@ import { jwtDecode } from 'jwt-decode';
 
 export const logginUser = createAsyncThunk('auth/logginUser', async (userData, { rejectWithValue, fulfillWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/auth/login', userData);
+    const response = await axios.post('http://localhost:8080/api/v1/auths/login', userData);
     const accessToken = response.data.data.accessToken;
     localStorage.setItem('accessToken', accessToken);
     return response.data;
@@ -21,7 +21,7 @@ export const logginUser = createAsyncThunk('auth/logginUser', async (userData, {
 
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue, fulfillWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/user/register', userData);
+    const response = await axios.post('http://localhost:8080/api/v1/users/register', userData);
     const accessToken = response.data.data.accessToken;
     localStorage.setItem('accessToken', accessToken);
     return response.data;

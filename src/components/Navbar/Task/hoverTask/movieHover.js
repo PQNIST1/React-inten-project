@@ -17,8 +17,8 @@ const MoiveHover = () => {
 
     useEffect(() => {
         if (data && data.data) {
-            setSliceData(data.data.slice(0, 4));
-            setSliceData1(data.data.slice(0, 4).reverse());
+            setSliceData(data.data.content.slice(0, 4));
+            setSliceData1(data.data.content.slice(0, 4).reverse());
         }
     }, [data]);
     return (

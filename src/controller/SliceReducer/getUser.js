@@ -7,7 +7,7 @@ export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithVa
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/user/me', {
+        const response = await axios.get('http://localhost:8080/api/v1/users/me', {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }

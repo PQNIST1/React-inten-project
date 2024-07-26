@@ -16,7 +16,7 @@ const MoiveContent = () => {
 
     useEffect(() => {
         if (data && data.data) {
-            setSliceData(data.data.slice(0, 3));
+            setSliceData(data.data.content.slice(0, 3));
         }
     }, [data]);
     return (

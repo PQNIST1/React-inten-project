@@ -10,11 +10,12 @@ const MovieList = () => {
     const movies = useSelector((state) => state.data.data);
     const form = useSelector((state) => state.data);
     const [data, setData] = useState([]);
-    const status = useSelector((state) => state.data.status);
-    const { success } = form;
+    const [filter, setFilterData] = useState([]);
+    const { success, status } = form;
     const [itemsPerPage] = useState(7);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
+    const { searchQuery } = useSelector((state) => state.seacrh);
 
     useEffect(() => {
         dispatch(getMovie());
@@ -32,13 +33,20 @@ const MovieList = () => {
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     useEffect(() => {
         if (data.data) {
-            setCurrentItems(data.data.slice(indexOfFirstItem, indexOfLastItem));
+            const filteredData = data.data.content.slice().filter((item) =>
+                item.object.name.toLowerCase().includes(searchQuery.toLowerCase())
+            );
+            setFilterData(filteredData);
         }
-    }, [data.data, indexOfFirstItem, indexOfLastItem, status]);
+    }, [data.data, searchQuery]);
+    useEffect(() => {
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentFilteredItems = filter.slice(indexOfFirstItem, indexOfLastItem);
+        setCurrentItems(currentFilteredItems);
+    }, [filter, currentPage, itemsPerPage]);
     return (
         <div className="w-full space-y-5">
         <div className="flex mb-10">
@@ -49,13 +57,13 @@ const MovieList = () => {
             <>
                 <div className="space-y-5 h-1016">
                     {currentItems.map((item) => (
-                        <Movie key={item.object.id} data={item.object} />
+                        <Movie key={item.object.id} data={item.object} pp={item} />
                     ))}
                 </div>
 
                 <Pagination
                     currentPage={currentPage}
-                    totalPages={Math.ceil(data.data.length / itemsPerPage)}
+                    totalPages={Math.ceil(filter.length / itemsPerPage)}
                     onPageChange={handlePageChange}
                 />
             </>

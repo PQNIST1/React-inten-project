@@ -19,8 +19,12 @@ module.exports = {
       },
       width: {
         "22": '88px',
+        "13":'51px',
         "424": '424px',
-      }
+      },
+      fontSize: {
+        "tn": '10px' // Thêm kích thước chữ tùy chỉnh
+      },
     },
   },
   variants: {

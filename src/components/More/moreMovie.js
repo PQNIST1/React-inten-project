@@ -20,8 +20,8 @@ const MoreMoive = () => {
             <MoiveList />
            {data.data && (
                 <>
-                    {activeTab === 'tab1' && <MoreListing data={data.data} />}
-                    {activeTab === 'tab2' && <MoreListing data={data.data} />}
+                    {activeTab === 'tab1' && <MoreListing data={data.data.content} />}
+                    {activeTab === 'tab2' && <MoreListing data={data.data.content.slice().reverse()} />}
                 </>
             )}
         </div>
