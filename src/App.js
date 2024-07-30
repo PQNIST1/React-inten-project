@@ -16,6 +16,7 @@ import AddFood from './components/Admin/AddFood/addFood';
 import MovieAdd from './components/Admin/AddMovie/addMovie';
 import SeatCtr from './components/Admin/Room/CreatSeat/creatSeatCtr';
 import RoomSeat from './components/Admin/Room/Seats/roomSeat';
+import ShowTimeDetail from './components/Admin/AddShowTime/showTimeDetail';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,7 @@ function App() {
           <Route path="/add/movie" element={<MovieAdd/>} />
           <Route path="/create/seat" element={<SeatCtr/>} />
           <Route path="/room/seat/:prama" element={<RoomSeat/>} />
+          <Route path="/showtime/detail/:prama" element={<ShowTimeDetail/>} />
         </Routes>
       </div>
     </Router>

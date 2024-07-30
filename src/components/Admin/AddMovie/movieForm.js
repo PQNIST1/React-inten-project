@@ -55,17 +55,19 @@ const MovieForm = () => {
         dispatch(setReleaseDate(formatDateTime()));
     };
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('overview', overview);
-        formData.append('image', img);
-        formData.append('trailer', trailer);
-        formData.append('duration', duration);
-        formData.append('releaseDate', releaseDate);
-        dispatch(addMovie({ formData, genres, casts, director }));
-        dispatch(clearForm());
-        setFileInputKey(Date.now());
+        e.preventDefault()
+        if (genres && cast_id && director) {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('overview', overview);
+            formData.append('image', img);
+            formData.append('trailer', trailer);
+            formData.append('duration', duration);
+            formData.append('releaseDate', releaseDate);
+            dispatch(addMovie({ formData, genres, casts, director }));
+            dispatch(clearForm());
+            setFileInputKey(Date.now());
+        };
     };
     const handleUpdate = (e) => {
         e.preventDefault();
@@ -161,7 +163,7 @@ const MovieForm = () => {
                         </div>
                         <div className="">
                             <label htmlFor="image">Hình ảnh</label>
-                            <input  ref={inputRef}   multiple key={fileInputKey}
+                            <input ref={inputRef} multiple key={fileInputKey}
                                 onChange={handleChange}
                                 id="image" name="image" className="mt-2 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-teal-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-teal-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60" type="file" required></input>
                         </div>

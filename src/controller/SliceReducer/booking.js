@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   selectedDate: '',
-  showtimes: {},
+  showtimes: [],
   selectedTime: '',
   selectedSingleSeats: [],
   selectedDoubleSeats: [],

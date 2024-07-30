@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const getShowTime = createAsyncThunk('auth/getShowTime', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/showtimes?size=50');
+        const response = await axios.get('http://localhost:8080/api/v1/showtimes?size=1000');
         return response.data;
     } catch (error) {
         if (!error.response) {
@@ -78,7 +78,9 @@ export const editShowTime = createAsyncThunk('auth/updateShowTime', async ({ id,
 const addShowTimeSlice = createSlice({
     name: 'showTime',
     initialState: {
+        roomCtr: false,
         data: [],
+        dataMovie:[],
         status: 'idle',
         durration: '',
         movie: null,
@@ -92,6 +94,12 @@ const addShowTimeSlice = createSlice({
         errors: [],
     },
     reducers: {
+        setRoomCtr(state,action) {
+            state.roomCtr = action.payload;
+        },
+        setDataMovie(state, action) {
+            state.dataMovie = action.payload;
+        },
         setShowtimes(state, action) {
             state.showtimes = action.payload;
         },
@@ -169,5 +177,5 @@ const addShowTimeSlice = createSlice({
     }
 });
 
-export const { setErrors, setShowtimes, addShowtime, clearShowtimes, setDurration, setMovie, setRoom, clearForm, setEdit, setError, setSuccess, setId } = addShowTimeSlice.actions;
+export const {setRoomCtr, setDataMovie, setErrors, setShowtimes, addShowtime, clearShowtimes, setDurration, setMovie, setRoom, clearForm, setEdit, setError, setSuccess, setId } = addShowTimeSlice.actions;
 export default addShowTimeSlice.reducer;

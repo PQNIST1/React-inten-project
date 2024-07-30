@@ -21,18 +21,18 @@ const Nav = () => {
         if (accessToken) {
             dispatch(setAccessToken());
             dispatch(getUser());
-            dispatch(getMovie());
         }
+        dispatch(getMovie());
     }, [dispatch, accessToken]);
-    
-   
+
+
     return (
         <div className="flex w-10/12 mx-auto pt-3  text-gray-400 font-sans">
             <Logo />
             <Ticket />
             <Tasks />
             <Search />
-            {isLogged ? (<Userlog  />) : (<Logged />)}
+            {isLogged ? (<Userlog />) : (<Logged />)}
         </div>
     )
 }

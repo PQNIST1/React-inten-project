@@ -35,6 +35,54 @@ export const addSeat = createAsyncThunk('auth/addSeat', async ( formData , {  re
   }
 });
 
+export const deleteSeatss = createAsyncThunk('auth/deleteSeatss', async ( id, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
+  try {
+    const response = await axios.delete(`http://localhost:8080/api/v1/seats/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }           
+});
+
+
+export const editSeatRoom = createAsyncThunk('auth/updateSeatRoom', async ({  formData, seats_id }, { dispatch, rejectWithValue }) => {
+    console.log(seats_id, formData);  
+  try {
+    if (seats_id && seats_id.length > 0) {
+      await Promise.all(seats_id.map(seatId => dispatch(deleteSeatss(seatId.object.id)).unwrap()));
+    }
+    await Promise.all(formData.map(data => dispatch(addSeat(data)).unwrap()));
+    return { success: true }; 
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const getSeatss = createAsyncThunk('auth/getSeatss', async (_, { rejectWithValue }) => {
+  try {
+      const response = await axios.get('http://localhost:8080/api/v1/seats?size=10000');
+      return response.data;
+  } catch (error) {
+      if (!error.response) {
+          throw error;
+      }
+      return rejectWithValue(error.response.data);
+  }
+});
 
 
 const initialState = {
@@ -42,11 +90,13 @@ const initialState = {
   cols: 0,
   result: [],
   seats: [],
+  data:[],
   selectedSeats: [],
   isSaved: false,
   error: null,
   loading: false,
   success: false,
+  status:'idle',
 };
 
 const seatsSlice = createSlice({
@@ -187,6 +237,18 @@ const seatsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+    .addCase(getSeatss.pending, (state) => {
+      state.status = 'loading';
+      state.error = null;
+  })
+  .addCase(getSeatss.fulfilled, (state, action) => {
+      state.status = 'succeeded';
+      state.data = action.payload;
+  })
+  .addCase(getSeatss.rejected, (state, action) => {
+      state.status = 'failed';
+      state.error = action.payload || 'Có lỗi xảy ra';
+  })
     .addCase(addSeat.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -200,6 +262,20 @@ const seatsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     })
+    .addCase(deleteSeatss.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+      state.success = false;
+    })
+    .addCase(deleteSeatss.fulfilled, (state, action) => {
+      state.loading = false;
+      state.success = true;
+    })
+    .addCase(deleteSeatss.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
+
   }
 });
 

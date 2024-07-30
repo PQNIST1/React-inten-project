@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSeatType } from '../../../../controller/SliceReducer/seat';
 import { setDimensions, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats, setResult, } from '../../../../controller/SliceReducer/seatsSlice';
+import { setRoomCtr } from '../../../../controller/SliceReducer/addShowTime';
 
 
 
@@ -15,7 +16,7 @@ const CreateSeat = () => {
     useEffect(() => {
         dispatch(getSeatType());
         setDimensionsInput({ rows: rows, cols: cols});
-       
+        dispatch(setRoomCtr(true));
     }, [dispatch, rows, cols]);
 
     const getSeatNumbers = (row) => {

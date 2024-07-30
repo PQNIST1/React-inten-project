@@ -16,6 +16,7 @@ export const getSeatRoom = createAsyncThunk('auth/getSeatRoom', async ( id, { re
 
 
 
+
 const initialState = {
   rows: 0,
   cols: 0,

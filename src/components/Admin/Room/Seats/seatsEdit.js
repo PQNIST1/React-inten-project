@@ -5,6 +5,8 @@ import { getSeatRoom, setDimensions, toggleSelectSeat, setSeatsType, clearSelect
 import { getSeatType } from '../../../../controller/SliceReducer/seat';
 import { getRoom } from '../../../../controller/SliceReducer/addRoom';
 import { NormalizedMovieNames, findName } from '../../../../data/tranformData';
+import {  clearForm, setSuccess, setError, editSeatRoom } from "../../../../controller/SliceReducer/seatsSlice";
+import { clearForm as clearForm1 } from "../../../../controller/SliceReducer/addShowTime";
 
 
 const getRows = (seat) => seat;
@@ -36,6 +38,9 @@ const SeatEdit = () => {
     const [roomName, setRoomName] = useState('');
     const seatss = useSelector((state) => state.seat.data);
     const navigate = useNavigate();
+    const form = useSelector((state) => state.seats);
+    const { error, success} = form;
+
 
     const convertToSeatsMatrix = (seatData) => {
 
@@ -52,6 +57,35 @@ const SeatEdit = () => {
 
         return seats;
     }
+
+    const  generateSeatData = (seats, seatTypes, room) => {
+        const result = [];
+        // Duyệt qua từng hàng trong ma trận ghế
+        seats.forEach((row, rowIndex) => {
+            // Duyệt qua từng cột trong hàng hiện tại
+            row.forEach((seatTypeCode, columnIndex) => {
+                if (seatTypeCode !== null) {
+                    // Tìm loại ghế dựa trên mã ghế
+                    const seatType = seatTypes.find(type => type.object.name === seatTypeCode);
+
+                    if (seatType) {
+                        result.push({
+                            name: seatType.object.name,
+                            row: rowIndex,
+                            column: columnIndex,
+                            seatType: { id: seatType.object.id },
+                            room: { id: room.id },
+                        });
+                    }
+                }
+            });
+        });
+
+        return result;
+    }
+
+    
+
 
     useEffect(() => {
         dispatch(getSeatType());
@@ -77,6 +111,21 @@ const SeatEdit = () => {
         }
     }, [dispatch, id]);
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // if (isSaved && seatsRoom.data && id.object) {
+        //     const formData = generateSeatData(seats, seatss.data.content, id.object)
+        //     const seats_id = seatsRoom.data;
+        //     dispatch(editSeatRoom({ formData , seats_id }));
+        //     dispatch(clearForm());
+        //     dispatch(clearForm1());
+        //     // setTimeout(() => {
+        //     //     dispatch(setSuccess());
+        //     //     dispatch(setError());
+        //     // }, 3000);
+        // }
+
+    };
 
     useEffect(() => {
         if (seatsRoom.data) {
@@ -304,7 +353,8 @@ const SeatEdit = () => {
 
     return (
         <div className="container mx-auto p-4  w-3/4">
-
+              {error && error.error && <p style={{ color: 'red' }}>{error.error}</p>}
+              {success && <div className="mt-4 text-green-500">Tải lên thành công!</div>}
             <div className='flex mb-5  h-10'>
                 {id.object && (
                     <div className='text-xl text-blue-700 mr-10'><h1>Phòng {id.object.name}</h1></div>
@@ -404,7 +454,7 @@ const SeatEdit = () => {
                             isSaved && (
                                 <div className='w-5/6 flex   h-10'>
                                     <div className='w-3/4 flex justify-center space-x-10'>
-                                        <button className="border-red-500 border-2 rounded text-white p-2">Lưu</button>
+                                        <button onClick={handleSubmit} className="border-red-500 border-2 rounded text-white p-2">Lưu</button>
                                         <button onClick={() => navigate(-1)} className="border-blue-500 border-2 rounded text-white p-2">Hủy</button>
                                     </div>
                                     <div className='w-1/4 flex justify-end'>

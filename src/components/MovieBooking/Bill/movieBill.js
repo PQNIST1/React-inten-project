@@ -27,8 +27,8 @@ const MovieBill = ({ date, time, name, img, sseats, dseats, vseats, food, active
             </div>
             {date === '' ? null :
                 <div className="space-y-5 mt-3">
-                    <p className="font-bold text-lg">Cinema Center - Rạp 2</p>
-                    <p className="text-lg">Suất: <span className="font-bold">{time}</span> - {getDayOfWeek(new Date(date))}, <span className="font-bold">{date}</span></p>
+                    <p className="font-bold text-lg">Cinema Center - {time.name}</p>
+                    <p className="text-lg">Suất: <span className="font-bold">{time.time}</span> - {getDayOfWeek(new Date(date))}, <span className="font-bold">{date}</span></p>
                 </div>
             }
 

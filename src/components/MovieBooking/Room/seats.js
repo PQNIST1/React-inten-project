@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedDoubleSeats, setSelectedSingleSeats, setSelectedVipSeats } from '../../../controller/SliceReducer/booking';
-import { toggleBookingSeat } from '../../../controller/SliceReducer/seatEdit';
+import { toggleBookingSeat, getSeatRoom, setSeat, setCol } from '../../../controller/SliceReducer/seatEdit';
+import { getSeatType } from '../../../controller/SliceReducer/seat';
 
 
 // Hàm để lấy các hàng
@@ -25,16 +26,77 @@ const getColumns = (seat) => {
 
 const Seats = () => {
     const dispatch = useDispatch();
-    const { seats, selectedSeats } = useSelector(state => state.seatsEdit);
-    const rows = getRows(seats).length;
-    const cols = getColumns(seats).length;
+    const { seats, selectedSeats, seatsRoom, cols, rows } = useSelector(state => state.seatsEdit);
     const selectedSingleSeats = useSelector((state) => state.movie.selectedSingleSeats);
     const selectedDoubleSeats = useSelector((state) => state.movie.selectedDoubleSeats);
     const selectedVipSeats = useSelector((state) => state.movie.selectedVipSeats);
     const maxSeats = 8;
+    const selectedTime = useSelector((state) => state.movie.selectedTime);
     const reservedSeats = ['A1', 'B2', 'C3', 'D2', 'E3'];
 
     const isReserved = (seat) => reservedSeats.includes(seat);
+
+    const convertToSeatsMatrix = (seatData) => {
+
+        const maxRow = Math.max(...seatData.map(seat => seat.row)) + 1;
+        const maxCol = Math.max(...seatData.map(seat => seat.column)) + 1;
+
+
+        const seats = Array.from({ length: maxRow }, () => Array(maxCol).fill(null));
+
+
+        seatData.forEach(seat => {
+            seats[seat.row][seat.column] = seat.seatType.name;
+        });
+
+        return seats;
+    }
+ 
+    
+   
+    useEffect(() => {
+        dispatch(getSeatType());
+    },[dispatch]);
+
+    useEffect(() => {
+        if (selectedTime.room) {
+            dispatch(getSeatRoom(selectedTime.room));
+            dispatch(setSeat([]));
+            dispatch(setCol({ rows: 0, cols: 0 }));
+        }
+    }, [dispatch, selectedTime.room]);
+
+    useEffect(() => {
+        if (seatsRoom.data) {
+            const seatData = seatsRoom.data.map(item => item.object);
+            const result = convertToSeatsMatrix(seatData);
+            dispatch(setSeat(result));
+        }
+    }, [seatsRoom, dispatch]);
+
+    useEffect(() => {
+        if (seats.length > 0) {
+            const newCols = getColumns(seats).length;
+            const newRows = getRows(seats).length;
+            if (newCols !== cols || newRows !== rows) {
+                dispatch(setCol({ rows: newRows, cols: newCols }));
+            }
+        }
+    }, [seats, dispatch, rows, cols]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     const generateRowLetters = () => {
         const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -57,7 +119,7 @@ const Seats = () => {
         dispatch(toggleBookingSeat({ row, col }));
     };
     // Hàm để lấy kiểu ghế
-    const getSeatType = (row, col) => {
+    const getSeatTypes = (row, col) => {
         if (doubleSeatStates[row] && doubleSeatStates[row][col]) {
             return doubleSeatStates[row][col];
         }
@@ -103,6 +165,7 @@ const Seats = () => {
             }
         }
     };
+
     const toggleDoubleSeat = (seat1, seat2) => {
         const seatsToToggle = [seat1, seat2];
         const allSeatsSelected = seatsToToggle.every(seat => selectedDoubleSeats.includes(seat));
@@ -167,14 +230,14 @@ const Seats = () => {
             updateDoubleSeatStates(row);
         }
 
-        const seatType = getSeatType(row, col);
+        const seatType = getSeatTypes(row, col);
         const seatIdentifier = `${letter}${seatNumber[col]}`;
 
         if (seatType === 'left') {
             return (
                 <button
                     key={`${row}-${col}`}
-                    className={` flex border-blue-700 h-3 w-13 rounded border p-2.5 cursor-pointer text-sm box-border ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed hover:border-none border-none hover:bg-gray-500': 'hover:bg-orange-400 hover:border-transparent'}`}
+                    className={` flex border-blue-700 h-3 w-13 rounded border p-2.5 cursor-pointer text-sm box-border ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed hover:border-none border-none hover:bg-gray-500' : 'hover:bg-orange-400 hover:border-transparent'}`}
                     style={{ gridColumn: 'span 2', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     onClick={() => {
                         if (seat) {
@@ -197,7 +260,7 @@ const Seats = () => {
         return (
             <button
                 key={`${row}-${col}`}
-                className={`rounded text-sm h-3 w-3 border p-2.5 cursor-pointer ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed  border-none' :  seat === 'single'
+                className={`rounded text-sm h-3 w-3 border p-2.5 cursor-pointer ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed  border-none' : seat === 'single'
                     ? 'border-green-700 hover:bg-orange-400 hover:border-transparent'
                     : seat === 'vip'
                         ? 'border-orange-400 hover:bg-orange-400 hover:border-transparent' : 'border-transparent'

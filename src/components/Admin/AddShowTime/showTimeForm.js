@@ -18,10 +18,9 @@ const ShowTimeForm = () => {
     const { dateStart, dateEnd} = useSelector((state) => state.special);
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (movie && dateStart && dateEnd && showtimes) {
-           
+        if (movie && dateStart && dateEnd && Array.isArray(showtimes) && showtimes.length > 0) { 
             const data = {
-                "startDate":formatDate(dateStart),
+                "startDate":formatDate(dateStart),  
                 "endDate": formatDate(dateEnd),
                 "movie": {
                     id: movie.value
@@ -71,7 +70,7 @@ const ShowTimeForm = () => {
                     {isEdit ? (
                         <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Cập nhập </h2>
                     ) : (
-                        <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Thêm ngày</h2>
+                        <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Thêm Lịch</h2>
                     )}
                     <form className="" onSubmit={isEdit ? handleUpdate : handleSubmit}>
                         <div className="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md px-8  py-8 space-y-5">
