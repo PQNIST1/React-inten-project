@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedDoubleSeats, setSelectedSingleSeats, setSelectedVipSeats } from '../../../controller/SliceReducer/booking';
-import { toggleBookingSeat, getSeatRoom, setSeat, setCol } from '../../../controller/SliceReducer/seatEdit';
+import { toggleBookingSeat, getSeatRoom, setSeat, setCol, setAlert } from '../../../controller/SliceReducer/seatEdit';
 import { getSeatType } from '../../../controller/SliceReducer/seat';
-
+import CustomAlert from "../../Alert/alert";
 
 // Hàm để lấy các hàng
 const getRows = (seat) => seat;
@@ -26,7 +26,7 @@ const getColumns = (seat) => {
 
 const Seats = () => {
     const dispatch = useDispatch();
-    const { seats, selectedSeats, seatsRoom, cols, rows } = useSelector(state => state.seatsEdit);
+    const { seats, selectedSeats, seatsRoom, cols, rows, showAlert } = useSelector(state => state.seatsEdit);
     const selectedSingleSeats = useSelector((state) => state.movie.selectedSingleSeats);
     const selectedDoubleSeats = useSelector((state) => state.movie.selectedDoubleSeats);
     const selectedVipSeats = useSelector((state) => state.movie.selectedVipSeats);
@@ -52,7 +52,9 @@ const Seats = () => {
         return seats;
     }
  
-    
+    const handleClose = () => {
+        dispatch(setAlert(false));
+    }
    
     useEffect(() => {
         dispatch(getSeatType());
@@ -181,9 +183,7 @@ const Seats = () => {
         } else {
             if (getTotalSelectedSeats() + 2 <= maxSeats) {
                 dispatch(setSelectedDoubleSeats([...selectedDoubleSeats, ...seatsToToggle]));
-            } else {
-                // alert(`You can only select up to ${maxSeats} seats.`);
-            }
+            } 
         }
     };
 
@@ -306,6 +306,12 @@ const Seats = () => {
                         })}
                     </div>
                 </div>
+            )}
+            {showAlert && (
+                <CustomAlert
+                    message="Chỉ được đặt giới hạn 8 ghế!"
+                    onClose={handleClose}
+                />
             )}
         </div>
     );

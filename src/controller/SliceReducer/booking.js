@@ -3,6 +3,9 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   selectedDate: '',
   showtimes: [],
+  singlePrice: '',
+  doublePrice: '',
+  vipPrice: '',
   selectedTime: '',
   selectedSingleSeats: [],
   selectedDoubleSeats: [],
@@ -17,6 +20,15 @@ const movieSlice = createSlice({
   name: 'movie',
   initialState,
   reducers: {
+    setSingle: (state, action) => {
+      state.singlePrice = action.payload;
+    },
+    setDouble: (state, action) => {
+      state.doublePrice = action.payload;
+    },
+    setVip: (state, action) => {
+      state.vipPrice = action.payload;
+    },
     setSelectedDate: (state, action) => {
       state.selectedDate = action.payload;
     },
@@ -24,7 +36,7 @@ const movieSlice = createSlice({
       state.selectedTime = action.payload;
     },
     setShowtimes: (state, action) => {
-        state.showtimes = action.payload;
+      state.showtimes = action.payload;
     },
     setSelectedSingleSeats: (state, action) => {
       state.selectedSingleSeats = action.payload;
@@ -68,21 +80,22 @@ const movieSlice = createSlice({
       }
     },
     clearBooking: (state) => {
-      state.selectedDate= '';
-      state.showtimes= {};
-      state.selectedTime= '';
-      state.selectedSingleSeats= [];
-      state.selectedDoubleSeats= [];
-      state.selectedVipSeats= [];
-      state.selectedMovieId= '';
-      state.selectedMovieName= '';
-      state.selectedMovieImg= '';
-      state.selectedFood= [];
+      state.selectedDate = '';
+      state.showtimes = [];
+      state.selectedTime = '';
+      state.selectedSingleSeats = [];
+      state.selectedDoubleSeats = [];
+      state.selectedVipSeats = [];
+      state.selectedMovieId = '';
+      state.selectedMovieName = '';
+      state.selectedMovieImg = '';
+      state.selectedFood = [];
     },
   },
 });
 
 export const {
+  setDouble, setSingle, setVip,
   setSelectedDate,
   setSelectedTime,
   setShowtimes,

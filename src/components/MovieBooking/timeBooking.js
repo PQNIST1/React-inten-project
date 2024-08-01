@@ -11,7 +11,6 @@ const TimeBooking = () => {
     const handleClick = (data) => {
         dispatch(setSelectedTime(data));
     }
-    console.log(showtimes.lenght);
     return (
         <div className="w-5/6 flex space-x-10 mb-5">
             <div className="capitalize my-auto">đổi xuất chiếu</div>

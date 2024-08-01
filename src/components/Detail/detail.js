@@ -79,7 +79,9 @@ const MovieDetail = () => {
         <div className="relative container text-gray-400 bg-customColor w-screen h-auto">
             {!dataReady ?
                 (
-                    <Spinner />
+                    <div className="flex justify-center items-center h-screen w-screen">
+                        <Spinner />
+                    </div>
                 ) : (
                     <>
                         <Nav />

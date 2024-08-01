@@ -6,7 +6,6 @@ import { clearForm } from "../../controller/SliceReducer/seat";
 import { clearForm as clearForm1 } from "../../controller/SliceReducer/addFood";
 import { clearForm as clearForm2 } from "../../controller/SliceReducer/addCategory";
 import { clearForm as clearForm3 } from "../../controller/SliceReducer/addActor";
-import { clearForm as clearForm4 } from "../../controller/SliceReducer/addCategory";
 import { clearForm as clearForm5 } from "../../controller/SliceReducer/addRoom";
 import { clearForm as clearForm6 } from "../../controller/SliceReducer/addShowTime";
 import { Link } from "react-router-dom";
@@ -37,7 +36,6 @@ const ContTabs = () => {
     dispatch(clearForm1());
     dispatch(clearForm2());
     dispatch(clearForm3());
-    dispatch(clearForm4());
     dispatch(clearForm5());
     dispatch(clearForm6());
   };

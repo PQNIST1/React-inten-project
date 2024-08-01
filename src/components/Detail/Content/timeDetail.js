@@ -5,6 +5,7 @@ import { setSelectedDate, setSelectedTime, setShowtimes } from "../../../control
 import TimeSlider from "./Time/Showtimes";
 import { formatDate, isPastDate, isToday, getDayOfWeek } from "./Time/dateCtr/datecontroller";
 import { getShowTime } from "../../../controller/SliceReducer/addShowTime";
+import { transformData } from "../../../controller/SliceReducer/img";
 
 
 
@@ -23,36 +24,7 @@ const TimeDetail = () => {
     const today = new Date();
     const formattedToday = formatDate(today);
 
-    const transformData = (data) => {
-        const result = {};
-      
-        // Chuyển đổi dữ liệu thành định dạng mong muốn
-        data.forEach(item => {
-            const startDate = new Date(item.object.startTime);
-            const dateStr = startDate.toISOString().split('T')[0];
-            const timeStr = startDate.toTimeString().split(' ')[0].slice(0, 5); // Lấy giờ và phút
-      
-            // Khởi tạo mảng nếu chưa tồn tại cho ngày hiện tại
-            if (!result[dateStr]) {
-                result[dateStr] = [];
-            }
-      
-            // Thêm thời gian chiếu và phòng vào mảng của ngày tương ứng
-            result[dateStr].push({ time: timeStr, room: item.object.room.id, name: item.object.room.name });
-        });
-      
-        // Sắp xếp thời gian trong mỗi ngày
-        for (const date in result) {
-            result[date].sort((a, b) => {
-                const [aHour, aMinute] = a.time.split(':').map(Number);
-                const [bHour, bMinute] = b.time.split(':').map(Number);
-                return aHour - bHour || aMinute - bMinute;
-            });
-        }
-      
-        // Trả về đối tượng theo định dạng mong muốn
-        return result;
-      };
+    
       
 
     const findAllMoviesByName = (movies, movieName) => {
@@ -98,7 +70,7 @@ const TimeDetail = () => {
             if (!validDates.includes(selectedDate)) {
                 const initialDate = validDates.includes(formattedToday) ? formattedToday : validDates[0] || '';
                 dispatch(setSelectedDate(initialDate));
-                dispatch(setSelectedTime(date[initialDate]?.[0] || ''));
+                // dispatch(setSelectedTime(date[initialDate]?.[0] || ''));
                 dispatch(setShowtimes(date[initialDate]));
                 //   
             }
@@ -107,7 +79,7 @@ const TimeDetail = () => {
 
     const handleDateSelect = (day) => {
         dispatch(setSelectedDate(day));
-        dispatch(setSelectedTime(date[day]?.[0] || ''));
+        // dispatch(setSelectedTime(date[day]?.[0] || ''));
         dispatch(setShowtimes(date[day]));
     };
     // Mặc định là một mảng trống nếu không có dữ liệu

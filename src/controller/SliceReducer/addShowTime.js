@@ -14,6 +14,7 @@ export const getShowTime = createAsyncThunk('auth/getShowTime', async (_, { reje
 });
 
 export const addShowTime = createAsyncThunk('auth/addShowTime', async (formData, { rejectWithValue }) => {
+    console.log(formData);
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
         return rejectWithValue('No access token found');

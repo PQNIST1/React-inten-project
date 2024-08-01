@@ -1,41 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddSearch from "../AddFood/addSearch";
 import Pagination from "../AddFood/page";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getShowTime, setRoomCtr } from "../../../controller/SliceReducer/addShowTime";
-import ShowTime from "./showTime";
-import { groupBy, getMinMaxDates } from "../../../data/tranformData";
-import { useNavigate } from "react-router-dom";
+import User from "./user";
 import { setPage } from "../../../controller/SliceReducer/tab";
+import { getUsers } from "../../../controller/SliceReducer/getUser";
 
 
-const ShowTimeList = () => {
+const UserList = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const showTimes = useSelector((state) => state.showTime.data);
+    const users = useSelector((state) => state.user.data);
     const page = useSelector((state) => state.tab.page);
-    const form = useSelector((state) => state.showTime);
+    const form = useSelector((state) => state.user);
     const [data, setData] = useState([]);
     const [filter, setFilterData] = useState([]);
-    const { success, status } = form;
+    const {  status } = form;
     const [itemsPerPage] = useState(6);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
     const { searchQuery } = useSelector((state) => state.seacrh);
+
     useEffect(() => {
-        dispatch(getShowTime());
-        dispatch(setRoomCtr(false));
+        dispatch(getUsers());
     }, [dispatch]);
     useEffect(() => {
-        if (success) {
-            dispatch(getShowTime());
-        }
-    }, [success, dispatch]);
-    useEffect(() => {
         if (status === 'succeeded') {
-            setData(showTimes);
+            setData(users);
         }
-    }, [status, showTimes]);
+    }, [status, users]);
     const handlePageChange = (page) => {
         setCurrentPage(page);
         if (!searchQuery) {
@@ -44,25 +38,12 @@ const ShowTimeList = () => {
     };
     useEffect(() => {
         if (data.data) {
-            const groupedData = groupBy(data.data.content, 'name');
-            const movieWithDates = Object.keys(groupedData).map(movie => {
-                const movieData = groupedData[movie];
-                const startTimes = movieData.map(item => item.object.startTime);
-                const endTimes = movieData.map(item => item.object.endTime);
-                const { min: start, max: end } = getMinMaxDates(startTimes.concat(endTimes));
-                return {
-                    movie,
-                    data: movieData,
-                    start,
-                    end
-                };
-            });
-            const filteredData = movieWithDates.slice().filter((item) =>
-                item.movie.toLowerCase().includes(searchQuery.toLowerCase())
+            const filteredData = data.data.content.slice().filter((item) =>
+                item.user.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setFilterData(filteredData);
             if (searchQuery) {
-                const newUrl = `#showTime?page=1`;
+                const newUrl = `#users?page=1`;
                 navigate(newUrl, { replace: true });
             }
         }
@@ -75,34 +56,37 @@ const ShowTimeList = () => {
         setCurrentItems(currentFilteredItems);
     }, [filter, currentPage, itemsPerPage]);
 
+
     useEffect(() => {
         if (!searchQuery) {
-            const newUrl = `#showTime?page=${page}`;
+            const newUrl = `#users?page=${page}`;
             navigate(newUrl, { replace: true });
         }
     }, [searchQuery, navigate, page]);
 
     return (
-        <div className=" flex flex-col">
+        <div className=" flex flex-col mt-10 mb-5">
             <div className="flex mb-5">
-                <p className="font-bold text-lg my-auto">Lịch chiếu</p>
+                <p className="font-bold text-lg my-auto">Người dùng</p>
                 <AddSearch />
             </div>
             {data.data && (
                 <>
-                    <div className="overflow-hidden w-full h-[500px] pr-28">
-                        <table className=" min-w-full ">
+                    <div className="overflow-hidden w-full pr-36 h-448">
+                        <table className=" min-w-full">
                             <thead>
                                 <tr className=" text-gray-400 bg-gray-50 bg-opacity-10">
-                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold capitalize"> Phim </th>
-                                    <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold capitalize"> Bắt đầu</th>
-                                    <th scope="col" className="    p-5 text-left text-sm leading-6 font-semibold capitalize"> Kết thúc </th>
-                                    <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold capitalize"> Số xuất chiếu</th>
+                                    <th scope="col" className="p-5 text-left text-sm leading-6 font-semibold capitalize"> Tên </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold  capitalize"> Email </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold  capitalize"> Số điện thoại </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold capitalize"> Tạo </th>
+                                    <th scope="col" className=" p-5 text-left text-sm leading-6 font-semibold capitalize"> Sửa </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold  capitalize"> Role </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-300 capitalize">
                                 {currentItems.map((item) => (
-                                    <ShowTime key={item.id} data={item} />
+                                    <User key={item.user.id} data={item.user} pp={item} />
                                 ))}
                             </tbody>
                         </table>
@@ -112,10 +96,11 @@ const ShowTimeList = () => {
                         totalPages={Math.ceil(filter.length / itemsPerPage)}
                         onPageChange={handlePageChange}
                     />
+
                 </>
 
             )}
         </div>
     )
 }
-export default ShowTimeList;
+export default UserList;

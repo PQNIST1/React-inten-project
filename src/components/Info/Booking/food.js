@@ -9,8 +9,8 @@ const FoodBooking = () => {
         <div className="w-1/2  h-96 pl-5">
             <p className="text-lg font-bold mb-2">Đồ ăn</p>
             <div className="h-96">
+                {/* <Food /> */}
                 {/* <Food />
-                <Food />
                 <Food />
                 <Food /> */}
             </div>

@@ -26,7 +26,10 @@ const BookingBill = () => {
     const selectedVipSeats = useSelector((state) => state.movie.selectedVipSeats);
     const selectedFood = useSelector(state => state.movie.selectedFood);
     const totalFoodPrice = getTotalFoodPrice(selectedFood);
-    const getTotal = selectedSingleSeats.length + selectedDoubleSeats.length + selectedVipSeats.length;
+    const vipPrice = useSelector(state => state.movie.vipPrice);
+    const single = useSelector(state => state.movie.singlePrice);
+    const double = useSelector(state => state.movie.doublePrice);
+    const getTotal = selectedSingleSeats.length * single + selectedDoubleSeats.length/2 * double + selectedVipSeats.length * vipPrice;
     const handlePrevClick = () => {
         const currentIndex = tabs.indexOf(activeTab);
         if (currentIndex === 0) {
@@ -41,7 +44,7 @@ const BookingBill = () => {
     };
 
     const handleNextClick = () => {
-        if (selectedDate !== '' && selectedMovieName !== '' && activeTab === 'movie') {
+        if (selectedTime  !== '' && selectedDate !== '' && selectedMovieName !== '' && activeTab === 'movie') {
             dispatch(handleNext()); 
         } else if (activeTab === 'seat' && getTotal > 0) {
             dispatch(handleNext()); 
@@ -63,7 +66,7 @@ const BookingBill = () => {
                     </div>
                     <div className="w-1/2 flex justify-end">
                         <p className="text-orange-400">
-                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(70000 * getTotal + totalFoodPrice)}
+                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format( getTotal + totalFoodPrice)}
                         </p>
                     </div>
                 </div>

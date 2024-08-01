@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editSeatType, setPrice, clearForm, setName, setCode, addSeatType, setSuccess, setError } from "../../../controller/SliceReducer/seat";
+import { editSeatType, setPrice, clearForm, setName, setCode, addSeatType, setSuccess, setError, addSeatTypePrice, editSeatTypePrice } from "../../../controller/SliceReducer/seat";
 import MyDatePicker from "./clendar";
 import DayTypeSelector from "./selectDay";
 
@@ -8,7 +8,7 @@ import DayTypeSelector from "./selectDay";
 const AddSeatPrice = () => {
     const dispatch = useDispatch();
     const form = useSelector((state) => state.seat);
-    const { isEdit, loading, error, success, price, dateStart, dateEnd, normalDay, weekend, specialDay, earlyShow, name, code, type_id, id } = form;
+    const { isEditPrice, isAddPrice, isEdit, loading, error, success, price, dateStart, dateEnd, normalDay, weekend, specialDay, earlyShow, name, code, type_id, id } = form;
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'price') {
@@ -22,7 +22,25 @@ const AddSeatPrice = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data1 = {
+        const data = {
+            "name": name,
+            "code": code,
+            "createdAt": "",
+            "updatedAt": ""
+        }
+        dispatch(addSeatType(data));
+        dispatch(clearForm());
+        setTimeout(() => {
+            dispatch(setSuccess());
+            dispatch(setError());
+        }, 3000);
+    };
+    const handleAddPrice = (e) => {
+        e.preventDefault();
+        const data = {
+            seatType: {
+                "id": type_id
+            },
             "normalDay": normalDay,
             "weekend": weekend,
             "specialDay": specialDay,
@@ -31,81 +49,157 @@ const AddSeatPrice = () => {
             "endDate": dateEnd,
             "price": price
         }
-        const data = {
-            "name": name,
-            "code": code,
-            "createdAt": "",
-            "updatedAt": ""
-        }
-        dispatch(addSeatType({ data, data1 }));
+        dispatch(addSeatTypePrice(data));
         dispatch(clearForm());
         setTimeout(() => {
             dispatch(setSuccess());
             dispatch(setError());
         }, 3000);
     };
+
+    const handleEditPrice = (e) => {
+        e.preventDefault();
+        const data = {
+            seatType: {
+                "id": type_id
+            },
+            "normalDay": normalDay,
+            "weekend": weekend,
+            "specialDay": specialDay,
+            "earlyShow": earlyShow,
+            "startDate": dateStart,
+            "endDate": dateEnd,
+            "price": price
+        }
+        dispatch(editSeatTypePrice({id, data}));
+        dispatch(clearForm());
+        setTimeout(() => {
+            dispatch(setSuccess());
+            dispatch(setError());
+        }, 3000);
+    };
+
     const handleUpdate = (e) => {
         e.preventDefault();
-        const data1 = {
-            "normalDay": normalDay,
-            "weekend": weekend,
-            "specialDay": specialDay,
-            "earlyShow": earlyShow,
-            "startDate": dateStart,
-            "endDate": dateEnd,
-            "price": price
-        }
         const data = {
             "name": name,
             "code": code,
             "createdAt": "",
             "updatedAt": ""
         }
-        dispatch(editSeatType({ type_id, id, data, data1 }));
+        dispatch(editSeatType({ type_id, data }));
         dispatch(clearForm());
         setTimeout(() => {
             dispatch(setSuccess());
             dispatch(setError());
         }, 3000);
     };
+
+
+    const handleForm = (e) => {
+        e.preventDefault();
+        if (isEdit) {
+            handleUpdate(e); 
+        } else if (isAddPrice) {
+            handleAddPrice(e); 
+        } else if (isEditPrice) {
+           handleEditPrice(e);
+        } else {
+            handleSubmit(e);
+        }
+    };
+
     const handleEdit = () => {
         dispatch(clearForm());
+    }
+    const getTitle = () => {
+        if (isEdit) {
+            return 'Cập nhật ghế';
+        } else if (isAddPrice) {
+            return 'Thêm giá';
+        } else if (isEditPrice) {
+            return 'Cập nhật giá';
+        } else {
+            return 'Thêm ghế';
+        }
+    };
+
+    const getForm = () => {
+        if (isEdit) {
+            return (
+                <div>
+                    <div>
+                        <label htmlFor="name">Loại ghế</label>
+                        <input id="name" name="name" value={name} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
+                    </div>
+                    <div>
+                        <label htmlFor="name">Mã ghế</label>
+                        <input id="code" name="code" value={code} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
+                    </div>
+                </div>
+
+            );
+        } else if (isAddPrice) {
+            return (
+                <div>
+                    <div>
+                        <label htmlFor="name">Giá</label>
+                        <input id="price" name="price" value={price} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="number" required></input>
+                    </div>
+                    <div>
+                        <label htmlFor="name">Ngày tồn tại</label>
+                        <div>
+                            <MyDatePicker />
+
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="day">Chọn chương trình</label>
+                        <DayTypeSelector />
+                    </div>
+                </div>
+            )
+        } else if (isEditPrice) {
+            return (
+                <div>
+                    <div>
+                        <label htmlFor="name">Giá</label>
+                        <input id="price" name="price" value={price} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="number" required></input>
+                    </div>
+                    <div>
+                        <label htmlFor="name">Ngày tồn tại</label>
+                        <div>
+                            <MyDatePicker />
+
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="day">Chọn chương trình</label>
+                        <DayTypeSelector />
+                    </div>
+                </div>
+            )
+        } else {
+            return (<div>
+                <div>
+                    <label htmlFor="name">Loại ghế</label>
+                    <input id="name" name="name" value={name} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
+                </div>
+                <div>
+                    <label htmlFor="name">Mã ghế</label>
+                    <input id="code" name="code" value={code} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
+                </div>
+            </div>)
+        }
     }
     return (
         <div>
             <div className="dark:bg-gray-900 bg-gray-100 flex justify-center items-center mt-10 mb-10">
                 <div className="max-w-md mx-auto p-6 bg-white dark:bg-gray-800 rounded-md shadow-lg">
-                    {isEdit ? (
-                        <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Cập nhập ghế</h2>
-                    ) : (
-                        <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Thêm ghế</h2>
-
-                    )}
-                    <form className="" onSubmit={isEdit ? handleUpdate : handleSubmit}>
+                    <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">{getTitle()}</h2>
+                    <form className="" onSubmit={handleForm}>
                         <div className="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md px-8  py-8 space-y-5">
-                            <div>
-                                <label htmlFor="name">Loại ghế</label>
-                                <input id="name" name="name" value={name} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
-                            </div>
-                            <div>
-                                <label htmlFor="name">Mã ghế</label>
-                                <input id="code" name="code" value={code} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="text" required></input>
-                            </div>
-                            <div>
-                                <label htmlFor="name">Giá</label>
-                                <input id="price" name="price" value={price} onChange={handleChange} className="bg-transparent border w-full h-10 rounded focus:outline-none px-2" type="number" required></input>
-                            </div>
-                            <div>
-                                <label htmlFor="name">Ngày tồn tại</label>
-                                <div>
-                                    <MyDatePicker />
-
-                                </div>
-                            </div>
-                            <div>
-                                <label htmlFor="day">Chọn chương trình</label>
-                                <DayTypeSelector />
-                            </div>
+                            {getForm()}
                         </div>
                         {isEdit ? (
                             <div>
@@ -114,7 +208,7 @@ const AddSeatPrice = () => {
                                     className="mb-1 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-md w-full mt-6 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-500 dark:focus:ring-opacity-50"
                                 >
                                     {loading ? (
-                                        <div className="flex justify-center items-center">
+                                        <div  className="flex justify-center items-center">
                                             <svg
                                                 className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
                                                 xmlns="http://www.w3.org/2000/svg"

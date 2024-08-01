@@ -100,9 +100,21 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .rmdp-input {
   height: 40px !important;
+  width: 215px !important;
+  background: transparent;
+}
+
+.special {
+  background-color: transparent;
+}
+
+.special .rmdp-input {
+  height: 40px !important;
   width: 250px !important;
   background: transparent;
 }
+
+
 .custom {
   background-color: transparent;
 }

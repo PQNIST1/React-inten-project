@@ -1,12 +1,15 @@
-import React from "react";
+import React,{ useEffect,useState } from "react";
 import { getDayOfWeek } from "../../Detail/Content/Time/dateCtr/datecontroller";
 import Seat from "./seat";
 import FoodBill from "../Food/foodBill";
-import { useEffect,useState } from "react";
-import { ImgController } from "../../../controller/SliceReducer/img";
+import { ImgController, formatDay } from "../../../controller/SliceReducer/img";
+import { useSelector } from "react-redux";
 
 const MovieBill = ({ date, time, name, img, sseats, dseats, vseats, food, active }) => {
     const [imageSrc, setImageSrc] = useState('');
+    const vip = useSelector(state => state.movie.vipPrice);
+    const single = useSelector(state => state.movie.singlePrice);
+    const double = useSelector(state => state.movie.doublePrice);
     useEffect(() => {
         const imgData = img;
         const imageUrl = ImgController(imgData);
@@ -28,15 +31,15 @@ const MovieBill = ({ date, time, name, img, sseats, dseats, vseats, food, active
             {date === '' ? null :
                 <div className="space-y-5 mt-3">
                     <p className="font-bold text-lg">Cinema Center - {time.name}</p>
-                    <p className="text-lg">Suất: <span className="font-bold">{time.time}</span> - {getDayOfWeek(new Date(date))}, <span className="font-bold">{date}</span></p>
+                    <p className="text-lg">Suất: <span className="font-bold">{time.time}</span> - {getDayOfWeek(new Date(date))}, <span className="font-bold">{formatDay(date)}</span></p>
                 </div>
             }
 
             {active === 'comfirm' ? null :
                 <div>
-                    {sseats.length === 0 ? null : <Seat data={sseats} title={'Ghế đơn'} />}
-                    {dseats.length === 0 ? null : <Seat data={dseats} title={'Ghế đôi'} />}
-                    {vseats.length === 0 ? null : <Seat data={vseats} title={'Ghế Vip'} />}
+                    {sseats.length === 0 ? null : <Seat data={sseats} title={'Ghế đơn'} price={single} />}
+                    {dseats.length === 0 ? null : <Seat data={dseats} title={'Ghế đôi'} price={double} />}
+                    {vseats.length === 0 ? null : <Seat data={vseats} title={'Ghế Vip'} price={vip} />}
                     {food.length === 0 ? null : <FoodBill />}
                 </div>
             }

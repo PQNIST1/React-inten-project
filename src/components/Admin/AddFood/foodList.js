@@ -6,6 +6,7 @@ import Pagination from "./page";
 import AddSearch from "./addSearch";
 import { setPage } from "../../../controller/SliceReducer/tab";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../../Detail/loadingScreen";
 
 const FoodList = () => {
     const dispatch = useDispatch();
@@ -38,9 +39,9 @@ const FoodList = () => {
     }, [status, foods]);
     const handlePageChange = (page) => {
         setCurrentPage(page);
-       if (!searchQuery) {
-        dispatch(setPage(page));
-       }
+        if (!searchQuery) {
+            dispatch(setPage(page));
+        }
     };
     useEffect(() => {
         if (data.data) {
@@ -51,7 +52,7 @@ const FoodList = () => {
             if (searchQuery) {
                 const newUrl = `#food?page=1`;
                 navigate(newUrl, { replace: true });
-               
+
             }
         }
     }, [data.data, searchQuery, navigate, dispatch, currentPage]);
@@ -87,7 +88,11 @@ const FoodList = () => {
                 <p className="font-bold text-lg my-auto">Đồ Ăn</p>
                 <AddSearch />
             </div>
-            {data.data && (
+            {!data.data ? (
+                <div className="flex justify-center items-center h-448">
+                    <Spinner />
+                </div>
+            ) : (
                 <>
                     <div className="h-448">
                         {currentItems.map((item) => (

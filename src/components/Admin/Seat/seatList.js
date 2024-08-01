@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSeatType, getSeatTypePrice } from "../../../controller/SliceReducer/seat";
 import Seat from "./seat";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { setPage } from "../../../controller/SliceReducer/tab";
+import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 
 const SeatList = () => {
     const dispatch = useDispatch();
@@ -19,7 +21,7 @@ const SeatList = () => {
     const [price, setPrice] = useState([]);
     const status = useSelector((state) => state.seat.status);
     const { success } = form;
-    const [itemsPerPage] = useState(4);
+    const [itemsPerPage] = useState(3);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
     const { searchQuery } = useSelector((state) => state.seacrh);
@@ -97,9 +99,9 @@ const SeatList = () => {
                         <table className=" min-w-full ">
                             <thead>
                                 <tr className=" text-gray-400 bg-gray-50 bg-opacity-10">
-                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold capitalize"> Loại ghế </th>
-                                    <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold capitalize"> Mã ghế </th>
-                                    <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold capitalize"> Giá tiền </th>
+                                    <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold capitalize"> Loại </th>
+                                    <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold capitalize"> Mã </th>
+                                    <th scope="col" className="    text-left text-sm leading-6 font-semibold capitalize pl-7">tiền - bắt đầu - kết thúc - date - <FontAwesomeIcon icon={faSquarePlus} /></th>
                                     <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold capitalize"> Tạo </th>
                                     <th scope="col" className=" p-5 text-left text-sm leading-6 font-semibold capitalize"> Sửa </th>
                                     <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold  capitalize"> Actions </th>

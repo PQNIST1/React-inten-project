@@ -33,7 +33,25 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
   }
 });
 
-
+export const updatePassword = createAsyncThunk('auth/updatePassword', async (formData, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
+  try {
+    const response = await axios.patch('http://localhost:8080/api/v1/users/change-password', formData, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
 
 
 const logginSlice = createSlice({
@@ -43,6 +61,7 @@ const logginSlice = createSlice({
     loading: false,
     error: null,
     isLogged: false,
+    success: false,
   },
   reducers: {
     setAccessToken(state, action) {
@@ -52,6 +71,8 @@ const logginSlice = createSlice({
       state.isLogged = false;
       localStorage.removeItem('accessToken');
     },
+    setSuccess: (state) => { state.success = false },
+    setError: (state) => { state.error = null },
     checkAccessTokenExpiration(state) {
       const token = localStorage.getItem('accessToken');
       if (token) {
@@ -94,6 +115,19 @@ const logginSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Đã xảy ra lỗi';
+      })
+      .addCase(updatePassword.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(updatePassword.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(updatePassword.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -102,6 +136,6 @@ export const logoutAndNavigate = () => (dispatch) => {
   window.location.href = '/';
 };
 
-export const { setAccessToken, logout, checkAccessTokenExpiration } = logginSlice.actions;
+export const { setAccessToken, logout, checkAccessTokenExpiration, setError, setSuccess } = logginSlice.actions;
 
 export default logginSlice.reducer;

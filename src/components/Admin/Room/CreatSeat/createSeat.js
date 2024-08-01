@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSeatType } from '../../../../controller/SliceReducer/seat';
-import { setDimensions, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats, setResult, } from '../../../../controller/SliceReducer/seatsSlice';
+import { setDimensions, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats } from '../../../../controller/SliceReducer/seatsSlice';
 import { setRoomCtr } from '../../../../controller/SliceReducer/addShowTime';
 
 
@@ -301,10 +301,10 @@ const CreateSeat = () => {
                                         {seatss.data?.content?.map((item) => (
                                             <button
                                                 key={item.id}
-                                                onClick={() => handleSetSeatsType(item.object.name)}
-                                                className={`rounded border-2  text-white p-2 m-2 w-20 ${item.object.name === 'single' ? 'border-green-700' : item.object.name === 'vip' ? 'border-orange-400' : 'border-blue-700'}`}
+                                                onClick={() => handleSetSeatsType(item.object.name.toLowerCase())}
+                                                className={`rounded border-2  text-white p-2 m-2 w-20 ${item.object.name.toLowerCase() === 'single' ? 'border-green-700' : item.object.name.toLowerCase() === 'vip' ? 'border-orange-400' : 'border-blue-700'}`}
                                             >
-                                                {item.object.name}
+                                                {item.object.name.toLowerCase()}
                                             </button>
                                         ))}
                                     </div>

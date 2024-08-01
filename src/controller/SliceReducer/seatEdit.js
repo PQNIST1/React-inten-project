@@ -28,12 +28,14 @@ const initialState = {
   success: false,
   status: 'idle',
   isEdit: false,
+  showAlert: false,
 };
 
 const seatsEditSlice = createSlice({
   name: 'seatsEdit',
   initialState,
   reducers: {
+    setAlert : (state, action) => {  state.showAlert = action.payload },
     setSeat: (state,action) => {
        state.seats = action.payload;
     },
@@ -98,12 +100,12 @@ const seatsEditSlice = createSlice({
           // Trước khi thêm ghế mới, kiểm tra tổng số ghế hiện tại cộng thêm ghế mới
           const newCount = calculateSelectedSeatsCount() + (isDoubleSeat(row, col) ? 2 : 1);
           
-          if (newCount > 8) {
-              alert('You can only select up to 8 seats.');
+          if (newCount > 8) { 
+              state.showAlert = true;       
               return;
           }
-          
           state.selectedSeats.push({ row, col });
+        
       }
   },
   
@@ -213,5 +215,5 @@ const seatsEditSlice = createSlice({
     }
 });
 
-export const { setSeat, toggleBookingSeat, setCol, setDimensions, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats } = seatsEditSlice.actions;
+export const { setAlert, setSeat, toggleBookingSeat, setCol, setDimensions, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats } = seatsEditSlice.actions;
 export default seatsEditSlice.reducer;

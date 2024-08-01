@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import {ImgController} from '../../../controller/SliceReducer/img';
+import { ImgController } from '../../../controller/SliceReducer/img';
 
 const Food = ({ data }) => {
     const [imageSrc, setImageSrc] = useState('');
@@ -16,7 +16,6 @@ const Food = ({ data }) => {
             <div className="text-sm ml-2">
                 <p className="font-bold">{data.foodId}</p>
                 <p className="font-bold">Giá: {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(data.price)} - <span>SL: {data.quantity}</span></p>
-
             </div>
         </div>
     )
