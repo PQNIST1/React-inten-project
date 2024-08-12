@@ -11,18 +11,17 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   useEffect(() => {
     const hash = location.hash; // Lấy hash từ URL
-    const [section, query] = hash.split('?'); // Tách phần section và phần query
-
+    const [ query] = hash.split('?'); // Tách phần section và phần query
     if (query) {
-      const queryParams = new URLSearchParams(query); // Tạo URLSearchParams từ phần query
+      const queryParams = new URLSearchParams(query); 
       const page = parseInt(queryParams.get('page'), 10) || 1;
+      
+        if (page !== currentPage) {
+          onPageChange(page);
+        }  
 
-      if (page !== currentPage) {
-        onPageChange(page);
-      }
     }
   }, [location, currentPage, onPageChange]);
-
   for (let i = 1; i <= totalPages; i++) {
     pages.push(i);
   }

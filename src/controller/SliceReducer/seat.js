@@ -7,8 +7,16 @@ import axios from 'axios';
 
 
 export const getSeatType = createAsyncThunk('auth/getSeatType', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/seat-types');
+    const response = await axios.get('http://localhost:8080/api/v1/seat-types',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -19,7 +27,7 @@ export const getSeatType = createAsyncThunk('auth/getSeatType', async (_, { reje
 });
 
 
-export const addSeatType = createAsyncThunk('auth/addSeatType', async ({ data, data1 }, { dispatch, rejectWithValue }) => {
+export const addSeatType = createAsyncThunk('auth/addSeatType', async (data,{ rejectWithValue }) => {
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
     return rejectWithValue('No access token found');
@@ -30,17 +38,6 @@ export const addSeatType = createAsyncThunk('auth/addSeatType', async ({ data, d
         'Authorization': `Bearer ${accessToken}`
       }
     });
-    const seat_typeId = response.data.data.object.id;
-    const seatType = {
-      "seatType": {
-        "id": seat_typeId
-      }
-    };
-    const combinedData = {
-      ...seatType,
-      ...data1
-    };
-    await dispatch(addSeatTypePrice(combinedData));
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -50,7 +47,7 @@ export const addSeatType = createAsyncThunk('auth/addSeatType', async ({ data, d
   }
 });
 
-export const deleteSeatType = createAsyncThunk('auth/deleteSeatType', async ({ id, id1 }, { dispatch, rejectWithValue }) => {
+export const deleteSeatType = createAsyncThunk('auth/deleteSeatType', async (id, { dispatch, rejectWithValue }) => {
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
     return rejectWithValue('No access token found');
@@ -61,7 +58,6 @@ export const deleteSeatType = createAsyncThunk('auth/deleteSeatType', async ({ i
         'Authorization': `Bearer ${accessToken}`
       }
     });
-    await dispatch(deleteSeatTypePrice(id1));
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -113,8 +109,16 @@ export const addSeatTypePrice = createAsyncThunk('auth/addSeatTypePrice', async 
 });
 
 export const getSeatTypePrice = createAsyncThunk('auth/getSeatTypePrice', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/seat-prices');
+    const response = await axios.get('http://localhost:8080/api/v1/seat-prices',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -123,6 +127,8 @@ export const getSeatTypePrice = createAsyncThunk('auth/getSeatTypePrice', async 
     return rejectWithValue(error.response.data);
   }
 });
+
+
 
 export const editSeatType = createAsyncThunk('auth/updateSeatType', async ({ type_id, id, data, data1 }, { dispatch, rejectWithValue }) => {
   const accessToken = localStorage.getItem('accessToken');
@@ -135,16 +141,6 @@ export const editSeatType = createAsyncThunk('auth/updateSeatType', async ({ typ
         'Authorization': `Bearer ${accessToken}`
       }
     });
-    const seatType = {
-      "seatType": {
-        "id": type_id
-      }
-    };
-    const combined = {
-      ...seatType,
-      ...data1
-    };
-    await dispatch(editSeatTypePrice({ id, combined }));
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -154,13 +150,14 @@ export const editSeatType = createAsyncThunk('auth/updateSeatType', async ({ typ
   }
 });
 
-export const editSeatTypePrice = createAsyncThunk('auth/updateSeatTypePrice', async ({ id, combined }, { rejectWithValue }) => {
+export const editSeatTypePrice = createAsyncThunk('auth/updateSeatTypePrice', async ({ id, data}, { rejectWithValue }) => {
+ 
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.put(`http://localhost:8080/api/v1/seat-prices/${id}`, combined, {
+    const response = await axios.put(`http://localhost:8080/api/v1/seat-prices/${id}`, data, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -196,6 +193,8 @@ const initialState = {
   success: false,
   status: 'idle',
   isEdit: false,
+  isEditPrice: false,
+  isAddPrice: false,
 };
 
 const seatSlice = createSlice({
@@ -205,6 +204,7 @@ const seatSlice = createSlice({
     setDateStart: (state, action) => {
       state.dateStart = action.payload;
     },
+    
     setDateEnd: (state, action) => {
       state.dateEnd = action.payload;
     },
@@ -246,9 +246,21 @@ const seatSlice = createSlice({
     },
     setEdit: (state, action) => {
       state.isEdit = action.payload;
+      state.isAddPrice = false;
+      state.isEditPrice = false;
+    },
+    setEditPrice: (state, action) => {
+      state.isEditPrice = action.payload;
+      state.isAddPrice = false;
+      state.isEdit = false;
+    },
+    setIsAddPrice: (state, action) => {
+      state.isAddPrice = action.payload;
+      state.isEditPrice = false;
+      state.isEdit = false;
     },
     clearForm: (state) => {
-      state.name = ''; state.code = ''; state.dateStart = null; state.dateEnd = null; state.normalDay = false; state.weekend = false; state.specialDay = false; state.earlyShow = false; state.price = ''; state.type_id = null; state.isEdit = false;
+      state.isAddPrice = false; state.isEditPrice = false; state.name = ''; state.code = ''; state.dateStart = null; state.dateEnd = null; state.normalDay = false; state.weekend = false; state.specialDay = false; state.earlyShow = false; state.price = ''; state.type_id = null; state.isEdit = false;
     },
   },
   extraReducers: (builder) => {
@@ -328,9 +340,35 @@ const seatSlice = createSlice({
       .addCase(editSeatType.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(editSeatTypePrice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(editSeatTypePrice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(editSeatTypePrice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteSeatTypePrice.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deleteSeatTypePrice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(deleteSeatTypePrice.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   }
 });
 
-export const { setName, setCode, setPrice, setDateEnd, setDateStart, setType_id, clearForm, setDay, setEdit, setError, setId, setSuccess, setEarly, setNormal, setSpecial, setWeekend } = seatSlice.actions;
+export const { setIsAddPrice, setEditPrice, setName, setCode, setPrice, setDateEnd, setDateStart, setType_id, clearForm, setDay, setEdit, setError, setId, setSuccess, setEarly, setNormal, setSpecial, setWeekend } = seatSlice.actions;
 export default seatSlice.reducer;

@@ -5,6 +5,7 @@ import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from 'react-redux';
 import { openModal } from "../../../controller/SliceReducer/modal";
 import { normalizeStringForURL } from "../../../data/tranformData";
+import { setSelectedMovieId } from "../../../controller/SliceReducer/booking";
 
 
 
@@ -17,13 +18,16 @@ const LargeHover = ({data}) => {
     const handleOpenModal = () => {
         dispatch(openModal(videoId)); // Thay bằng videoId bạn muốn
     };
+    const handleReset = () => {
+        dispatch(setSelectedMovieId('')); // Thay bằng videoId bạn muốn
+    };
     return (
         <div className="">
-            <Link to={pathname}>
+            <Link to={pathname} onClick={handleReset}>
                 <div className="bg-black absolute h-full w-full rounded top-0 opacity-50  ">
                 </div>
             </Link>
-            <Link to={pathname}>
+            <Link to={pathname} onClick={handleReset}>
                 <div className="absolute bg-orange-500 top-1/3 mt-5 left-1/3 flex text-white p-2 rounded hover:bg-orange-400">
                     <img src="https://www.galaxycine.vn/_next/static/media/Vector-1.319a0d2b.svg" alt="" className="m-auto mr-1.5" />
                     <p className="tex-sm m-auto">Mua vé</p>

@@ -100,9 +100,21 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 .rmdp-input {
   height: 40px !important;
+  width: 215px !important;
+  background: transparent;
+}
+
+.special {
+  background-color: transparent;
+}
+
+.special .rmdp-input {
+  height: 40px !important;
   width: 250px !important;
   background: transparent;
 }
+
+
 .custom {
   background-color: transparent;
 }
@@ -110,6 +122,27 @@ input[type="time"]::-webkit-calendar-picker-indicator {
  
   width:  120px;
 }
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-in.visible {
+  opacity: 2;
+}
+
+.slide-in {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+
+.slide-in.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 
 
 

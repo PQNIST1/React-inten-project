@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faEyeSlash, faUser } from "@fortawesome/free-regular-svg-icons";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { faEye } from "@fortawesome/free-regular-svg-icons";
-import { faMobileScreen } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { faEnvelope, faEyeSlash, faUser,  faEye  } from "@fortawesome/free-regular-svg-icons";
+import { faMobileScreen, faLock } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../controller/SliceReducer/loggin";

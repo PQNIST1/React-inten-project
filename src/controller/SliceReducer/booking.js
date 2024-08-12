@@ -1,8 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+
+export const getReturn = createAsyncThunk('auth/getReturn', async (id, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
+  try {
+    const response = await axios.patch(`http://localhost:8080/api/v1/bookings/${id}`, null, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+
 
 const initialState = {
   selectedDate: '',
-  showtimes: {},
+  showtimes: [],
+  singlePrice: '',
+  doublePrice: '',
+  vipPrice: '',
   selectedTime: '',
   selectedSingleSeats: [],
   selectedDoubleSeats: [],
@@ -11,12 +38,27 @@ const initialState = {
   selectedMovieName: '',
   selectedMovieImg: '',
   selectedFood: [],
+  loading: false,
+  error: null,
+  success: false,
 };
 
 const movieSlice = createSlice({
   name: 'movie',
   initialState,
   reducers: {
+    setError: (state) => {
+      state.error = null;
+    },
+    setSingle: (state, action) => {
+      state.singlePrice = action.payload;
+    },
+    setDouble: (state, action) => {
+      state.doublePrice = action.payload;
+    },
+    setVip: (state, action) => {
+      state.vipPrice = action.payload;
+    },
     setSelectedDate: (state, action) => {
       state.selectedDate = action.payload;
     },
@@ -24,7 +66,7 @@ const movieSlice = createSlice({
       state.selectedTime = action.payload;
     },
     setShowtimes: (state, action) => {
-        state.showtimes = action.payload;
+      state.showtimes = action.payload;
     },
     setSelectedSingleSeats: (state, action) => {
       state.selectedSingleSeats = action.payload;
@@ -48,12 +90,12 @@ const movieSlice = createSlice({
       state.selectedFood = action.payload;
     },
     addFood: (state, action) => {
-      const { foodId, quantity, price, image } = action.payload;
+      const { foodId, id, quantity, price, image } = action.payload;
       const existingFood = state.selectedFood.find(item => item.foodId === foodId);
       if (existingFood) {
         existingFood.quantity += quantity;
       } else {
-        state.selectedFood.push({ foodId, quantity, price, image });
+        state.selectedFood.push({ foodId, id, quantity, price, image });
       }
     },
     removeFood: (state, action) => {
@@ -68,21 +110,40 @@ const movieSlice = createSlice({
       }
     },
     clearBooking: (state) => {
-      state.selectedDate= '';
-      state.showtimes= {};
-      state.selectedTime= '';
-      state.selectedSingleSeats= [];
-      state.selectedDoubleSeats= [];
-      state.selectedVipSeats= [];
-      state.selectedMovieId= '';
-      state.selectedMovieName= '';
-      state.selectedMovieImg= '';
-      state.selectedFood= [];
+      state.selectedDate = '';
+      state.showtimes = [];
+      state.selectedTime = '';
+      state.selectedSingleSeats = [];
+      state.selectedDoubleSeats = [];
+      state.selectedVipSeats = [];
+      state.selectedMovieId = '';
+      state.selectedMovieName = '';
+      state.selectedMovieImg = '';
+      state.selectedFood = [];
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getReturn.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(getReturn.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        const paymentUrl = action.payload.data.paymentURL; // Đảm bảo tên trường đúng
+        window.location.href = paymentUrl;
+      })
+      .addCase(getReturn.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  }
 });
 
 export const {
+  setDouble, setSingle, setVip,
   setSelectedDate,
   setSelectedTime,
   setShowtimes,
@@ -96,6 +157,7 @@ export const {
   addFood,
   removeFood,
   clearBooking,
+  setError,
 } = movieSlice.actions;
 
 export default movieSlice.reducer;

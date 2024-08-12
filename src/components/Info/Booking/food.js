@@ -1,27 +1,35 @@
 import React from "react";
-import Food from "./foodDetail";
+import Food from "./foodBooking";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
-const FoodBooking = () => {
+const FoodBooking = ({booking}) => {
+    const calculateTotalPrice = (items) => {
+        return items.reduce((total, item) => total + item.price , 0);
+    };    
     return (
         <div className="w-1/2  h-96 pl-5">
             <p className="text-lg font-bold mb-2">Đồ ăn</p>
-            <div className="h-96">
+            <div className="">
+                {booking.data.object.orders.map((item)=> (
+                    <>
+                    <Food data={item.food} amount={item.amount} /> 
+                    </>
+                ))}
+                {/* <Food /> */}
                 {/* <Food />
-                <Food />
                 <Food />
                 <Food /> */}
             </div>
             <div className="border-t-2 border-dotted flex space-x-20 pt-5 mt-5 ">
                 <div className="">
                     <p className="font-bold">Số lượng</p>
-                    <p>4</p>
+                    <p>{(booking.data.object.orders).length}</p>
                 </div>
                 <div className="capitalize">
                     <p className="font-bold">Tổng cộng</p>
-                    <p>356.000 VNĐ</p>
+                    <p>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(calculateTotalPrice(booking.data.object.orders))}</p>
                 </div>
             </div>
             <div className=" flex mt-24 justify-end items-center">

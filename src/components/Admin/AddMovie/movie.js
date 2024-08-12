@@ -2,13 +2,11 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { faClock, faCalendar } from "@fortawesome/free-regular-svg-icons";
-import { formatDate } from "../../../controller/SliceReducer/img";
 import { useDispatch, useSelector } from "react-redux";
-import { ImgController } from "../../../controller/SliceReducer/img";
 import { setName, deleteMovie, setError, setSuccess, setEdit, clearForm, setId, setOverview, setTrailer, setDuration, setImage, getMovieGenre, getMovieCast, addGenre, addCast, addDirector, setCastId, setGenreId, setReleaseDate, setDate, setTime } from "../../../controller/SliceReducer/moive";
 import { normalizeStringForURL } from "../../../data/tranformData";
 import { Link } from "react-router-dom";
-import { splitDateTime } from "../../../controller/SliceReducer/img";
+import { splitDateTime, formatDate } from "../../../controller/SliceReducer/img";
 
 const Movie = ({ data, pp }) => {
     const date = formatDate(data.releaseDate);
@@ -19,7 +17,6 @@ const Movie = ({ data, pp }) => {
     const genres = useSelector((state) => state.data.movieGenre);
     const casts = useSelector((state) => state.data.movieCast);
     const pathname = `/detail/${normalizeStringForURL(movieName)}`;
-    const [imageSrc, setImageSrc] = useState('');
     const [data1, setData1] = useState(null);
     const [data2, setData2] = useState(null);
     const [data3, setData3] = useState(null);
@@ -29,10 +26,6 @@ const Movie = ({ data, pp }) => {
     useEffect(() => {
         dispatch(getMovieGenre());
         dispatch(getMovieCast());
-        const imgData = data.image;
-        const imageUrl = ImgController(imgData);
-        setImageSrc(imageUrl);
-        return () => URL.revokeObjectURL(imageUrl);
     }, [data, dispatch]);
 
     const getGenresByMovieId = (data, movieId) => {
@@ -115,7 +108,7 @@ const Movie = ({ data, pp }) => {
                 <div className="w-full  relative overflow-hidden">
                     <div className=" flex">
                         <Link to={pathname}>
-                            <img src={imageSrc} alt="" className="h-32 rounded" />
+                            <img src={`http://localhost:8080${data.image}`} alt="" className="h-32 rounded" />
                         </Link>
                         <div className="capitalize ml-3  w-1/2">
                             <div className="flex">

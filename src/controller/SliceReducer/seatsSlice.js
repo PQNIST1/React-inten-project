@@ -2,10 +2,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const addSeats = createAsyncThunk('auth/addSeats', async (formData, { dispatch, rejectWithValue }) => {
+
   try {
     // Gửi yêu cầu thêm ghế cho từng mục trong formData
     await Promise.all(formData.map(data => dispatch(addSeat(data)).unwrap()));
-    
+
   } catch (error) {
     if (!error.response) {
       throw error;
@@ -15,7 +16,7 @@ export const addSeats = createAsyncThunk('auth/addSeats', async (formData, { dis
 });
 
 
-export const addSeat = createAsyncThunk('auth/addSeat', async ( formData , {  rejectWithValue }) => {
+export const addSeat = createAsyncThunk('auth/addSeat', async (formData, { rejectWithValue }) => {
   const accessToken = localStorage.getItem('accessToken');
   if (!accessToken) {
     return rejectWithValue('No access token found');
@@ -35,18 +36,75 @@ export const addSeat = createAsyncThunk('auth/addSeat', async ( formData , {  re
   }
 });
 
+export const deleteSeatss = createAsyncThunk('auth/deleteSeatss', async (id, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
+  try {
+    const response = await axios.delete(`http://localhost:8080/api/v1/seats/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+
+export const editSeatRoom = createAsyncThunk('auth/updateSeatRoom', async ({ formData, seats_id }, { dispatch, rejectWithValue }) => {
+  try {
+    if (seats_id && seats_id.length > 0) {
+      await Promise.all(seats_id.map(seatId => dispatch(deleteSeatss(seatId.object.id)).unwrap()));
+    }
+    await Promise.all(formData.map(data => dispatch(addSeat(data)).unwrap()));
+    return { success: true };
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const getSeatss = createAsyncThunk('auth/getSeatss', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
+  try {
+    const response = await axios.get('http://localhost:8080/api/v1/seats?size=10000',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
 
 
 const initialState = {
-  rows: 0,  
+  rows: 0,
   cols: 0,
   result: [],
   seats: [],
+  data: [],
   selectedSeats: [],
   isSaved: false,
   error: null,
   loading: false,
   success: false,
+  status: 'idle',
 };
 
 const seatsSlice = createSlice({
@@ -55,7 +113,7 @@ const seatsSlice = createSlice({
   reducers: {
     setError: (state) => { state.error = null },
     setSuccess: (state) => { state.success = false },
-    clearForm : (state) => {
+    clearForm: (state) => {
       state.rows = 0; state.cols = 0; state.result = []; state.seats = []; state.isSaved = false;
     },
     setCol: (state, action) => {
@@ -187,21 +245,47 @@ const seatsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-    .addCase(addSeat.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-      state.success = false;
-    })
-    .addCase(addSeat.fulfilled, (state, action) => {
-      state.loading = false;
-      state.success = true;
-    })
-    .addCase(addSeat.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    })
+      .addCase(getSeatss.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(getSeatss.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.data = action.payload;
+      })
+      .addCase(getSeatss.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Có lỗi xảy ra';
+      })
+      .addCase(addSeat.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(addSeat.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(addSeat.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteSeatss.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.success = false;
+      })
+      .addCase(deleteSeatss.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+      })
+      .addCase(deleteSeatss.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+
   }
 });
 
-export const {setError, setSuccess, clearForm ,setResult, setCol, setDimensions, setSeat, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats } = seatsSlice.actions;
+export const { setError, setSuccess, clearForm, setResult, setCol, setDimensions, setSeat, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats } = seatsSlice.actions;
 export default seatsSlice.reducer;

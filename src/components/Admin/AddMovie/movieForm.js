@@ -4,7 +4,7 @@ import CategorySelect from "./multiSelect.js/categorySelect";
 import ActorSelect from "./multiSelect.js/actorSelect";
 import DirectorSelect from "./multiSelect.js/directorSelect";
 import { setDate, setTime, setDuration, setName, setOverview, setReleaseDate, setTrailer, clearForm, addMovie, editMovie } from "../../../controller/SliceReducer/moive";
-import { ImgFileController } from "../../../controller/SliceReducer/img";
+
 
 const MovieForm = () => {
     const dispatch = useDispatch();
@@ -17,13 +17,21 @@ const MovieForm = () => {
 
     useEffect(() => {
         if (image) {
-            const file = ImgFileController(image);
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            if (inputRef.current) {
-                inputRef.current.files = dataTransfer.files;
-                setImg(file);
-            }
+            // Tải hình ảnh từ URL và chuyển đổi thành đối tượng File
+            fetch(`http://localhost:8080${image}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const file = new File([blob], "image.jpg", { type: blob.type });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    
+                    // Cập nhật input file
+                    if (inputRef.current) {
+                        inputRef.current.files = dataTransfer.files;
+                        setImg(file); // Cập nhật trạng thái với đối tượng File
+                    }
+                })
+                .catch(error => console.error('Error fetching image:', error));
         }
     }, [image]);
 
@@ -55,17 +63,19 @@ const MovieForm = () => {
         dispatch(setReleaseDate(formatDateTime()));
     };
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('overview', overview);
-        formData.append('image', img);
-        formData.append('trailer', trailer);
-        formData.append('duration', duration);
-        formData.append('releaseDate', releaseDate);
-        dispatch(addMovie({ formData, genres, casts, director }));
-        dispatch(clearForm());
-        setFileInputKey(Date.now());
+        e.preventDefault()
+        if (genres && cast_id && director) {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('overview', overview);
+            formData.append('image', img);
+            formData.append('trailer', trailer);
+            formData.append('duration', duration);
+            formData.append('releaseDate', releaseDate);
+            dispatch(addMovie({ formData, genres, casts, director }));
+            dispatch(clearForm());
+            setFileInputKey(Date.now());
+        };
     };
     const handleUpdate = (e) => {
         e.preventDefault();
@@ -161,7 +171,7 @@ const MovieForm = () => {
                         </div>
                         <div className="">
                             <label htmlFor="image">Hình ảnh</label>
-                            <input  ref={inputRef}   multiple key={fileInputKey}
+                            <input ref={inputRef} multiple key={fileInputKey}
                                 onChange={handleChange}
                                 id="image" name="image" className="mt-2 block w-full text-sm file:mr-4 file:rounded-md file:border-0 file:bg-teal-500 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-teal-700 focus:outline-none disabled:pointer-events-none disabled:opacity-60" type="file" required></input>
                         </div>

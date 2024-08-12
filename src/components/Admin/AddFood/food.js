@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { ImgController, splitDateTime } from "../../../controller/SliceReducer/img";
+import React from "react";
+import { splitDateTime } from "../../../controller/SliceReducer/img";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,16 +7,8 @@ import { deleteFood, setEdit, setError, setId, setImage, setName, setPrice, setS
 
 const Food = ({ data, pp }) => {
     const dispatch = useDispatch();
-    const [imageSrc, setImageSrc] = useState('');
     const form = useSelector((state) => state.addFood);
     const { isEdit, id } = form;
-    useEffect(() => {
-        const imgData = data.image;
-        const imageUrl = ImgController(imgData);
-        setImageSrc(imageUrl);
-        return () => URL.revokeObjectURL(imageUrl);
-
-    }, [data]);
     const handleDelete = (id) => {
         dispatch(deleteFood(id));
         setTimeout(() => {
@@ -40,7 +32,7 @@ const Food = ({ data, pp }) => {
     return (
         <div className="flex">
             <div className="flex mb-4 w-3/4">
-                <img src={imageSrc} alt="" className="h-24 w-44 rounded" />
+                <img src={`http://localhost:8080${data.image}`} alt="" className="h-24 w-44 rounded" />
                 <div className="text-sm ml-3 space-y-2">
                     <p className="font-bold">{data.name}</p>
                     <p className="text-sm">{data.detail}</p>

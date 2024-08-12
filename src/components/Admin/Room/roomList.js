@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import AddSearch from "../AddFood/addSearch";
 import Pagination from "../AddFood/page";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getRoom } from "../../../controller/SliceReducer/addRoom";
 import Room from "./room";
+import { setPage } from "../../../controller/SliceReducer/tab";
 
 
 const RoomList = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const rooms = useSelector((state) => state.room.data);
+    const page = useSelector((state) => state.tab.page);
     const form = useSelector((state) => state.room);
     const [data, setData] = useState([]);
     const [filter, setFilterData] = useState([]);
@@ -18,6 +21,8 @@ const RoomList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
     const { searchQuery } = useSelector((state) => state.seacrh);
+    const [isFirstLoad, setIsFirstLoad] = useState(true);
+
     useEffect(() => {
         dispatch(getRoom());
     }, [dispatch]);
@@ -33,6 +38,9 @@ const RoomList = () => {
     }, [status, rooms]);
     const handlePageChange = (page) => {
         setCurrentPage(page);
+        if (!searchQuery) {
+            dispatch(setPage(page));
+        }
     };
     useEffect(() => {
         if (data.data) {
@@ -40,8 +48,12 @@ const RoomList = () => {
                 item.object.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setFilterData(filteredData);
+            if (searchQuery) {
+                const newUrl = `#room?page=1`;
+                navigate(newUrl, { replace: true });
+            }
         }
-    }, [data.data, searchQuery]);
+    }, [data.data, searchQuery, navigate]);
 
     useEffect(() => {
         const indexOfLastItem = currentPage * itemsPerPage;
@@ -49,6 +61,25 @@ const RoomList = () => {
         const currentFilteredItems = filter.slice(indexOfFirstItem, indexOfLastItem);
         setCurrentItems(currentFilteredItems);
     }, [filter, currentPage, itemsPerPage]);
+
+    useEffect(() => {
+        if (data && currentItems.length > 0 && isFirstLoad) {
+            setIsFirstLoad(false);
+        } else if (data && !isFirstLoad && currentItems.length === 0) {
+            const prePage = Math.max(page - 1, 1); // Đảm bảo prePage không dưới 1
+            const newUrl = `#?page=${prePage}`;
+            navigate(newUrl, { replace: true });
+            setIsFirstLoad(true);
+        }
+    }, [currentItems, data, navigate, page, isFirstLoad, dispatch]);
+
+    useEffect(() => {
+        if (!searchQuery) {
+            const newUrl = `#room?page=${page}`;
+            navigate(newUrl, { replace: true });
+        }
+    }, [searchQuery, navigate, page]);
+
     return (
         <div className=" flex flex-col">
             <div className="flex mb-5">
@@ -70,7 +101,7 @@ const RoomList = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-300 capitalize">
                                 {currentItems.map((item) => (
-                                    <Room key={item.object.id} data={item.object} pp={item}/>
+                                    <Room key={item.object.id} data={item.object} pp={item} />
                                 ))}
                             </tbody>
                         </table>

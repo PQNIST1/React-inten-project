@@ -19,6 +19,8 @@ import searchReducer from './SliceReducer/search';
 import seatsReducer from './SliceReducer/seatsSlice';
 import seatsEditReducer from './SliceReducer/seatEdit';
 import showTimeReducer from './SliceReducer/addShowTime';
+import reportReducer from './SliceReducer/report';
+
 
 const rootReducer = combineReducers({
   modal: modalReducer,
@@ -40,6 +42,7 @@ const rootReducer = combineReducers({
   seats: seatsReducer,
   seatsEdit: seatsEditReducer,
   showTime: showTimeReducer,
+  report: reportReducer,
 });
 
 export default rootReducer;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setName, setPrice, addFood, clearForm, editFood, setError, setSuccess } from '../../../controller/SliceReducer/addFood';
-import { ImgFileController } from "../../../controller/SliceReducer/img";
+
 
 
 
@@ -14,13 +14,21 @@ const FoodForm = () => {
     const inputRef = useRef(null);
     useEffect(() => {
         if (image) {
-            const file = ImgFileController(image);
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            if (inputRef.current) {
-                inputRef.current.files = dataTransfer.files;
-                setImg(file);
-            }
+            // Tải hình ảnh từ URL và chuyển đổi thành đối tượng File
+            fetch(`http://localhost:8080${image}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const file = new File([blob], "image.jpg", { type: blob.type });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    
+                    // Cập nhật input file
+                    if (inputRef.current) {
+                        inputRef.current.files = dataTransfer.files;
+                        setImg(file); // Cập nhật trạng thái với đối tượng File
+                    }
+                })
+                .catch(error => console.error('Error fetching image:', error));
         }
     }, [image]);
     const handleChange = (e) => {

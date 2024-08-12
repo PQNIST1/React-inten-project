@@ -7,8 +7,12 @@ export const tabSlice = createSlice({
     activeTab: 'profile',
     activeMovieTab: "tab1",
     tabs: tabs,
+    page:1,
   },
   reducers: {
+    setPage: (state, action) => {
+      state.page =action.payload;
+    },
     setActiveTab: (state, action) => {
       state.activeTab = action.payload;
     },
@@ -31,6 +35,6 @@ export const tabSlice = createSlice({
 
 });
 
-export const { setActiveTab, setActiveMovieTab, handleNext, handlePrev } = tabSlice.actions;
+export const { setPage, setActiveTab, setActiveMovieTab, handleNext, handlePrev } = tabSlice.actions;
 
 export default tabSlice.reducer;

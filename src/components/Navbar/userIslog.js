@@ -8,13 +8,20 @@ const Userlog = () => {
     const userInfo = useSelector((state) => state.user.userInfo);
     const [data, setData] = useState({});
     const status = useSelector((state) => state.user.status);
-
+    const isValidData = data?.data && data.data.roles && data.data.roles.length > 0;
+    const isAdmin = isValidData && data.data.roles.some(role => role.id === 3);
     useEffect(() => {
         if (status === 'succeeded') {
             setData(userInfo);
         }
     }, [status, userInfo]);
+    let content;
 
+    if (isHovered) {
+        content = isAdmin ? <AdminHover /> : <UserHover />;
+    } else {
+        content = null;
+    }
     return (
         <div
             onMouseEnter={() => setIsHovered(true)}
@@ -29,7 +36,7 @@ const Userlog = () => {
                 />
             </div>
             <div>
-                {data.data && ( 
+                {data.data && (
                     <>
                         <div className="flex hover:text-yellow-400 font-bold">
                             <img
@@ -50,8 +57,7 @@ const Userlog = () => {
                     </>
                 )}
             </div>
-            {/* {isHovered && <UserHover />} */}
-            {isHovered && <AdminHover />}
+            {content}
         </div>
     );
 };

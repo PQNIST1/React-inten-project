@@ -52,6 +52,7 @@ const showtimesData = {
   '2024-07-26': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
   '2024-07-27': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
   '2024-07-28': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
+  '2024-08-20': ['9:00 AM', '12:00 PM', '3:00 PM', '6:00 PM', '9:00 PM'],
 
 
 };
@@ -156,22 +157,18 @@ const seat = [
 
 const payment = [
   {
-    id: '1', name: 'HSBC/Payoo - ATM/VISA/MASTER/JCB/QRCODE', img: 'https://cdn.galaxycine.vn/media/2020/10/20/hsbc-icon_1603203578522.png'
+    id: '1', name: 'VNPAY', img: 'https://cdn.galaxycine.vn/media/2021/12/2/download_1638460623615.png', method: 'VN_PAY'
+  },
+]
+
+const payment2 = [
+  {
+    id: '1', name: 'VNPAY', img: 'https://cdn.galaxycine.vn/media/2021/12/2/download_1638460623615.png', method: 'VN_PAY'
   },
   {
-    id: '2', name: 'Ví ShopeePay', img: 'https://cdn.galaxycine.vn/media/2022/4/29/shopee-pay_1651229746140.png'
-  },
-  {
-    id: '3', name: 'Ví Điện Tử MoMo', img: 'https://cdn.galaxycine.vn/media/2020/10/20/momo-icon_1603203874499.png'
-  },
-  {
-    id: '4', name: 'ZaloPay', img: 'https://cdn.galaxycine.vn/media/2022/12/2/icon-96x96_1669977824597.png'
-  },
-  {
-    id: '5', name: 'VNPAY', img: 'https://cdn.galaxycine.vn/media/2021/12/2/download_1638460623615.png'
+    id: '2', name: 'Tiền mặt', img: 'https://i.imgur.com/6pnbwrd.png', method: "CASH"
   },
 ]
 
 
-
-export { dataPreview, dataSlide,  dataCinema, dataSupport, showtimesData, dates, payment, seat };
+export { dataPreview, dataSlide,  dataCinema, dataSupport, showtimesData, dates, payment, seat, payment2 };

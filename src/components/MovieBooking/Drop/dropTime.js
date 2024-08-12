@@ -1,13 +1,17 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 import TimeDetail from "../../Detail/Content/timeDetail";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setMovieOpen, setShowtimeOpen } from "../../../controller/SliceReducer/modal";
 
 const DropTime = () => {
-    const [isOpen, setIsOpen] = useState(false);
-    const handleToggle = () => setIsOpen(!isOpen);
+    const dispatch = useDispatch();
+    const isOpen = useSelector((state) => (state.modal.showTimeOpen));
+    const handleToggle = () => {
+       dispatch(setShowtimeOpen(!isOpen));
+       dispatch(setMovieOpen(false));
+    };
     const isSelected = useSelector((state) => (state.movie.selectedMovieName));
     return (
         <div className="inline-block text-left w-full">

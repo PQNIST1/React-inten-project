@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSelectedDoubleSeats, setSelectedSingleSeats, setSelectedVipSeats } from '../../../controller/SliceReducer/booking';
-import { toggleBookingSeat } from '../../../controller/SliceReducer/seatEdit';
+import { setSelectedDoubleSeats, setSelectedSingleSeats, setSelectedVipSeats ,setSingle, setVip, setDouble } from '../../../controller/SliceReducer/booking';
+import { toggleBookingSeat, getSeatRoom, setSeat, setCol, setAlert } from '../../../controller/SliceReducer/seatEdit';
+import { getSeatType } from '../../../controller/SliceReducer/seat';
+import CustomAlert from "../../Alert/alert";
+import { getBookingPrice, getBookingSeats } from "../../../controller/SliceReducer/payment";
 
 
 // Hàm để lấy các hàng
@@ -25,16 +28,125 @@ const getColumns = (seat) => {
 
 const Seats = () => {
     const dispatch = useDispatch();
-    const { seats, selectedSeats } = useSelector(state => state.seatsEdit);
-    const rows = getRows(seats).length;
-    const cols = getColumns(seats).length;
+    const { seats, selectedSeats, seatsRoom, cols, rows, showAlert } = useSelector(state => state.seatsEdit);
     const selectedSingleSeats = useSelector((state) => state.movie.selectedSingleSeats);
     const selectedDoubleSeats = useSelector((state) => state.movie.selectedDoubleSeats);
     const selectedVipSeats = useSelector((state) => state.movie.selectedVipSeats);
     const maxSeats = 8;
-    const reservedSeats = ['A1', 'B2', 'C3', 'D2', 'E3'];
+    const selectedTime = useSelector((state) => state.movie.selectedTime);
+    const reservedSeat = useSelector((state) => state.payment.seats);
+    const pricess = useSelector((state) => state.payment.price);
+    const [reservedSeats, setReservedSeats] = useState([]);
+
+
 
     const isReserved = (seat) => reservedSeats.includes(seat);
+
+
+    const convertToSeatsMatrixx = (seatData) => {
+        // Chuyển đổi các giá trị row và column thành số nguyên
+        const formattedData = seatData.map(seat => ({
+            ...seat,
+            object: {
+                ...seat,
+                row: parseInt(seat.row, 10),
+                column: parseInt(seat.column, 10)
+            }
+        }));
+
+        // Tìm số hàng và số cột lớn nhất
+        const maxRow = Math.max(...formattedData.map(seat => seat.row)) + 1;
+        const maxCol = Math.max(...formattedData.map(seat => seat.column)) + 1;
+
+        // Tạo ma trận với số hàng và cột tối đa
+        const seats = Array.from({ length: maxRow }, () => Array(maxCol).fill(null));
+
+        // Cập nhật ma trận với thông tin ghế
+        formattedData.forEach(seat => {
+            seats[seat.object.row][seat.object.column] = {
+                type: seat.seatType.name,
+                id: seat.id,
+                type_id: seat.seatType.id
+            };
+        });
+
+        return seats;
+    };
+
+
+
+
+    const handleClose = () => {
+        dispatch(setAlert(false));
+    }
+
+    useEffect(() => {
+        dispatch(getSeatType());
+        dispatch(getBookingSeats(selectedTime.id));
+        dispatch(getBookingPrice(selectedTime.id));
+    }, [dispatch, selectedTime]);
+
+    useEffect(() => {
+        if (selectedTime.room) {
+            dispatch(getSeatRoom(selectedTime.room.id));
+            dispatch(setSeat([]));
+        }
+    }, [dispatch, selectedTime.room]);
+
+    useEffect(() => {
+        if (pricess.data) {
+            const prices = {
+                single: null,
+                double: null,
+                vip: null
+            };
+            pricess.data.forEach(item => {
+                const seatType = item.object.seatType.name;
+                const price = item.object.price;
+
+                if (seatType === 'single') {
+                    prices.single = price;
+                } else if (seatType === 'double') {
+                    prices.double = price;
+                } else if (seatType === 'vip') {
+                    prices.vip = price;
+                }
+            });
+            if (prices.single !== null) {
+                dispatch(setSingle(prices.single));
+            }
+            if (prices.double !== null) {
+                dispatch(setDouble(prices.double));
+            }
+            if (prices.vip !== null) {
+                dispatch(setVip(prices.vip));
+            }
+        }
+    }, [dispatch, pricess]);
+
+    useEffect(() => {
+        if (reservedSeat.data) {
+            setReservedSeats(reservedSeat.data.filter(item => item.booked).map(item => item.seat.name));
+        }
+    }, [reservedSeat.data])
+    useEffect(() => {
+        if (seatsRoom.data) {
+            dispatch(setCol({ rows: 0, cols: 0 }));
+            const seatData = seatsRoom.data.map(item => item.object);
+            const results = convertToSeatsMatrixx(seatData);
+            dispatch(setSeat(results));
+        }
+    }, [seatsRoom, dispatch]);
+
+    useEffect(() => {
+        if (seats.length > 0) {
+            const newCols = getColumns(seats).length;
+            const newRows = getRows(seats).length;
+            if (newCols !== cols || newRows !== rows) {
+                dispatch(setCol({ rows: newRows, cols: newCols }));
+            }
+        }
+    }, [seats, dispatch, rows, cols]);
 
     const generateRowLetters = () => {
         const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -57,11 +169,11 @@ const Seats = () => {
         dispatch(toggleBookingSeat({ row, col }));
     };
     // Hàm để lấy kiểu ghế
-    const getSeatType = (row, col) => {
+    const getSeatTypes = (row, col) => {
         if (doubleSeatStates[row] && doubleSeatStates[row][col]) {
             return doubleSeatStates[row][col];
         }
-        return 'single'; // Default to single seat if not set
+        return seats[row][col] ? seats[row][col].type : 'single'; // Default to single seat if not set
     };
 
     // Cập nhật trạng thái ghế đôi
@@ -71,8 +183,9 @@ const Seats = () => {
         doubleSeatStates[row] = [];
         let isLastDouble = false;
 
-        for (let col = 0; col < cols; col++) {
-            if (seats[row][col] === 'double') {
+        for (let col = 0; col < seats[row].length; col++) {
+            const seat = seats[row][col];
+            if (seat && seat.type === 'double') {
                 if (!isLastDouble) {
                     doubleSeatStates[row][col] = 'left';
                 } else {
@@ -80,33 +193,52 @@ const Seats = () => {
                 }
                 isLastDouble = !isLastDouble;
             } else {
-                doubleSeatStates[row][col] = 'single';
+                doubleSeatStates[row][col] = seat ? seat.type : 'single';
                 isLastDouble = false;
             }
         }
     };
 
     const toggleSeat = (seat, type) => {
-        if (reservedSeats.includes(seat)) {
-            alert('This seat is already reserved.');
+        // Check if the seat is reserved
+        if (reservedSeats.includes(seat.id)) {
+
             return;
         }
 
         const selectedSeats = getSelectedSeats(type);
-        if (selectedSeats.includes(seat)) {
-            updateSelectedSeats(type, selectedSeats.filter(s => s !== seat));
+        const seatIdentifier = `${seat.letter}${seat.number}`;
+
+        // Check if the seat is already selected
+        if (selectedSeats.some(s => s.id === seat.id)) {
+            // Deselect the seat
+            updateSelectedSeats(type, selectedSeats.filter(s => s.id !== seat.id));
         } else {
+            // Check if adding this seat will exceed maxSeats
             if (getTotalSelectedSeats() < maxSeats) {
-                updateSelectedSeats(type, [...selectedSeats, seat]);
-            } else {
-                // alert(`You can only select up to ${maxSeats} seats.`);
+                // Select the seat
+                updateSelectedSeats(type, [...selectedSeats, { id: seat.id, label: seatIdentifier, type_id: seat.type_id }]);
             }
+
         }
     };
+
+
     const toggleDoubleSeat = (seat1, seat2) => {
         const seatsToToggle = [seat1, seat2];
-        const allSeatsSelected = seatsToToggle.every(seat => selectedDoubleSeats.includes(seat));
-        const someSeatsSelected = seatsToToggle.some(seat => selectedDoubleSeats.includes(seat));
+        const seatIdentifiers = seatsToToggle.map(seat => ({
+            id: seat.id,
+            label: `${seat.letter}${seat.number}`,
+            type_id: seat.type_id,
+            type: seat.type
+        }));
+
+        const allSeatsSelected = seatIdentifiers.every(seat =>
+            selectedDoubleSeats.some(selected => selected.id === seat.id)
+        );
+        const someSeatsSelected = seatIdentifiers.some(seat =>
+            selectedDoubleSeats.some(selected => selected.id === seat.id)
+        );
 
         if (someSeatsSelected && !allSeatsSelected) {
             alert('Please select or deselect both seats together.');
@@ -114,15 +246,23 @@ const Seats = () => {
         }
 
         if (allSeatsSelected) {
-            dispatch(setSelectedDoubleSeats(selectedDoubleSeats.filter(seat => !seatsToToggle.includes(seat))));
+            // Remove the seats from selectedDoubleSeats
+            dispatch(setSelectedDoubleSeats(selectedDoubleSeats.filter(selected =>
+                !seatIdentifiers.some(seat => seat.id === selected.id)
+            )));
         } else {
+            // Check if adding these seats will exceed maxSeats limit
             if (getTotalSelectedSeats() + 2 <= maxSeats) {
-                dispatch(setSelectedDoubleSeats([...selectedDoubleSeats, ...seatsToToggle]));
-            } else {
-                // alert(`You can only select up to ${maxSeats} seats.`);
+                // Add the seats to selectedDoubleSeats
+                dispatch(setSelectedDoubleSeats([
+                    ...selectedDoubleSeats,
+                    ...seatIdentifiers
+                ]));
             }
         }
     };
+
+
 
     const getSelectedSeats = (type) => {
         switch (type) {
@@ -167,19 +307,20 @@ const Seats = () => {
             updateDoubleSeatStates(row);
         }
 
-        const seatType = getSeatType(row, col);
+        const seatType = getSeatTypes(row, col);
         const seatIdentifier = `${letter}${seatNumber[col]}`;
 
         if (seatType === 'left') {
             return (
                 <button
                     key={`${row}-${col}`}
-                    className={` flex border-blue-700 h-3 w-13 rounded border p-2.5 cursor-pointer text-sm box-border ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed hover:border-none border-none hover:bg-gray-500': 'hover:bg-orange-400 hover:border-transparent'}`}
+                    className={`flex border-blue-700 h-3 w-13 rounded border p-2.5 cursor-pointer text-sm box-border ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed hover:border-none border-none hover:bg-gray-500' : 'hover:bg-orange-400 hover:border-transparent'}`}
                     style={{ gridColumn: 'span 2', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     onClick={() => {
                         if (seat) {
                             handleToggleSelectSeat(row, col);
-                            toggleDoubleSeat(`${letter}${seatNumber[col]}`, `${letter}${seatNumber[col + 1]}`);
+                            const rightSeatId = seatNumber[col + 1] ? seats[row][col + 1].id : null;
+                            toggleDoubleSeat({ letter: letter, number: seatNumber[col], id: seat.id, type_id: seat.type_id, type: seat.type }, { letter: letter, number: seatNumber[col + 1], id: rightSeatId, type_id: seat.type_id, type: seat.type });
                         }
                     }}
                     disabled={isReserved(seatIdentifier)}
@@ -197,9 +338,9 @@ const Seats = () => {
         return (
             <button
                 key={`${row}-${col}`}
-                className={`rounded text-sm h-3 w-3 border p-2.5 cursor-pointer ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed  border-none' :  seat === 'single'
+                className={`rounded text-sm h-3 w-3 border p-2.5 cursor-pointer ${isSelected ? 'bg-orange-400 border-transparent text-white' : isReserved(seatIdentifier) ? 'bg-gray-500 cursor-not-allowed border-none' : seat && seat.type === 'single'
                     ? 'border-green-700 hover:bg-orange-400 hover:border-transparent'
-                    : seat === 'vip'
+                    : seat && seat.type === 'vip'
                         ? 'border-orange-400 hover:bg-orange-400 hover:border-transparent' : 'border-transparent'
                     }`}
                 style={{
@@ -210,12 +351,12 @@ const Seats = () => {
                 onClick={() => {
                     if (seat) {
                         handleToggleSelectSeat(row, col);
-                        toggleSeat(`${letter}${seatNumber[col]}`, seat);
+                        toggleSeat({ letter: letter, number: seatNumber[col], id: seat.id, type_id: seat.type_id }, seat.type);
                     }
                 }}
                 disabled={isReserved(seatIdentifier)}
             >
-                {seatNumber[col]}
+                {seat ? seatNumber[col] : ''}
             </button>
         );
     };
@@ -243,6 +384,12 @@ const Seats = () => {
                         })}
                     </div>
                 </div>
+            )}
+            {showAlert && (
+                <CustomAlert
+                    message="Chỉ được đặt giới hạn 8 ghế!"
+                    onClose={handleClose}
+                />
             )}
         </div>
     );

@@ -20,7 +20,38 @@ export const NormalizedMovieNames = (movies) => {
   return normalizedNames;
 };
 
+export const NormalizedMovieNamesTime = (movies) => {
+  const normalizedNames = movies.map(movie => ({
+    movie: movie.object.movie.name,
+    name: normalizeStringForURL(movie.object.movie.name),
+  }));
+
+  return normalizedNames;
+};
+
+
 export const findName = (movies, prama) => {
-    const foundMovie = movies.find(movie => movie.name.toLowerCase() === prama.toLowerCase());
+  const foundMovie = movies.find(movie => movie.name.toLowerCase() === prama.toLowerCase());
+  if (foundMovie) {
     return foundMovie.movie;
+  } else {
+    return '';
+  }
+};
+
+export const groupBy = (array, key) => {
+  return array.reduce((result, item) => {
+    const groupKey = item.object.movie[key];
+    if (!result[groupKey]) {
+      result[groupKey] = [];
+    }
+    result[groupKey].push(item);
+    return result;
+  }, {});
+};
+
+// Hàm lấy ngày bắt đầu và kết thúc
+export const getMinMaxDates = (dates) => {
+  const sortedDates = dates.sort((a, b) => new Date(a) - new Date(b));
+  return { min: sortedDates[0], max: sortedDates[sortedDates.length - 1] };
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRoom, setError, setCode, setEdit, setId, setName, setSuccess, clearForm } from "../../../controller/SliceReducer/addRoom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,22 +6,44 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 import { splitDateTime } from "../../../controller/SliceReducer/img";
 import { normalizeStringForURL } from "../../../data/tranformData";
+import { getShowTime } from "../../../controller/SliceReducer/addShowTime";
 
 
 const Room = ({ data, pp }) => {
     const dispatch = useDispatch();
     const form = useSelector((state) => state.room);
     const { isEdit, id } = form;
+    const [exist, setExist] = useState();
+    const showtime = useSelector((state) => state.showTime.data);
+
+    useEffect(() => {
+        dispatch(getShowTime());
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (showtime.data) {
+            const exists = showtime.data.content.some(item => item.object.room.id === data.id);
+            setExist(exists);
+        }
+    },[showtime, exist, data]);
+
+
     const handleDelete = (id) => {
-        dispatch(deleteRoom(id));
-        setTimeout(() => {
-            dispatch(setSuccess());
-            dispatch(setError());
-        }, 3000);
-        dispatch(clearForm());
+        if (exist) {
+            alert('phòng này đang được sử dụng không thể thay đổi!')
+        } else {
+            dispatch(deleteRoom(id));
+            setTimeout(() => {
+                dispatch(setSuccess());
+                dispatch(setError());
+            }, 3000);
+            dispatch(clearForm());
+        }
     };
     const handleUpdate = (idd) => {
-        if (isEdit && idd === id) {
+        if (exist) {
+            alert('phòng này đang được sử dụng không thể thay đổi!')
+        } else if (isEdit && idd === id) {
             dispatch(setEdit(false));
             dispatch(clearForm());
         } else {

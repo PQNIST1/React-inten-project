@@ -1,55 +1,74 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilm } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { getShowTimeDate} from "../../controller/SliceReducer/addShowTime";
+import { getCurrentDate } from "../MovieBooking/Drop/dropButton";
+import { setSelectedMovieName, setSelectedMovieImg, setSelectedMovieId, setShowtimes } from "../../controller/SliceReducer/booking";
 
 const ChoiseMovie = () => {
-    const [selectedValue, setSelectedValue] = useState(""); // State để lưu giá trị đã chọn từ dropdown
+    const [selectedValue, setSelectedValue] = useState(null); // State để lưu giá trị đã chọn từ dropdown
+    const dispatch = useDispatch();
+    const movies = useSelector((state) => state.showTime.date);
+    const [data, setData] = useState([]);
+    const status = useSelector((state) => state.showTime.status);
 
-    const attributeValues = [
-        { label: "Action", value: "action" },
-        { label: "Comedy", value: "comedy" },
-        { label: "Drama", value: "drama" },
-        { label: "Drama", value: "drama" },
-        { label: "Drama", value: "drama" },
-       
-        // Thêm các giá trị khác nếu cần
-    ];
+    useEffect(() => {
+        dispatch(getShowTimeDate(getCurrentDate()));
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (status === 'succeeded') {
+            setData(movies.data);
+        }
+    }, [status, movies]);
 
     const attributeName = "movieAttribute"; // Tên attribute dùng cho data-e2e
     const onChangeAttribute = (event) => {
-        setSelectedValue(event.target.value); // Cập nhật giá trị đã chọn khi dropdown thay đổi
-        console.log(event.target.value); // Log giá trị đã chọn
+        const selectedOption = event.target.options[event.target.selectedIndex];
+        const name = selectedOption.getAttribute('data-name');
+        const image = selectedOption.getAttribute('data-image');
+        const id = selectedOption.getAttribute('data-id');
+        setSelectedValue({ name, image, id });
+        dispatch(setSelectedMovieName(name));
+        dispatch(setSelectedMovieImg(image));
+        dispatch(setSelectedMovieId(id));
+        dispatch(setShowtimes([]));
     };
 
     return (
         <div className="flex">
             <FontAwesomeIcon icon={faFilm} color="orange" className="h-6 my-auto mx-2" />
-            <select
-                value={selectedValue}
-                data-e2e={attributeName}
-                onChange={(event) => onChangeAttribute(event)}
-                className="p-[9px]  bg-gray-50 w-96 h-full focus:outline-none"
-            >
-                <option
-                    className="font-roboto capitalize"
-                    value=""
-                    data-e2e="default"
-                    disabled
-                    hidden
+            {data && (
+                <select
+                    value={selectedValue ? selectedValue.name : ""}
+                    data-e2e={attributeName}
+                    onChange={onChangeAttribute}
+                    className="p-[9px] bg-gray-50 w-96 h-full focus:outline-none"
                 >
-                    Chọn phim
-                </option>
-                {attributeValues.map((attribute, index) => (
                     <option
                         className="font-roboto capitalize"
-                        key={`${attribute.label}-${index}`}
-                        value={attribute.value}
-                        data-e2e={attribute.value}
+                        value=""
+                        data-e2e="default"
+                        disabled
+                        hidden
                     >
-                        {attribute.label}
+                        Chọn phim
                     </option>
-                ))}
-            </select>
+                    {data.map((attribute) => (
+                        <option
+                            className="font-roboto capitalize"
+                            key={attribute.movie.id}
+                            value={attribute.movie.name}
+                            data-name={attribute.movie.name}
+                            data-image={attribute.movie.image}
+                            data-id={attribute.movie.id}
+                        >
+                            {attribute.movie.name}
+                        </option>
+                    ))}
+                </select>
+            )}
         </div>
     );
 };

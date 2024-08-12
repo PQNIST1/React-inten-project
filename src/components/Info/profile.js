@@ -28,10 +28,6 @@ const Profile = () => {
                     <InputChange title={'Mật khẩu'} icon={faLock} value={"**********"} />
                 </>
             )}
-
-            <div className=" w-full flex justify-end px-16">
-                <button className="p-2 text-white mr-1 hover:bg-blue-500 bg-blue-700 border rounded">Cập nhập</button>
-            </div>
         </div>
     )
 }

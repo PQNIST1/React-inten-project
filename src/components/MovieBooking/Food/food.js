@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch,  useSelector } from "react-redux";
 import { addFood, removeFood } from "../../../controller/SliceReducer/booking";
-import { useSelector } from "react-redux";
-import { ImgController } from "../../../controller/SliceReducer/img";
+
 
 
 const Food = ({ data }) => {
@@ -11,17 +10,10 @@ const Food = ({ data }) => {
     const foodItem = selectedFood.find((item) => item.foodId === data.name);
     const quantity = foodItem ? foodItem.quantity : 0;
 
-    const [imageSrc, setImageSrc] = useState('');
-    useEffect(() => {
-        const imgData = data.image;
-        const imageUrl = ImgController(imgData);
-        setImageSrc(imageUrl);
-        return () => URL.revokeObjectURL(imageUrl);
-    }, [data]);
 
+   
     const handleIncrement = (foodId) => {
-
-        dispatch(addFood({ foodId, quantity: 1, price:data.price, image:data.image }));
+        dispatch(addFood({ foodId,  id:data.id , quantity: 1, price:data.price, image:data.image}));
     };
 
     const handleDecrement = (foodId) => {
@@ -32,7 +24,7 @@ const Food = ({ data }) => {
     return (
         <div className="flex">
             <div className="flex mb-4 w-3/4">
-                <img src={imageSrc} alt="" className="h-24 w-44 rounded" />
+                <img src={`http://localhost:8080${data.image}`} alt="" className="h-24 w-44 rounded" />
                 <div className="text-sm ml-3 space-y-2">
                     <p className="font-bold">{data.name}</p>
                     <p className="text-sm">{data.detail}</p>

@@ -1,17 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { faUser, faEyeSlash,faEye } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
-import { faEye } from "@fortawesome/free-regular-svg-icons";
-import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { logginUser } from "../../controller/SliceReducer/loggin";
 
 const Login = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state || '/';
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -27,9 +26,9 @@ const Login = () => {
     };
     useEffect(() => {
         if (user) {
-            navigate('/');
+            navigate('/', { replace: true });
         }
-    }, [user, navigate]);
+    }, [user, navigate, from]);
 
 
     const togglePasswordVisibility = () => {

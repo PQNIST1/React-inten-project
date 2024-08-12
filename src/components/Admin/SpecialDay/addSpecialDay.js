@@ -62,7 +62,7 @@ const AddSpecialDay = () => {
                             </div>
                             <div>
                                 <label htmlFor="name">Ngày tồn tại</label>
-                                <div>
+                                <div className="special">
                                     <MyDatePicker />
 
                                 </div>
