@@ -10,8 +10,10 @@ const SelectedRoom = () => {
     const { loading, error, success, isSaved, seats } = form;
     const seatss = useSelector((state) => state.seat.data);
     const { room } = useSelector((state) => state.showTime);
-    const  generateSeatData = (seats, seatTypes, room) => {
+    const generateSeatData = (seats, seatTypes, room) => {
         const result = [];
+        const rowLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Danh sách các ký tự hàng
+    
         // Duyệt qua từng hàng trong ma trận ghế
         seats.forEach((row, rowIndex) => {
             // Duyệt qua từng cột trong hàng hiện tại
@@ -19,10 +21,15 @@ const SelectedRoom = () => {
                 if (seatTypeCode !== null) {
                     // Tìm loại ghế dựa trên mã ghế
                     const seatType = seatTypes.find(type => type.object.name === seatTypeCode);
-
+    
                     if (seatType) {
+                        // Chuyển đổi chỉ số hàng và cột thành ký tự và số
+                        const rowCharIndex = seats.length - rowIndex - 1; // Đảo ngược chỉ số hàng
+                        const rowChar = rowLetters[rowCharIndex % rowLetters.length]; // Chọn ký tự hàng
+                        const colNum = columnIndex + 1; // Chọn số cột
+    
                         result.push({
-                            name: seatType.object.name,
+                            name: `${rowChar}${colNum}`, // Ví dụ: "A1", "B2", ...
                             row: rowIndex,
                             column: columnIndex,
                             seatType: { id: seatType.object.id },
@@ -32,9 +39,12 @@ const SelectedRoom = () => {
                 }
             });
         });
-
+    
         return result;
-    }
+    };
+    
+    
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isSaved && room ) {

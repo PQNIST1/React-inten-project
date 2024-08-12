@@ -2,12 +2,11 @@ import React from "react";
 import Nav from '../../Navbar/nav';
 import Footer from '../../Footer/footer';
 import UserTabs from "./userTabs";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import UserList from "./userList";
 import CreateForm from "./createForm";
 
 const UserCtr = () => {
-    const dispatch = useDispatch();
     const activeTab = useSelector((state) => state.tab.activeTab);
     return (
         <div className="relative container text-gray-400 bg-customColor w-screen  flex flex-col min-h-screen">

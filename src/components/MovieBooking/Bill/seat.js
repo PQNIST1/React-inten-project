@@ -16,7 +16,7 @@ const Seat = ({ data, title, price }) => {
                             <span className="font-bold">
                                 {data.map((item, index) => (
                                     <span key={index}>
-                                        {item}
+                                        {item.label}
                                         {index < data.length - 1 ? ", " : ""}
                                     </span>
                                 ))}

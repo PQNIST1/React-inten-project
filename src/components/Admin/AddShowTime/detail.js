@@ -4,7 +4,7 @@ import AddSearch from "../AddFood/addSearch";
 import Pagination from "../AddFood/page";
 import Tail from "./tail";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { format, set } from "date-fns";
+import { format} from "date-fns";
 import { setPage } from '../../../controller/SliceReducer/tab';
 import { getShowTime } from "../../../controller/SliceReducer/addShowTime";
 import { findName, NormalizedMovieNamesTime } from "../../../data/tranformData";

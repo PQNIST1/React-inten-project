@@ -2,8 +2,41 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getShowTime = createAsyncThunk('auth/getShowTime', async (_, { rejectWithValue }) => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+        return rejectWithValue('No access token found');
+    }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/showtimes?size=1000');
+        const response = await axios.get('http://localhost:8080/api/v1/showtimes?size=1000',{
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        if (!error.response) {
+            throw error;
+        }
+        return rejectWithValue(error.response.data);
+    }
+});
+
+export const getShowTimeMovie = createAsyncThunk('auth/getShowTimeMovie', async (id, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/v1/movies/${id}/showtimes`);
+        return response.data;
+    } catch (error) {
+        if (!error.response) {
+            throw error;
+        }
+        return rejectWithValue(error.response.data);
+    }
+});
+
+export const getShowTimeDate = createAsyncThunk('auth/getShowtimDate', async (date, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/v1/showtimes/date?date=${date}`
+           );
         return response.data;
     } catch (error) {
         if (!error.response) {
@@ -14,7 +47,6 @@ export const getShowTime = createAsyncThunk('auth/getShowTime', async (_, { reje
 });
 
 export const addShowTime = createAsyncThunk('auth/addShowTime', async (formData, { rejectWithValue }) => {
-    console.log(formData);
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
         return rejectWithValue('No access token found');
@@ -81,6 +113,8 @@ const addShowTimeSlice = createSlice({
     initialState: {
         roomCtr: false,
         data: [],
+        show:[],
+        date:[],
         dataMovie:[],
         status: 'idle',
         durration: '',
@@ -121,6 +155,12 @@ const addShowTimeSlice = createSlice({
         setId: (state, action) => { state.id = action.payload },
         setSuccess: (state) => { state.success = false },
         setError: (state) => { state.error = null },
+        setShow: (state,action) => {
+            state.show = action.payload;
+        },
+        setStatus: (state) => {
+            state.status = 'idle'
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -133,6 +173,30 @@ const addShowTimeSlice = createSlice({
                 state.data = action.payload;
             })
             .addCase(getShowTime.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload || 'Có lỗi xảy ra';
+            })
+            .addCase(getShowTimeMovie.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(getShowTimeMovie.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.show = action.payload;
+            })
+            .addCase(getShowTimeMovie.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload || 'Có lỗi xảy ra';
+            })
+            .addCase(getShowTimeDate.pending, (state) => {
+                state.status = 'loading';
+                state.error = null;
+            })
+            .addCase(getShowTimeDate.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.date = action.payload;
+            })
+            .addCase(getShowTimeDate.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload || 'Có lỗi xảy ra';
             })
@@ -178,5 +242,5 @@ const addShowTimeSlice = createSlice({
     }
 });
 
-export const {setRoomCtr, setDataMovie, setErrors, setShowtimes, addShowtime, clearShowtimes, setDurration, setMovie, setRoom, clearForm, setEdit, setError, setSuccess, setId } = addShowTimeSlice.actions;
+export const {setStatus, setShow, setRoomCtr, setDataMovie, setErrors, setShowtimes, addShowtime, clearShowtimes, setDurration, setMovie, setRoom, clearForm, setEdit, setError, setSuccess, setId } = addShowTimeSlice.actions;
 export default addShowTimeSlice.reducer;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import AddSearch from "../AddFood/addSearch";
 import Pagination from "../AddFood/page";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import User from "./user";
 import { setPage } from "../../../controller/SliceReducer/tab";
@@ -17,7 +17,7 @@ const UserList = () => {
     const [data, setData] = useState([]);
     const [filter, setFilterData] = useState([]);
     const {  status } = form;
-    const [itemsPerPage] = useState(6);
+    const [itemsPerPage] = useState(4);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentItems, setCurrentItems] = useState([]);
     const { searchQuery } = useSelector((state) => state.seacrh);
@@ -84,7 +84,7 @@ const UserList = () => {
                                     <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold  capitalize"> Role </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-300 capitalize">
+                            <tbody className="divide-y divide-gray-300">
                                 {currentItems.map((item) => (
                                     <User key={item.user.id} data={item.user} pp={item} />
                                 ))}

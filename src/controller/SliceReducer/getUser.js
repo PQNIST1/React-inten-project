@@ -23,8 +23,16 @@ export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithVa
 
 
 export const getUsers = createAsyncThunk('auth/getUsers', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/users?size=1000');
+    const response = await axios.get('http://localhost:8080/api/v1/users?size=1000', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {

@@ -3,8 +3,16 @@ import axios from "axios";
 
 
 export const getSpecialDay = createAsyncThunk('auth/getSpecialDay', async (_, { rejectWithValue }) => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+        return rejectWithValue('No access token found');
+    }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/special-days');
+        const response = await axios.get('http://localhost:8080/api/v1/special-days', {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
         return response.data;
     } catch (error) {
         if (!error.response) {

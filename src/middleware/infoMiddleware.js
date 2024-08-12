@@ -1,17 +1,16 @@
-// PrivateRoute.js
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Route, Navigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Navigate, useLocation } from 'react-router-dom';
 
-const PrivateRoute = ({ element: Element, ...rest }) => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+const PrivateRoute = ({ element: Component, requireAuth, ...rest }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  const location = useLocation();
+  const from = location.pathname;
+  return accessToken ? <Component {...rest} /> : <Navigate to="/login" state={{ from: from}} />;
+};
 
-  return (
-    <Route
-      {...rest}
-      element={isAuthenticated ? <Element /> : <Navigate to="/login" replace />}
-    />
-  );
+PrivateRoute.propTypes = {
+  element: PropTypes.elementType.isRequired,
 };
 
 export default PrivateRoute;

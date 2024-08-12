@@ -19,13 +19,14 @@ export const getPrice = (prices) => {
                 return price.price; // Ngày cuối tuần
             } else if (price.normal && !isWeekend) {
                 return price.price; // Ngày thường
-            } else if (price.early) {
-                return price.price; // Chiếu sớm
-            }
+            } 
+            // else if (price.early) {
+            //     return price.price; // Chiếu sớm
+            // }
         }
     }
 
-    return '';
+    return '';  
 };
 
 

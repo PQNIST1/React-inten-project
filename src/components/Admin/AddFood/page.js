@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
 
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
@@ -11,7 +11,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   useEffect(() => {
     const hash = location.hash; // Lấy hash từ URL
-    const [section, query] = hash.split('?'); // Tách phần section và phần query
+    const [ query] = hash.split('?'); // Tách phần section và phần query
     if (query) {
       const queryParams = new URLSearchParams(query); 
       const page = parseInt(queryParams.get('page'), 10) || 1;

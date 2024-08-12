@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Select from "react-tailwindcss-select";
 import { useDispatch, useSelector } from "react-redux";
 import { getRoom } from "../../../../controller/SliceReducer/addRoom";
-import { setRoom, setRoomCtr } from "../../../../controller/SliceReducer/addShowTime";
+import { setRoom } from "../../../../controller/SliceReducer/addShowTime";
 import { getSeatss } from "../../../../controller/SliceReducer/seatsSlice";
 
 
@@ -30,18 +30,15 @@ const RoomSelect = () => {
     useEffect(() => {
         if (status === 'succeeded') {
             setData(rooms);
-           
         }
     }, [status, rooms]);
-
-
     useEffect(() => {
         if (data && data.data) {
             const newData = data.data.content.map((item) => item.object);
             setData1(newData);
         }
     }, [data, dispatch]);
-
+   
     useEffect(() => {
         if (success) {
             dispatch(getSeatss());
@@ -53,9 +50,9 @@ const RoomSelect = () => {
         label: item.name,
     }))
 
-
     useEffect(() => {
         if (options.length > 0 && seats.data) {
+    
             const existingIds = [...new Set(seats.data.content.map(item => item.object.room.id))];
 
             // Compute filteredOptions
@@ -96,8 +93,6 @@ const RoomSelect = () => {
         }
         return true;
     };
-
-
     return (
         <>
             {data1 && (

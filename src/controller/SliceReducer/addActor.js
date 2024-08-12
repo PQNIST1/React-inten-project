@@ -2,8 +2,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const getActor = createAsyncThunk('auth/getActor', async (_, { rejectWithValue }) => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+        return rejectWithValue('No access token found');
+    }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/casts?size=50');
+        const response = await axios.get('http://localhost:8080/api/v1/casts?size=50',{
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            } 
+        });
         return response.data;
     } catch (error) {
         if (!error.response) {

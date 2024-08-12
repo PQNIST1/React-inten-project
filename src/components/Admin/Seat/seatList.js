@@ -103,8 +103,7 @@ const SeatList = () => {
                                     <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold capitalize"> Mã </th>
                                     <th scope="col" className="    text-left text-sm leading-6 font-semibold capitalize pl-7">tiền - bắt đầu - kết thúc - date - <FontAwesomeIcon icon={faSquarePlus} /></th>
                                     <th scope="col" className="  p-5 text-left text-sm leading-6 font-semibold capitalize"> Tạo </th>
-                                    <th scope="col" className=" p-5 text-left text-sm leading-6 font-semibold capitalize"> Sửa </th>
-                                    <th scope="col" className="   p-5 text-left text-sm leading-6 font-semibold  capitalize"> Actions </th>
+                                    <th scope="col" className=" p-5 text-left text-sm leading-6 font-semibold capitalize"> Sửa </th>    
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-300 capitalize">

@@ -4,8 +4,10 @@ import MoiveListing from "./movies";
 import { useSelector } from "react-redux";
 
 const Moive = () => {
-    const movies = useSelector((state) => state.data.data);
+    const movies = useSelector((state) => state.data.current);
+    const moviesu = useSelector((state) => state.data.upcoming);
     const [data, setData] = useState([]);
+    const [data1, setData1] = useState([]);
     const status = useSelector((state) => state.data.status);
     const activeTab = useSelector((state) => state.tab.activeMovieTab);
     const [sliceData, setSliceData] = useState([]);
@@ -14,15 +16,16 @@ const Moive = () => {
     useEffect(() => {
         if (status === 'succeeded') {
             setData(movies);
+            setData1(moviesu)
         }
-    }, [status, movies]);
+    }, [status, movies, moviesu]);
 
     useEffect(() => {
-        if (data && data.data) {
-            setSliceData(data.data.content.slice(0, 8));
-            setSliceData1(data.data.content.slice(0, 8).reverse());
+        if (data && data.data && data1 && data1.data) {
+            setSliceData(data.data.slice(0, 8));
+            setSliceData1(data1.data.slice(0, 8).reverse());
         }
-    }, [data]); 
+    }, [data, data1]); 
     return (
         <div className="w-5/6 h-auto mx-auto mt-20 flex-col text-center">
             <MoiveList />

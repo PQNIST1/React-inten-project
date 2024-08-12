@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BookingTabs from "./bookingTab";
 import RomCtr from "../Room/roomCtr";
 import TimeBooking from "../timeBooking";
@@ -11,6 +11,12 @@ import MovieDrop from "../Drop/moiveDrop";
 
 
 const Seat = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    useEffect(() => {
+        if (!accessToken) {
+            window.location.href = '/login';
+        }
+    }, [accessToken]);
     return (
         <div className="w-full">
             <TimeBooking />
@@ -29,7 +35,7 @@ const Booking = () => {
             <div className="flex">
                 <div className="w-4/6">
                     {activeTab === 'movie' && <MovieDrop />}
-                    {activeTab === 'seat' && <Seat />}
+                    {activeTab === 'seat' &&  <Seat />}
                     {activeTab === 'food' && <FoodList />}
                     {activeTab === 'payment' && <Payment />}
                     {activeTab === 'comfirm' && <Comfirm />}

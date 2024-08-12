@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedDate, setSelectedTime, setShowtimes } from "../../../controller/SliceReducer/booking";
 import TimeSlider from "./Time/Showtimes";
 import { formatDate, isPastDate, isToday, getDayOfWeek } from "./Time/dateCtr/datecontroller";
-import { getShowTime } from "../../../controller/SliceReducer/addShowTime";
-import { transformData } from "../../../controller/SliceReducer/img";
+import { getShowTimeMovie, setShow } from "../../../controller/SliceReducer/addShowTime";
+
+
 
 
 
@@ -13,76 +14,66 @@ const TimeDetail = () => {
     const dispatch = useDispatch();
     const selectedDate = useSelector((state) => state.movie.selectedDate);
     const selectedTime = useSelector((state) => state.movie.selectedTime);
-    const movieName = useSelector((state) => state.movie.selectedMovieName);
+    const movieId = useSelector((state) => state.movie.selectedMovieId);
     const form = useSelector((state) => state.showTime);
     const [datas, setDatas] = useState([]);
     const [date, setDate] = useState();
     const [time, setTime] = useState();
-    const [validDates, setValidDates] = useState();
-    const { data, status } = form;
-
+    const [validDates, setValidDates] = useState([]);
+    const { show, status } = form;
     const today = new Date();
     const formattedToday = formatDate(today);
 
-    
-      
-
-    const findAllMoviesByName = (movies, movieName) => {
-        return movies.filter(movie =>
-            movie.object.movie.name.toLowerCase() === movieName.toLowerCase()
-        );
-    };
+    useEffect(()=> {
+        dispatch(setSelectedTime(''));
+        dispatch(setShow([]));
+        dispatch(setShowtimes([]));
+    },[dispatch]);
 
     useEffect(() => {
-        dispatch(getShowTime());
-    }, [dispatch]);
-    useEffect(() => {
-        if (status === 'succeeded' && movieName) {
-            const foundMovie = findAllMoviesByName(data.data.content, movieName);
-
-            if (foundMovie.length > 0) {
-                setDatas(foundMovie);
-            } else {
-                setDatas([]);
-            }
+        if (movieId) { 
+            dispatch(getShowTimeMovie(movieId));
         }
-    }, [dispatch, status, movieName, data]);
+    }, [dispatch, movieId]);
 
     useEffect(() => {
-        if (datas.length > 0) {
-            const showtimesData = transformData(datas);
-            if (showtimesData) {
-                setDate(showtimesData);
-                const dates = Object.keys(showtimesData).sort((a, b) => new Date(a) - new Date(b));
-                const valid = dates.filter(date => !isPastDate(new Date(date)));
-                const times = showtimesData[selectedDate] || [];
-                setTime(times);
-                setValidDates(valid);
-            }
+        if (show.data) {
+            setDatas(show.data);
+
+        } else {
+            setDatas([]);
+        }
+    }, [show]);
+    
+    useEffect(() => {
+        if (datas && status === 'succeeded') {
+            setDate(datas);
+            const valid = Object.keys(datas).filter(date => !isPastDate(new Date(date)));
+            const times = datas[selectedDate] || [];
+            setTime(times);
+            setValidDates(valid.reverse());
         } else {
             setTime();
-            setValidDates()
+            setValidDates();
         }
-    }, [datas, selectedDate]);
+    }, [datas,selectedDate, status]);
 
     useEffect(() => {
-        if (validDates && date) {
+        if (validDates && date && status === 'succeeded') {
             if (!validDates.includes(selectedDate)) {
                 const initialDate = validDates.includes(formattedToday) ? formattedToday : validDates[0] || '';
-                dispatch(setSelectedDate(initialDate));
-                // dispatch(setSelectedTime(date[initialDate]?.[0] || ''));
-                dispatch(setShowtimes(date[initialDate]));
-                //   
+                if (selectedDate === '') {
+                    dispatch(setSelectedDate(initialDate));
+                }
             }
         }
-    }, [formattedToday, validDates, selectedDate, dispatch, date]);
+    }, [formattedToday, validDates, selectedDate, dispatch, date, status]);
 
     const handleDateSelect = (day) => {
         dispatch(setSelectedDate(day));
-        // dispatch(setSelectedTime(date[day]?.[0] || ''));
         dispatch(setShowtimes(date[day]));
+        dispatch(setSelectedTime(''));
     };
-    // Mặc định là một mảng trống nếu không có dữ liệu
 
     const handleTimeSelect = (time) => {
         dispatch(setSelectedTime(time));

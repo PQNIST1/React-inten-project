@@ -4,7 +4,7 @@ import CategorySelect from "./multiSelect.js/categorySelect";
 import ActorSelect from "./multiSelect.js/actorSelect";
 import DirectorSelect from "./multiSelect.js/directorSelect";
 import { setDate, setTime, setDuration, setName, setOverview, setReleaseDate, setTrailer, clearForm, addMovie, editMovie } from "../../../controller/SliceReducer/moive";
-import { ImgFileController } from "../../../controller/SliceReducer/img";
+
 
 const MovieForm = () => {
     const dispatch = useDispatch();
@@ -17,13 +17,21 @@ const MovieForm = () => {
 
     useEffect(() => {
         if (image) {
-            const file = ImgFileController(image);
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(file);
-            if (inputRef.current) {
-                inputRef.current.files = dataTransfer.files;
-                setImg(file);
-            }
+            // Tải hình ảnh từ URL và chuyển đổi thành đối tượng File
+            fetch(`http://localhost:8080${image}`)
+                .then(response => response.blob())
+                .then(blob => {
+                    const file = new File([blob], "image.jpg", { type: blob.type });
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    
+                    // Cập nhật input file
+                    if (inputRef.current) {
+                        inputRef.current.files = dataTransfer.files;
+                        setImg(file); // Cập nhật trạng thái với đối tượng File
+                    }
+                })
+                .catch(error => console.error('Error fetching image:', error));
         }
     }, [image]);
 

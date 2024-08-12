@@ -4,43 +4,50 @@ import { createUser, setError, setSuccess } from "../../../controller/SliceReduc
 
 const CreateForm = () => {
     const dispatch = useDispatch();
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOptions, setSelectedOptions] = useState([]);
     const { success, error } = useSelector((state) => state.user);
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const handleChange = (event) => {
-        setSelectedOption(event.target.value);
+        const value = parseInt(event.target.value, 10);
+        setSelectedOptions((prevSelected) => {
+            const exists = prevSelected.some(option => option.id === value);
+            if (exists) {
+                // Loại bỏ đối tượng nếu nó đã tồn tại
+                return prevSelected.filter(option => option.id !== value);
+            } else {
+                // Thêm đối tượng mới
+                return [...prevSelected, { id: value }];
+            }
+        });
     };
 
-    const formData = {
-        user: {
-            name: name,
-            userName: name,
-            phone: phone,
-            email: email,
-            passWord: password,
-        },
-        roles: [
-            {
-                id: selectedOption,
-            },
-        ],
-    };
+  
 
     const clearForm = () => {
         setName('');
         setEmail('');
         setPhone('');
         setPassword('');
-        setSelectedOption('');
+        setSelectedOptions([]);
     }
 
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (selectedOption) {
+        if (selectedOptions.length > 0) {
+            const formData = {
+                user: {
+                    name: name,
+                    userName: name,
+                    phone: phone,
+                    email: email,
+                    passWord: password,
+                },
+                roles: selectedOptions
+            };
             dispatch(createUser(formData));
             clearForm();
         }
@@ -87,36 +94,36 @@ const CreateForm = () => {
                                             <legend className="text-lg font-semibold">Chọn Role:</legend>
                                             <label className="flex items-center">
                                                 <input
-                                                    type="radio"
+                                                    type="checkbox"
                                                     name="options"
                                                     value="1"
-                                                    checked={selectedOption === '1'}
+                                                    checked={selectedOptions.some(option => option.id === 1)}
                                                     onChange={handleChange}
-                                                    className="form-radio h-4 w-4 text-blue-600 border-gray-300"
+                                                    className="form-checkbox h-4 w-4 text-blue-600 border-gray-300"
                                                 />
-                                                <span className="ml-2 ">Khách hàng</span>
+                                                <span className="ml-2">Khách hàng</span>
                                             </label>
                                             <label className="flex items-center">
                                                 <input
-                                                    type="radio"
+                                                    type="checkbox"
                                                     name="options"
                                                     value="2"
-                                                    checked={selectedOption === '2'}
+                                                    checked={selectedOptions.some(option => option.id === 2)}
                                                     onChange={handleChange}
-                                                    className="form-radio h-4 w-4 text-blue-600 border-gray-300"
+                                                    className="form-checkbox h-4 w-4 text-blue-600 border-gray-300"
                                                 />
-                                                <span className="ml-2 ">Nhân viên</span>
+                                                <span className="ml-2">Nhân viên</span>
                                             </label>
                                             <label className="flex items-center">
                                                 <input
-                                                    type="radio"
+                                                    type="checkbox"
                                                     name="options"
                                                     value="3"
-                                                    checked={selectedOption === '3'}
+                                                    checked={selectedOptions.some(option => option.id === 3)}
                                                     onChange={handleChange}
-                                                    className="form-radio h-4 w-4 text-blue-600 border-gray-300"
+                                                    className="form-checkbox h-4 w-4 text-blue-600 border-gray-300"
                                                 />
-                                                <span className="ml-2 ">Quản trị</span>
+                                                <span className="ml-2">Quản trị</span>
                                             </label>
                                         </fieldset>
                                     </div>

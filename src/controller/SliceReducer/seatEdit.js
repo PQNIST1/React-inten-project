@@ -3,8 +3,16 @@ import axios from 'axios';
 
 
 export const getSeatRoom = createAsyncThunk('auth/getSeatRoom', async ( id, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/rooms/${id}/seats`);
+    const response = await axios.get(`http://localhost:8080/api/v1/rooms/${id}/seats`,{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -90,7 +98,7 @@ const seatsEditSlice = createSlice({
   
       // Hàm kiểm tra xem ghế có phải là ghế đôi không
       const isDoubleSeat = (row, col) => {
-          return state.seats[row][col] === 'double';
+          return state.seats[row][col].type === 'double';
       };
   
       // Nếu ghế đã được chọn, xóa nó khỏi danh sách

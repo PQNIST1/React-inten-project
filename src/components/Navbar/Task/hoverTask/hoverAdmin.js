@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { logoutAndNavigate } from "../../../../controller/SliceReducer/loggin";
-import { faClipboardUser, faListOl, faArrowRightFromBracket, faUsers,  faFilm,  faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faClipboardUser, faListOl, faArrowRightFromBracket, faUsers,  faFilm,  faCirclePlus, faTicket } from "@fortawesome/free-solid-svg-icons";
 
 const AdminHover = () => {
     const dispatch = useDispatch();
@@ -28,6 +28,12 @@ const AdminHover = () => {
                 <div className="hover:text-blue-700 flex px-2 hover:bg-yellow-300 hover:border-l-4 hover:border-orange-400 text-center">
                     <FontAwesomeIcon icon={faUsers} className="my-auto" />
                     <p className="capitalize mx-auto">người dùng</p>
+                </div>
+            </Link>
+            <Link to="/ticket/#ticket">
+                <div className="hover:text-blue-700 flex px-2 hover:bg-yellow-300 hover:border-l-4 hover:border-orange-400 text-center">
+                <FontAwesomeIcon icon={faTicket} className="my-auto" />
+                    <p className="capitalize mx-auto">Booking</p>
                 </div>
             </Link>
             <Link to="/add/#food?page=1">

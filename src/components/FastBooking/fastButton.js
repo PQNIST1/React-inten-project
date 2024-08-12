@@ -7,9 +7,12 @@ const FastButton = () => {
     const selectedDate = useSelector((state) => state.movie.selectedDate);
     const selectedTime = useSelector((state) => state.movie.selectedTime);
     const selectedMovieName = useSelector((state) => state.movie.selectedMovieName);
+    const accessToken = localStorage.getItem('accessToken');
     const handleNext = () => {
-        if (selectedTime  !== '' && selectedDate !== '' && selectedMovieName !== '') {
+        if (selectedTime  !== '' && selectedDate !== '' && selectedMovieName !== '' && accessToken) {
             navigate('/booking/#seat');
+        } else {
+            navigate('/login');
         }
     }
 

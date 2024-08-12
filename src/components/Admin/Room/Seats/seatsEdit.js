@@ -5,8 +5,8 @@ import { getSeatRoom, setDimensions, toggleSelectSeat, setSeatsType, clearSelect
 import { getSeatType } from '../../../../controller/SliceReducer/seat';
 import { getRoom } from '../../../../controller/SliceReducer/addRoom';
 import { NormalizedMovieNames, findName } from '../../../../data/tranformData';
-import {  clearForm, setSuccess, setError, editSeatRoom } from "../../../../controller/SliceReducer/seatsSlice";
-import { clearForm as clearForm1 } from "../../../../controller/SliceReducer/addShowTime";
+import { clearForm, setSuccess, setError, editSeatRoom } from "../../../../controller/SliceReducer/seatsSlice";
+import { clearForm as clearForm1, getShowTime } from "../../../../controller/SliceReducer/addShowTime";
 
 
 const getRows = (seat) => seat;
@@ -33,13 +33,15 @@ const SeatEdit = () => {
     const { seats, selectedSeats, isSaved, seatsRoom, cols, rows } = useSelector(state => state.seatsEdit);
     const rooms = useSelector((state) => state.room.data);
     const [id, setId] = useState({});
+    const [exist, setExist] = useState();
     const [dimensionss, setDimensionss] = useState({ rows: 0, cols: 0 });
     const { prama } = useParams();
     const [roomName, setRoomName] = useState('');
     const seatss = useSelector((state) => state.seat.data);
     const navigate = useNavigate();
     const form = useSelector((state) => state.seats);
-    const { error, success} = form;
+    const showtime = useSelector((state) => state.showTime.data);
+    const { error, success } = form;
 
 
     const convertToSeatsMatrix = (seatData) => {
@@ -58,7 +60,7 @@ const SeatEdit = () => {
         return seats;
     }
 
-    const  generateSeatData = (seats, seatTypes, room) => {
+    const generateSeatData = (seats, seatTypes, room) => {
         const result = [];
         // Duyệt qua từng hàng trong ma trận ghế
         seats.forEach((row, rowIndex) => {
@@ -84,7 +86,7 @@ const SeatEdit = () => {
         return result;
     }
 
-    
+
 
 
     useEffect(() => {
@@ -104,26 +106,35 @@ const SeatEdit = () => {
     }, [roomName, rooms, dispatch, prama]);
 
     useEffect(() => {
+        dispatch(getShowTime());
+    }, [dispatch]);
+
+
+    useEffect(() => {
         if (id.object) {
             dispatch(getSeatRoom(id.object.id));
-            dispatch(setSeat([])); 
+            dispatch(setSeat([]));
             dispatch(setCol({ rows: 0, cols: 0 }));
+            if (showtime.data) {
+                const exists = showtime.data.content.some(item => item.object.room.id === id.object.id);
+                setExist(exists);
+            }
         }
-    }, [dispatch, id]);
+    }, [dispatch, id, showtime]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // if (isSaved && seatsRoom.data && id.object) {
-        //     const formData = generateSeatData(seats, seatss.data.content, id.object)
-        //     const seats_id = seatsRoom.data;
-        //     dispatch(editSeatRoom({ formData , seats_id }));
-        //     dispatch(clearForm());
-        //     dispatch(clearForm1());
-        //     // setTimeout(() => {
-        //     //     dispatch(setSuccess());
-        //     //     dispatch(setError());
-        //     // }, 3000);
-        // }
+        if (isSaved && seatsRoom.data && id.object) {
+            const formData = generateSeatData(seats, seatss.data.content, id.object)
+            const seats_id = seatsRoom.data;
+            dispatch(editSeatRoom({ formData, seats_id }));
+            dispatch(clearForm());
+            dispatch(clearForm1());
+            setTimeout(() => {
+                dispatch(setSuccess());
+                dispatch(setError());
+            }, 3000);
+        }
 
     };
 
@@ -146,10 +157,10 @@ const SeatEdit = () => {
         }
     }, [seats, dispatch, rows, cols]);
 
- 
 
 
-    
+
+
 
 
 
@@ -353,8 +364,8 @@ const SeatEdit = () => {
 
     return (
         <div className="container mx-auto p-4  w-3/4">
-              {error && error.error && <p style={{ color: 'red' }}>{error.error}</p>}
-              {success && <div className="mt-4 text-green-500">Tải lên thành công!</div>}
+            {error && error.error && <p style={{ color: 'red' }}>{error.error}</p>}
+            {success && <div className="mt-4 text-green-500">Tải lên thành công!</div>}
             <div className='flex mb-5  h-10'>
                 {id.object && (
                     <div className='text-xl text-blue-700 mr-10'><h1>Phòng {id.object.name}</h1></div>
@@ -383,7 +394,7 @@ const SeatEdit = () => {
                     )
                 }
             </div>
-            {seats.length > 0   && (
+            {seats.length > 0 && (
                 <div>
                     <div className="grid gap-2 items-center justify-center " >
                         {generateRowLetters(rows).map((letter, rowIndex) => {
@@ -397,7 +408,7 @@ const SeatEdit = () => {
                                                 {renderSeatContent(seat, rowIndex, colIndex, seatNumbers)}
                                             </React.Fragment>
                                         )).filter(content => content !== null)}
-                                        
+
                                     </div>
                                     <button className="w-5 cursor-pointer" onClick={() => !isSaved && handleToggleSelectRow(rowIndex)}>{letter}</button>
 
@@ -421,49 +432,51 @@ const SeatEdit = () => {
                             </div>
                         </div>
                     </div>
+                    {!exist && (
+                        <div className="flex mt-4 h-24">
+                            {!isSaved && (
+                                <>
+                                    <div className='m-auto'>
+                                        <div className='mb-3'><p>Đặt kiểu ghế</p></div>
+                                        <div className='flex gap-2'>
+                                            {seatss.data?.content?.map((item) => (
+                                                <button
+                                                    key={item.id}
+                                                    onClick={() => handleSetSeatsType(item.object.name)}
+                                                    className={`rounded border-2  text-white p-2 m-2 w-20 ${item.object.name === 'single' ? 'border-green-700' : item.object.name === 'vip' ? 'border-orange-400' : 'border-blue-700'}`}
+                                                >
+                                                    {item.object.name}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className='m-auto'>
+                                        <div className='mb-3'><p>Thiết lập</p></div>
+                                        <div className='flex gap-2'>
+                                            <button onClick={handleClearSelectedSeats} className="border-yellow-500 border-2 rounded text-white p-2">Bỏ Chọn Kiểu Ghế</button>
+                                            <button onClick={handleResetSeats} className="border-red-500 border-2 rounded text-white p-2">Reset Phòng</button>
+                                            <button onClick={handleSaveSeats} className="border-purple-500 border-2 rounded text-white p-2">Lưu</button>
+                                        </div>
+                                    </div>
 
-                    <div className="flex mt-4 h-24">
-                        {!isSaved && (
-                            <>
-                                <div className='m-auto'>
-                                    <div className='mb-3'><p>Đặt kiểu ghế</p></div>
-                                    <div className='flex gap-2'>
-                                        {seatss.data?.content?.map((item) => (
-                                            <button
-                                                key={item.id}
-                                                onClick={() => handleSetSeatsType(item.object.name)}
-                                                className={`rounded border-2  text-white p-2 m-2 w-20 ${item.object.name === 'single' ? 'border-green-700' : item.object.name === 'vip' ? 'border-orange-400' : 'border-blue-700'}`}
-                                            >
-                                                {item.object.name}
-                                            </button>
-                                        ))}
+                                </>
+                            )}
+                            {
+                                isSaved && (
+                                    <div className='w-5/6 flex   h-10'>
+                                        <div className='w-3/4 flex justify-center space-x-10'>
+                                            <button onClick={handleSubmit} className="border-red-500 border-2 rounded text-white p-2">Lưu</button>
+                                            <button onClick={() => navigate(-1)} className="border-blue-500 border-2 rounded text-white p-2">Hủy</button>
+                                        </div>
+                                        <div className='w-1/4 flex justify-end'>
+                                            <button onClick={handleEditSeats} className="border-pink-500 border-2 rounded text-white p-2">Sửa</button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className='m-auto'>
-                                    <div className='mb-3'><p>Thiết lập</p></div>
-                                    <div className='flex gap-2'>
-                                        <button onClick={handleClearSelectedSeats} className="border-yellow-500 border-2 rounded text-white p-2">Bỏ Chọn Kiểu Ghế</button>
-                                        <button onClick={handleResetSeats} className="border-red-500 border-2 rounded text-white p-2">Reset Phòng</button>
-                                        <button onClick={handleSaveSeats} className="border-purple-500 border-2 rounded text-white p-2">Lưu</button>
-                                    </div>
-                                </div>
+                                )
+                            }
+                        </div>
+                    )}
 
-                            </>
-                        )}
-                        {
-                            isSaved && (
-                                <div className='w-5/6 flex   h-10'>
-                                    <div className='w-3/4 flex justify-center space-x-10'>
-                                        <button onClick={handleSubmit} className="border-red-500 border-2 rounded text-white p-2">Lưu</button>
-                                        <button onClick={() => navigate(-1)} className="border-blue-500 border-2 rounded text-white p-2">Hủy</button>
-                                    </div>
-                                    <div className='w-1/4 flex justify-end'>
-                                        <button onClick={handleEditSeats} className="border-pink-500 border-2 rounded text-white p-2">Sửa</button>
-                                    </div>
-                                </div>
-                            )
-                        }
-                    </div>
                 </div>
             )
             }

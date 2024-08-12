@@ -53,6 +53,25 @@ export const updatePassword = createAsyncThunk('auth/updatePassword', async (for
   }
 });
 
+export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
+  try {
+    const response = await axios.post('http://localhost:8080/api/v1/auths/logout', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data)
+  }
+});
 
 const logginSlice = createSlice({
   name: 'loggin',
@@ -73,22 +92,23 @@ const logginSlice = createSlice({
     },
     setSuccess: (state) => { state.success = false },
     setError: (state) => { state.error = null },
-    checkAccessTokenExpiration(state) {
-      const token = localStorage.getItem('accessToken');
-      if (token) {
-        const decodedToken = jwtDecode(token);
-        const expirationDate = new Date(0);
-        expirationDate.setUTCSeconds(decodedToken.exp);
-        if (state.isLogged && expirationDate) {
-          const currentTime = new Date();
-          if (currentTime >= new Date(expirationDate)) {
-            localStorage.removeItem('accessToken');
-            window.location.href = '/';
-          }
-        }
-      }
+    // checkAccessTokenExpiration(state) {
+    //   const token = localStorage.getItem('accessToken');
+    //   if (token) {
+    //     const decodedToken = jwtDecode(token);
+    //     const expirationDate = new Date(0);
+    //     expirationDate.setUTCSeconds(decodedToken.exp);
+    //     if (state.isLogged && expirationDate) {
+    //       const currentTime = new Date();
+    //       if (currentTime >= new Date(expirationDate)) {
+    //         localStorage.removeItem('accessToken');
+    //         window.location.href = '/';
+    //         dispatch(logoutUser());
+    //       }
+    //     }
+    //   }
 
-    },
+    // },
   },
   extraReducers: (builder) => {
     builder
@@ -133,9 +153,27 @@ const logginSlice = createSlice({
 });
 export const logoutAndNavigate = () => (dispatch) => {
   dispatch(logout());
+  dispatch(logoutUser());
   window.location.href = '/';
 };
 
-export const { setAccessToken, logout, checkAccessTokenExpiration, setError, setSuccess } = logginSlice.actions;
+export const checkAccessTokenExpiration = () => {
+  return (dispatch) => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const expirationDate = new Date(0);
+      expirationDate.setUTCSeconds(decodedToken.exp);
+      const currentTime = new Date();
+      if (currentTime >= expirationDate) {
+        localStorage.removeItem('accessToken');
+        dispatch(logoutUser());
+        window.location.href = '/';
+      }
+    }
+  };
+};
+
+export const { setAccessToken, logout, setError, setSuccess } = logginSlice.actions;
 
 export default logginSlice.reducer;

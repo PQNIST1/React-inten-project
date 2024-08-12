@@ -1,9 +1,8 @@
 import React from "react";
-import { useDispatch } from "react-redux";
 import { format } from 'date-fns';
 import { Link } from "react-router-dom";
 import { normalizeStringForURL } from "../../../data/tranformData";
-import { setDataMovie } from "../../../controller/SliceReducer/addShowTime";
+
 
 
 const formatDate = (date) => {

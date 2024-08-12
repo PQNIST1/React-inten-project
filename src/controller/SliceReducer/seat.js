@@ -7,8 +7,16 @@ import axios from 'axios';
 
 
 export const getSeatType = createAsyncThunk('auth/getSeatType', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/seat-types');
+    const response = await axios.get('http://localhost:8080/api/v1/seat-types',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -101,8 +109,16 @@ export const addSeatTypePrice = createAsyncThunk('auth/addSeatTypePrice', async 
 });
 
 export const getSeatTypePrice = createAsyncThunk('auth/getSeatTypePrice', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/seat-prices');
+    const response = await axios.get('http://localhost:8080/api/v1/seat-prices',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {

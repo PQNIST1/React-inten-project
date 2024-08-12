@@ -4,7 +4,7 @@ import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useDispatch, useSelector } from "react-redux";
 import { setDateEnd, setDateStart } from "../../../controller/SliceReducer/specialDay";
-import { format} from 'date-fns';
+import { format } from 'date-fns';
 
 
 
@@ -21,13 +21,17 @@ const MyDatePicker = () => {
         const [dateStart, dateEnd] = value;
         if (dateStart && dateEnd) {
             const formattedStartDate = format(new Date(dateStart.format()), "yyyy-MM-dd'T'HH:mm:ss");
-            dispatch(setDateStart(formattedStartDate));     
+            dispatch(setDateStart(formattedStartDate));
             const formattedEndDate = format(new Date(dateEnd.format()), "yyyy-MM-dd'T'HH:mm:ss");
             dispatch(setDateEnd(formattedEndDate));
-        } 
+        } else if (!dateStart) {
+            dispatch(setDateStart(null));
+        } else if (!dateEnd) {
+            dispatch(setDateEnd(null));
+        }
     }
     return (
-        <DatePicker 
+        <DatePicker
             range
             value={[dateStart ? new Date(dateStart) : null, dateEnd ? new Date(dateEnd) : null]}
             onChange={handleChange}

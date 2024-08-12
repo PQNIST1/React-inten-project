@@ -18,6 +18,8 @@ import SeatCtr from './components/Admin/Room/CreatSeat/creatSeatCtr';
 import RoomSeat from './components/Admin/Room/Seats/roomSeat';
 import ShowTimeDetail from './components/Admin/AddShowTime/showTimeDetail';
 import UserCtr from './components/Admin/User/userCtr';
+import BookingUsers from './components/Admin/Booking/bookingUser';
+import PrivateRoute from './middleware/infoMiddleware';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
@@ -47,16 +49,17 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/more" element={<More />} />
-          <Route path="/info" element={<UserInfo />} />
-          <Route path="/ticket" element={<TicketDetail />} />
+          <Route path="/info" element={<PrivateRoute element={UserInfo} />} />
+          <Route path="/ticket/:prama" element={<PrivateRoute element={TicketDetail}/>} />
           <Route path="/booking" element={<Room />} />
           <Route path="/category" element={<MovieCategory/>} />
-          <Route path="/add" element={<AddFood/>} />
-          <Route path="/add/movie" element={<MovieAdd/>} />
-          <Route path="/create/seat" element={<SeatCtr/>} />
-          <Route path="/room/seat/:prama" element={<RoomSeat/>} />
-          <Route path="/showtime/detail/:prama" element={<ShowTimeDetail/>} />
-          <Route path="/user" element={<UserCtr/>} />
+          <Route path="/add" element={<PrivateRoute element={AddFood}/>} />
+          <Route path="/add/movie" element={<PrivateRoute element={MovieAdd}/>} />
+          <Route path="/create/seat" element={<PrivateRoute element={SeatCtr}/>} />
+          <Route path="/room/seat/:prama" element={<PrivateRoute element={RoomSeat}/>} />
+          <Route path="/showtime/detail/:prama" element={<PrivateRoute element={ShowTimeDetail}/>} />
+          <Route path="/user" element={<PrivateRoute element={UserCtr}/> } />
+          <Route path="/ticket" element={<PrivateRoute element={BookingUsers}/>} />
         </Routes>
       </div>
     </Router>

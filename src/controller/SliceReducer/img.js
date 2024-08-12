@@ -60,7 +60,7 @@ export const transformData = (data) => {
         }
 
         // Thêm thời gian chiếu và phòng vào mảng của ngày tương ứng
-        result[dateStr].push({ time: timeStr, room: item.object.room.id, name: item.object.room.name });
+        result[dateStr].push({ time: timeStr, room: item.object.room.id, name: item.object.room.name, id: item.object.id });
     });
 
     // Sắp xếp thời gian trong mỗi ngày

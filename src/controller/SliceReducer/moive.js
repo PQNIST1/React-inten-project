@@ -3,8 +3,53 @@ import axios from 'axios';
 
 // Tạo một async thunk để gọi API
 export const getMovie = createAsyncThunk('auth/getMovie', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+    return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movies?size=50');
+    const response = await axios.get('http://localhost:8080/api/v1/movies?size=50',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const getMovieById = createAsyncThunk('auth/getMovieById', async (id, { rejectWithValue }) => {
+
+  try {
+    const response = await axios.get(`http://localhost:8080/api/v1/movies/${id}`);
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const getMovieCurrent = createAsyncThunk('auth/getMovieCurrent', async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get('http://localhost:8080/api/v1/movies/current?size=50');
+    return response.data;
+  } catch (error) {
+    if (!error.response) {
+      throw error;
+    }
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const getMovieUpcoming = createAsyncThunk('auth/getMovieUpcoming', async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get('http://localhost:8080/api/v1/movies/upcoming?size=50');
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -16,8 +61,16 @@ export const getMovie = createAsyncThunk('auth/getMovie', async (_, { rejectWith
 
 
 export const getMovieGenre = createAsyncThunk('auth/getMovieGenre', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movie-genres?size=50');
+    const response = await axios.get('http://localhost:8080/api/v1/movie-genres?size=50',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -28,8 +81,16 @@ export const getMovieGenre = createAsyncThunk('auth/getMovieGenre', async (_, { 
 });
 
 export const getMovieCast = createAsyncThunk('auth/getMovieCast', async (_, { rejectWithValue }) => {
+  const accessToken = localStorage.getItem('accessToken');
+  if (!accessToken) {
+      return rejectWithValue('No access token found');
+  }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movie-casts?size=50');
+    const response = await axios.get('http://localhost:8080/api/v1/movie-casts?size=50',{
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+    }
+    });
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -248,6 +309,9 @@ const dataSlice = createSlice({
     date:'',
     time: '',
     data: [],
+    current:[],
+    upcoming:[],
+    movie:[],
     genre_id: [],
     cast_id: [],
     movieGenre: [],
@@ -306,7 +370,8 @@ const dataSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getMovie.pending, (state) => {
+      
+    .addCase(getMovie.pending, (state) => {
         state.status = 'loading';
         state.error = null;
       })
@@ -315,6 +380,42 @@ const dataSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(getMovie.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Có lỗi xảy ra';
+      })
+      .addCase(getMovieById.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(getMovieById.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.movie = action.payload;
+      })
+      .addCase(getMovieById.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Có lỗi xảy ra';
+      })
+      .addCase(getMovieCurrent.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(getMovieCurrent.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.current = action.payload;
+      })
+      .addCase(getMovieCurrent.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Có lỗi xảy ra';
+      })
+      .addCase(getMovieUpcoming.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(getMovieUpcoming.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.upcoming = action.payload;
+      })
+      .addCase(getMovieUpcoming.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Có lỗi xảy ra';
       })

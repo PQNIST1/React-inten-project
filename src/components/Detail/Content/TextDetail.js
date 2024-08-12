@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-regular-svg-icons";
-import { faCalendar } from "@fortawesome/free-regular-svg-icons";
+import { faClock, faCalendar } from "@fortawesome/free-regular-svg-icons";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import MoiveProduct from "./Main/MoiveProduct";
-import { dataActor, dataDirector, dataGender } from '../../../data/hashData';
 import { formatDate } from "../../../controller/SliceReducer/img";
 import { useSelector } from "react-redux";
 
@@ -15,13 +13,13 @@ const TextDetail = ({ data }) => {
     const [data2, setData2] = useState([]);
     const getDirector = (data) => {
         return data
-            .filter(item => item.role === 1)
+            .filter(item => item.roleCast === 1)
             .map(item => ({ name: item.name }));
     };
 
     const getActor = (data) => {
         return data
-            .filter(item => item.role === 2)
+            .filter(item => item.roleCast === 2)
             .map(item => ({ name: item.name }));
     };
     useEffect(() => {

@@ -9,7 +9,8 @@ const MovieCf = () => {
     const vip = useSelector(state => state.movie.vipPrice);
     const single = useSelector(state => state.movie.singlePrice);
     const double = useSelector(state => state.movie.doublePrice);
-    const getTotal = SingleSeats.length * single + DoubleSeats.length * double + VipSeats.length * vip;
+    const getTotal = SingleSeats.length * single + DoubleSeats.length * double/2 + VipSeats.length * vip;
+    const getTotalSeat = SingleSeats.length  + DoubleSeats.length  + VipSeats.length;
 
     return (
         <div className="w-1/2">
@@ -28,7 +29,7 @@ const MovieCf = () => {
                   
                     <div className="">
                         <p className="font-bold">Số lượng</p>
-                        <p>{getTotal}</p>
+                        <p>{getTotalSeat}</p>
                     </div>
                     <div className="capitalize">
                         <p className="font-bold">Tổng cộng</p>

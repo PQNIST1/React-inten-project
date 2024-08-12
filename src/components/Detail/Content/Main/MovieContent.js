@@ -3,7 +3,7 @@ import DetailListing from "../detailList";
 import { useSelector } from "react-redux";
 
 const MoiveContent = () => {
-    const movies = useSelector((state) => state.data.data);
+    const movies = useSelector((state) => state.data.current);
     const [data, setData] = useState([]);
     const status = useSelector((state) => state.data.status);
     const [sliceData, setSliceData] = useState([]);
@@ -16,7 +16,7 @@ const MoiveContent = () => {
 
     useEffect(() => {
         if (data && data.data) {
-            setSliceData(data.data.content.slice(0, 3));
+            setSliceData(data.data.slice(0, 3));
         }
     }, [data]);
     return (

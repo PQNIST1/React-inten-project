@@ -2,7 +2,7 @@ import React from "react";
 
 
 
-const User = ({ data, pp }) => { 
+const User = ({ data, pp }) => {
     // const pathname = `/room/seat/${normalizeStringForURL(data.name)}`;
     return (
         <tr className=" transition-all duration-500  text-gray-400">
@@ -16,16 +16,20 @@ const User = ({ data, pp }) => {
             <td className="p-5 whitespace-nowrap leading-6 font-medium text-tn">{pp.updatedBy && (
                 <div>
                     <p>{pp.updatedBy.name}</p>
-
                 </div>
             )}</td>
             <td className="p-5 whitespace-nowrap leading-6 font-medium text-tn">{pp.roles[0] && (
-                <div>
-                    <p>{pp.roles[0].name}</p>
+                <div className=" flex">
+                    <div>
+                        {pp.roles.map((item) => (
+                            <p key={item.id}>{item.name}</p>
+                        ))}
+                    </div>
                 </div>
+
             )}</td>
-           
-           
+
+
         </tr>
     )
 }
