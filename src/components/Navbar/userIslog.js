@@ -10,6 +10,7 @@ const Userlog = () => {
     const status = useSelector((state) => state.user.status);
     const isValidData = data?.data && data.data.roles && data.data.roles.length > 0;
     const isAdmin = isValidData && data.data.roles.some(role => role.id === 3);
+    const isEmployee = isValidData && data.data.roles.some(role => role.id === 2);
     useEffect(() => {
         if (status === 'succeeded') {
             setData(userInfo);
@@ -18,7 +19,7 @@ const Userlog = () => {
     let content;
 
     if (isHovered) {
-        content = isAdmin ? <AdminHover /> : <UserHover />;
+        content = isAdmin ||  isEmployee ? <AdminHover /> : <UserHover />;
     } else {
         content = null;
     }

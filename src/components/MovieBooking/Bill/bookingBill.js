@@ -13,7 +13,7 @@ import { clearSelectedSeats } from "../../../controller/SliceReducer/seatEdit";
 const getTotalFoodPrice = (selectedFood) => {
     return selectedFood.reduce((total, food) => total + (food.price * food.quantity), 0);
 };
-const BookingBill = () => {
+const   BookingBill = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { error, success} =  useSelector((state) => state.payment);
@@ -86,7 +86,7 @@ const BookingBill = () => {
             dispatch(handleNext());
         } else if ( activeTab === 'payment' && selectedRadio !== '' && phone !== ""  && isAdmin && accessToken) {
             dispatch(handleNext());
-        } else if ( activeTab === 'payment' && selectedRadio !== '' && accessToken) {
+        } else if ( activeTab === 'payment' && selectedRadio !== '' && accessToken && !isAdmin) {
             dispatch(handleNext());
         }
         else if ( activeTab === 'comfirm' && isAdmin) {

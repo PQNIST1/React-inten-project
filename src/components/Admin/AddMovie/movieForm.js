@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import CategorySelect from "./multiSelect.js/categorySelect";
 import ActorSelect from "./multiSelect.js/actorSelect";
 import DirectorSelect from "./multiSelect.js/directorSelect";
-import { setDate, setTime, setDuration, setName, setOverview, setReleaseDate, setTrailer, clearForm, addMovie, editMovie } from "../../../controller/SliceReducer/moive";
+import { setError, setSuccess, setDate, setDuration, setName, setOverview, setReleaseDate, setTrailer, clearForm, addMovie, editMovie } from "../../../controller/SliceReducer/moive";
 
 
 const MovieForm = () => {
     const dispatch = useDispatch();
     const form = useSelector((state) => state.data);
     const [img, setImg] = useState(null);
-    const { date, time, id, image, isEdit, loading, error, success, name, overview, trailer, duration, releaseDate, genres, casts, director, genre_id, cast_id } = form;
+    const { date, id, image, isEdit, loading, error, success, name, overview, trailer, duration, releaseDate, genres, casts, director, genre_id, cast_id } = form;
     const [fileInputKey, setFileInputKey] = useState(Date.now());
     const inputRef = useRef(null);
 
@@ -24,7 +24,7 @@ const MovieForm = () => {
                     const file = new File([blob], "image.jpg", { type: blob.type });
                     const dataTransfer = new DataTransfer();
                     dataTransfer.items.add(file);
-                    
+
                     // Cập nhật input file
                     if (inputRef.current) {
                         inputRef.current.files = dataTransfer.files;
@@ -34,14 +34,6 @@ const MovieForm = () => {
                 .catch(error => console.error('Error fetching image:', error));
         }
     }, [image]);
-
-    const formatDateTime = () => {
-        if (date && time) {
-            const formattedDateTime = `${date} ${time}:00`;
-            return formattedDateTime;
-        }
-        return '';
-    };
     const handleChange = (e) => {
         const { name, value, files } = e.target;
         if (name === 'image' && files.length > 0) {
@@ -57,10 +49,8 @@ const MovieForm = () => {
             dispatch(setTrailer(value));
         } else if (name === 'date') {
             dispatch(setDate(value));
-        } else if (name === 'time') {
-            dispatch(setTime(value));
+            dispatch(setReleaseDate(`${value} 00:00:00`));
         }
-        dispatch(setReleaseDate(formatDateTime()));
     };
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -75,6 +65,10 @@ const MovieForm = () => {
             dispatch(addMovie({ formData, genres, casts, director }));
             dispatch(clearForm());
             setFileInputKey(Date.now());
+            setTimeout(() => {
+                dispatch(setSuccess());
+                dispatch(setError());
+            }, 3000);
         };
     };
     const handleUpdate = (e) => {
@@ -89,6 +83,10 @@ const MovieForm = () => {
         dispatch(editMovie({ id, formData, genres, casts, director, cast_id, genre_id }));
         dispatch(clearForm());
         setFileInputKey(Date.now());
+        setTimeout(() => {
+            dispatch(setSuccess());
+            dispatch(setError());
+        }, 3000);
 
     };
     const handleEdit = () => {
@@ -116,7 +114,7 @@ const MovieForm = () => {
                                 className="w-full rounded-md border bg-transparent  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
                         </div>
                         <div className="-mx-3 flex flex-wrap">
-                            <div className="w-full px-3 sm:w-1/2">
+                            <div className="w-full px-3">
                                 <div className="">
                                     <label htmlFor="date" className="mb-3 block text-base font-medium ">
                                         Ngày
@@ -125,18 +123,6 @@ const MovieForm = () => {
                                         value={date}
                                         onChange={handleChange}
                                         required type="date" name="date" id="date"
-                                        className="w-full rounded-md border bg-transparent py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                                </div>
-                            </div>
-                            <div className="w-full px-3 sm:w-1/2">
-                                <div className="">
-                                    <label htmlFor="time" className="mb-3 block text-base font-medium">
-                                        Giờ
-                                    </label>
-                                    <input required
-                                        value={time}
-                                        onChange={handleChange}
-                                        type="time" name="time" id="time"
                                         className="w-full rounded-md border bg-transparent py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
                                 </div>
                             </div>

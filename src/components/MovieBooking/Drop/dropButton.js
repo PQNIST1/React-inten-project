@@ -39,8 +39,6 @@ const Dropdown = () => {
         const timer = setTimeout(() => {
             dispatch(setMovieOpen(false));
         }, 500);
-
-        // Xóa timeout nếu component unmount trước khi timeout kết thúc
         return () => clearTimeout(timer);
     };
     useEffect(() => {
@@ -69,9 +67,9 @@ const Dropdown = () => {
                             <div className="grid grid-cols-4 gap-4 mt-6 mx-3">
                                 {data.map((item, index) => (
                                     <div key={index}>
-                                        <button onClick={() => handleSelect(item.movie.name, item.movie.image, item.movie.id)} className=''>
+                                        <div onClick={() => handleSelect(item.movie.name, item.movie.image, item.movie.id)} className=''>
                                             <DropFeature data={item} select={selectedOption} />
-                                        </button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

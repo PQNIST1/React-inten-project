@@ -8,6 +8,7 @@ import { normalizeStringForURL } from "../../../data/tranformData";
 import { Link } from "react-router-dom";
 import { splitDateTime, formatDate } from "../../../controller/SliceReducer/img";
 
+
 const Movie = ({ data, pp }) => {
     const date = formatDate(data.releaseDate);
     const dispatch = useDispatch();
@@ -84,21 +85,21 @@ const Movie = ({ data, pp }) => {
             dispatch(setEdit(false));
             dispatch(clearForm());
         } else {
-            dispatch(setId(idd));
-            dispatch(setEdit(true));
-            dispatch(setName(data.name));
-            dispatch(setOverview(data.overview));
-            dispatch(setTrailer(data.trailer));
-            dispatch(setDuration(data.duration));
-            dispatch(setImage(data.image));
-            dispatch(setReleaseDate(data.releaseDate));
-            dispatch(setDate(day));
-            dispatch(setTime(time));
-            dispatch(addGenre(data1));
-            dispatch(addCast(data2));
-            dispatch(addDirector(data3));
-            dispatch(setCastId(data4));
-            dispatch(setGenreId(data5));
+                dispatch(setId(idd));
+                dispatch(setEdit(true));
+                dispatch(setName(data.name));
+                dispatch(setOverview(data.overview));
+                dispatch(setTrailer(data.trailer));
+                dispatch(setDuration(data.duration));
+                dispatch(setImage(data.image));
+                dispatch(setReleaseDate(data.releaseDate));
+                dispatch(setDate(day));
+                dispatch(setTime(time));
+                dispatch(addGenre(data1));
+                dispatch(addCast(data2));
+                dispatch(addDirector(data3));
+                dispatch(setCastId(data4));
+                dispatch(setGenreId(data5));
         }
     }
     return (

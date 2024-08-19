@@ -12,6 +12,7 @@ const Payment = () => {
     const status = useSelector((state) => state.user.status);
     const isValidData = data?.data && data.data.roles && data.data.roles.length > 0;
     const isAdmin = isValidData && data.data.roles.some(role => role.id === 3);
+    const isEmployee = isValidData && data.data.roles.some(role => role.id === 2);
     const dispatch = useDispatch();
     const phone = useSelector((state) => state.payment.phone);
 
@@ -25,7 +26,7 @@ const Payment = () => {
     }, [status, userInfo]);
 
     let content;
-    if (isAdmin) {
+    if (isAdmin && isEmployee) {
         content = <div className="">
             <p className="text-lg font-bold text-white mb-5">Đặt vé</p>
             <div className="space-y-2 text-sm">
@@ -51,13 +52,13 @@ const Payment = () => {
         </div>
     }
     let method;
-    if (isAdmin) {
+    if (isAdmin ||  isEmployee) {
         method = <div className="">
             <p className="text-lg font-bold text-white mb-5">Phương thức thanh toán</p>
             <div>
                 <div className="flex flex-col space-y-2">
                     {paymentMethod2.map((item) => (
-                        <Banking option={item.name} value={item.id} img={item.img} method={item.method} />
+                        <Banking key={item.id} option={item.name} value={item.id} img={item.img} method={item.method} />
                     ))}
                 </div>
             </div>
@@ -68,7 +69,7 @@ const Payment = () => {
             <div>
                 <div className="flex flex-col space-y-2">
                     {paymentMethod.map((item) => (
-                        <Banking option={item.name} value={item.id} img={item.img} method={item.method} />
+                        <Banking key={item.id} option={item.name} value={item.id} img={item.img} method={item.method} />
                     ))}
                 </div>
             </div>

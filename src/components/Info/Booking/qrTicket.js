@@ -73,13 +73,13 @@ const QrTicket = ({ booking }) => {
             <div className="flex items-center justify-center">
                 <QRCodeComponent url={url} />
             </div>
-            <div className="border-t-2 border-dotted pt-5">
-                <p><span className="font-bold">Ghế</span> - {booking.data.object.tickets.map((item, index) => (
-                    <>
+            <div className="border-t-2 border-dotted pt-5 flex">
+                <div className="flex space-x-1"><span className="font-bold">Ghế</span> - {booking.data.object.tickets.map((item, index) => (
+                    <p key={item.seat.id} >
                         {item.seat.name}
                         {index < (booking.data.object.tickets).length - 1 ? ", " : ""}
-                    </>
-                ))}</p>
+                    </p>
+                ))}</div>
             </div>
             <div className="flex border-t-2 border-dotted py-5 space-x-11">
                 <div className="">

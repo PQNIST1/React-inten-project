@@ -1,11 +1,13 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  clearForm, setSuccess, setError, editShowTime, addShowTime, clearShowtimes } from "../../../controller/SliceReducer/addShowTime";
+import { clearForm, setSuccess, setError, editShowTime, addShowTime, clearShowtimes } from "../../../controller/SliceReducer/addShowTime";
 import { clearForm as clear } from "../../../controller/SliceReducer/specialDay";
 import MyDatePicker from "../SpecialDay/selectDay";
 import RoomSelect from "../Room/CreatSeat/selected";
 import MovieSelect from "./selectMovie";
 import ShowtimeManager from "./time";
+
+import SimpleShowtimeManager from "./timeEdit";
 
 const formatDate = (dateString) => {
     return dateString.split('T')[0];
@@ -14,12 +16,12 @@ const ShowTimeForm = () => {
     const dispatch = useDispatch();
     const form = useSelector((state) => state.showTime);
     const { movie, room, loading, error, success, id, isEdit, showtimes } = form;
-    const { dateStart, dateEnd} = useSelector((state) => state.special);
+    const { dateStart, dateEnd } = useSelector((state) => state.special);
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (movie && dateStart && dateEnd && Array.isArray(showtimes) && showtimes.length > 0) { 
+        if (movie && dateStart && dateEnd && Array.isArray(showtimes) && showtimes.length > 0) {
             const data = {
-                "startDate":formatDate(dateStart),  
+                "startDate": formatDate(dateStart),
                 "endDate": formatDate(dateEnd),
                 "movie": {
                     id: movie.value
@@ -38,13 +40,15 @@ const ShowTimeForm = () => {
                 dispatch(setError());
             }, 3000);
         }
-      
+
     };
     const handleUpdate = (e) => {
         e.preventDefault();
+        const startDate = `${formatDate(dateStart)}T${showtimes[0].startTime}:00`;
+        const endDate = `${formatDate(dateEnd)}T${showtimes[0].endTime}:00`;
         const data = {
-           "startDate": formatDate(dateStart),
-            "endDate": formatDate(dateEnd),
+            "startTime": startDate,
+            "endTime": endDate,
             "movie": {
                 id: movie.value
             },
@@ -62,6 +66,68 @@ const ShowTimeForm = () => {
     const handleEdit = () => {
         dispatch(clearForm());
     };
+    let edit;
+    if (isEdit) {
+        edit = (
+            <div className="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md px-8 py-8 space-y-5">
+                <div>
+                    <label htmlFor="name">Phim</label>
+                    <div className="custom">
+                        <input value={movie.label} className="bg-transparent border rounded outline-none px-3 py-1.5"/>
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="name">Phòng</label>
+                    <div>
+                        <RoomSelect />
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="name">Ngày tồn tại</label>
+                    <div className="input-date">
+                        <MyDatePicker />
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="name">Xuất chiếu</label>
+                    <div>
+                      <SimpleShowtimeManager/>
+                    </div>
+                </div>
+            </div>
+        );
+    } else {
+        edit = (
+            <div className="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md px-8 py-8 space-y-5">
+                <div>
+                    <label htmlFor="name">Phim</label>
+                    <div className="custom">
+                        <MovieSelect />
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="name">Phòng</label>
+                    <div>
+                        <RoomSelect />
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="name">Ngày tồn tại</label>
+                    <div className="input-date">
+                        <MyDatePicker />
+                    </div>
+                </div>
+                <div>
+                    <label htmlFor="name">Xuất chiếu</label>
+                    <div>
+                        <ShowtimeManager />
+                    </div>
+                </div>
+            </div>
+        );
+    }
+    
+
     return (
         <div className="w-full">
             <div className="dark:bg-gray-900 bg-gray-100 flex justify-center items-center mt-10 mb-10 w-full">
@@ -72,32 +138,7 @@ const ShowTimeForm = () => {
                         <h2 className="text-3xl font-semibold text-center mb-6 dark:text-white">Thêm Lịch</h2>
                     )}
                     <form className="" onSubmit={isEdit ? handleUpdate : handleSubmit}>
-                        <div className="relative border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md px-8  py-8 space-y-5">
-                            <div>
-                                <label htmlFor="name">Phim</label>
-                                <div className="custom">
-                                    <MovieSelect/>
-                                </div>
-                            </div>
-                            <div>
-                                <label htmlFor="name">Phòng</label>
-                                <div>
-                                    <RoomSelect/>
-                                </div>
-                            </div>
-                            <div>
-                                <label htmlFor="name">Ngày tồn tại</label>
-                                <div className="input-date">
-                                    <MyDatePicker />
-                                </div>
-                            </div>
-                            <div>
-                                <label htmlFor="name">Xuất chiếu</label>
-                                <div>
-                                    <ShowtimeManager />
-                                </div>
-                            </div>
-                        </div>
+                            {edit}
                         {isEdit ? (
                             <div>
                                 <button

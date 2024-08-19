@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import AddSearch from "../AddFood/addSearch";
 import Pagination from "../AddFood/page";
 import { useDispatch, useSelector } from "react-redux";
-import { getShowTime, setRoomCtr } from "../../../controller/SliceReducer/addShowTime";
+import { clearForm, getShowTime, setEdit, setRoomCtr } from "../../../controller/SliceReducer/addShowTime";
+import { clearForm as clearForm1 } from "../../../controller/SliceReducer/specialDay";
 import ShowTime from "./showTime";
 import { groupBy, getMinMaxDates } from "../../../data/tranformData";
 import { useNavigate } from "react-router-dom";
@@ -25,6 +26,9 @@ const ShowTimeList = () => {
     useEffect(() => {
         dispatch(getShowTime());
         dispatch(setRoomCtr(false));
+        dispatch(setEdit(false));
+        dispatch(clearForm());
+        dispatch(clearForm1());
     }, [dispatch]);
     useEffect(() => {
         if (success) {

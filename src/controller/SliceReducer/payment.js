@@ -202,7 +202,11 @@ const paymentSlice = createSlice({
                 state.loading = false;
                 state.success = true;
                 const paymentUrl = action.payload.data.paymentUrl;
-                window.location.href = paymentUrl;
+                if (paymentUrl) {
+                    window.location.href = paymentUrl;
+                } else {
+                    window.location.href = '/ticket/#ticket?page=1';
+                }
             })
             .addCase(addBookingAdmin.rejected, (state, action) => {
                 state.loading = false;

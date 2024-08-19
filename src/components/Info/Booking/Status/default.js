@@ -11,7 +11,7 @@ const DefaultBooking = ({ item }) => (
           <img src={`http://localhost:8080${item.tickets[0].showtime.movie.image}`} alt="" className="h-32 rounded" />
           <div className="capitalize ml-3 w-64">
             <div className="flex">
-              <p className="text-lg font-bold">{item.tickets[0].showtime.movie.name}</p>
+              <p className="text-sm font-bold">{item.tickets[0].showtime.movie.name}</p>
               <span className="ml-5 bg-orange-500 text-white font-bold rounded h-7 px-2">T18</span>
             </div>
             <div className="space-y-2 mt-3">

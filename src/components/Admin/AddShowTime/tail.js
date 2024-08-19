@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { splitDateTime } from "../../../controller/SliceReducer/img";
 import { useSelector, useDispatch } from "react-redux";
-import { setEdit,clearForm, setId, setMovie, setRoom, deleteShowTime, setError, setSuccess } from "../../../controller/SliceReducer/addShowTime";
+import { setEdit,clearForm, setId, setMovie, setRoom, deleteShowTime, setError, setSuccess, setShowtimes } from "../../../controller/SliceReducer/addShowTime";
 import { setDateEnd, setDateStart } from "../../../controller/SliceReducer/specialDay";
 
 
@@ -21,7 +21,8 @@ const Tail = ({ data, index }) => {
     const { isEdit, id } = form;
     const transformedMovie = {
         value: data.object.movie.id,
-        label: data.object.movie.name
+        label: data.object.movie.name,
+        duration: data.object.movie.duration
     };
 
   
@@ -40,6 +41,10 @@ const Tail = ({ data, index }) => {
             dispatch(setRoom(transformedRoom));
             dispatch(setDateStart(data.object.startTime));
             dispatch(setDateEnd(data.object.endTime));
+            dispatch(setShowtimes([{
+                 startTime:formatTime(data.object.startTime) , endTime: formatTime(data.object.endTime)
+            }]));
+
         }
     }
     const handleDelete = (id) => {

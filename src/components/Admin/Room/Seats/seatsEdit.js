@@ -7,6 +7,7 @@ import { getRoom } from '../../../../controller/SliceReducer/addRoom';
 import { NormalizedMovieNames, findName } from '../../../../data/tranformData';
 import { clearForm, setSuccess, setError, editSeatRoom } from "../../../../controller/SliceReducer/seatsSlice";
 import { clearForm as clearForm1, getShowTime } from "../../../../controller/SliceReducer/addShowTime";
+import Spinner from '../../../Detail/loadingScreen';
 
 
 const getRows = (seat) => seat;
@@ -394,7 +395,7 @@ const SeatEdit = () => {
                     )
                 }
             </div>
-            {seats.length > 0 && (
+            {seats.length > 0 ? (
                 <div>
                     <div className="grid gap-2 items-center justify-center " >
                         {generateRowLetters(rows).map((letter, rowIndex) => {
@@ -478,8 +479,11 @@ const SeatEdit = () => {
                     )}
 
                 </div>
-            )
-            }
+            ) : (
+                <div  className='flex justify-center  items-center h-96'>
+                    <Spinner />
+                </div>
+            )}
         </div >
     );
 }

@@ -70,7 +70,7 @@ const movieSlice = createSlice({
     },
     setSelectedSingleSeats: (state, action) => {
       state.selectedSingleSeats = action.payload;
-    },
+    },                
     setSelectedDoubleSeats: (state, action) => {
       state.selectedDoubleSeats = action.payload;
     },
@@ -108,6 +108,11 @@ const movieSlice = createSlice({
           state.selectedFood = state.selectedFood.filter(item => item.foodId !== foodId);
         }
       }
+    },
+    clearSeats: (state) => {
+      state.selectedSingleSeats = [];
+      state.selectedDoubleSeats = [];
+      state.selectedVipSeats = [];
     },
     clearBooking: (state) => {
       state.selectedDate = '';
@@ -158,6 +163,7 @@ export const {
   removeFood,
   clearBooking,
   setError,
+  clearSeats
 } = movieSlice.actions;
 
 export default movieSlice.reducer;

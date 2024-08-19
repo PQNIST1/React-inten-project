@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setEarly, setNormal, setSpecial, setWeekend, clearForm, setSuccess, setError, setDateEnd, setDateStart, setId, setPrice, setType_id, setIsAddPrice, setEditPrice, deleteSeatTypePrice } from "../../../controller/SliceReducer/seat";
+import { setEarly, setNormal, setSpecial, setWeekend, clearForm, setSuccess, setError, setDateEnd, setDateStart, setId, setPrice, setType_id, setIsAddPrice, setEditPrice, deleteSeatTypePrice, clearText } from "../../../controller/SliceReducer/seat";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan, faSquarePlus } from "@fortawesome/free-regular-svg-icons";
 import { splitDateTime } from "../../../controller/SliceReducer/img";
@@ -70,6 +70,7 @@ const Seat = ({ data, prices, pp }) => {
         } else {
             dispatch(setIsAddPrice(true));
             dispatch(setType_id(data.id));
+            dispatch(clearText());
         }
         
     };
