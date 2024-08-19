@@ -7,7 +7,7 @@ export const getShowTime = createAsyncThunk('auth/getShowTime', async (_, { reje
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/showtimes?size=1000',{
+        const response = await axios.get('http://localhost:8080/api/v1/showtimes?size=10000',{
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -150,7 +150,7 @@ const addShowTimeSlice = createSlice({
         setDurration: (state, action) => { state.durration = action.payload },
         setMovie: (state, action) => { state.movie = action.payload },
         setRoom: (state, action) => { state.room = action.payload },
-        clearForm: (state) => { state.movie = null; state.room = null; state.isEdit = false; state.id = '' },
+        clearForm: (state) => { state.movie = null; state.room = null; state.isEdit = false; state.id = ''; state.showtimes = []; },
         setEdit: (state, action) => { state.isEdit = action.payload },
         setId: (state, action) => { state.id = action.payload },
         setSuccess: (state) => { state.success = false },

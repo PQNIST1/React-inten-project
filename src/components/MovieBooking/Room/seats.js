@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedDoubleSeats, setSelectedSingleSeats, setSelectedVipSeats ,setSingle, setVip, setDouble } from '../../../controller/SliceReducer/booking';
-import { toggleBookingSeat, getSeatRoom, setSeat, setCol, setAlert } from '../../../controller/SliceReducer/seatEdit';
-import { getSeatType } from '../../../controller/SliceReducer/seat';
+import { toggleBookingSeat, getSeatRoom, setSeat, setCol, setAlert, clearSelectedSeats } from '../../../controller/SliceReducer/seatEdit';
 import CustomAlert from "../../Alert/alert";
 import { getBookingPrice, getBookingSeats } from "../../../controller/SliceReducer/payment";
 
@@ -17,8 +16,8 @@ const getColumns = (seat) => {
 
     for (let col = 0; col < numCols; col++) {
         const column = [];
-        for (let row = 0; row < seat.length; row++) {
-            column.push(seat[row][col]);
+        for (const element of seat) {
+            column.push(element[col]);
         }
         columns.push(column);
     }
@@ -81,9 +80,9 @@ const Seats = () => {
     }
 
     useEffect(() => {
-        dispatch(getSeatType());
         dispatch(getBookingSeats(selectedTime.id));
         dispatch(getBookingPrice(selectedTime.id));
+        dispatch(clearSelectedSeats());
     }, [dispatch, selectedTime]);
 
     useEffect(() => {
@@ -164,7 +163,7 @@ const Seats = () => {
             }
         });
     };
-
+    // Hàm để chọn ghế
     const handleToggleSelectSeat = (row, col) => {
         dispatch(toggleBookingSeat({ row, col }));
     };
@@ -200,26 +199,17 @@ const Seats = () => {
     };
 
     const toggleSeat = (seat, type) => {
-        // Check if the seat is reserved
         if (reservedSeats.includes(seat.id)) {
-
             return;
         }
-
         const selectedSeats = getSelectedSeats(type);
         const seatIdentifier = `${seat.letter}${seat.number}`;
-
-        // Check if the seat is already selected
         if (selectedSeats.some(s => s.id === seat.id)) {
-            // Deselect the seat
             updateSelectedSeats(type, selectedSeats.filter(s => s.id !== seat.id));
-        } else {
-            // Check if adding this seat will exceed maxSeats
-            if (getTotalSelectedSeats() < maxSeats) {
-                // Select the seat
+        } else {  
+            if (getTotalSelectedSeats() < maxSeats) {        
                 updateSelectedSeats(type, [...selectedSeats, { id: seat.id, label: seatIdentifier, type_id: seat.type_id }]);
             }
-
         }
     };
 
@@ -232,7 +222,6 @@ const Seats = () => {
             type_id: seat.type_id,
             type: seat.type
         }));
-
         const allSeatsSelected = seatIdentifiers.every(seat =>
             selectedDoubleSeats.some(selected => selected.id === seat.id)
         );
@@ -244,14 +233,11 @@ const Seats = () => {
             alert('Please select or deselect both seats together.');
             return;
         }
-
         if (allSeatsSelected) {
-            // Remove the seats from selectedDoubleSeats
             dispatch(setSelectedDoubleSeats(selectedDoubleSeats.filter(selected =>
                 !seatIdentifiers.some(seat => seat.id === selected.id)
             )));
         } else {
-            // Check if adding these seats will exceed maxSeats limit
             if (getTotalSelectedSeats() + 2 <= maxSeats) {
                 // Add the seats to selectedDoubleSeats
                 dispatch(setSelectedDoubleSeats([
@@ -306,10 +292,8 @@ const Seats = () => {
         if (!doubleSeatStates[row]) {
             updateDoubleSeatStates(row);
         }
-
         const seatType = getSeatTypes(row, col);
         const seatIdentifier = `${letter}${seatNumber[col]}`;
-
         if (seatType === 'left') {
             return (
                 <button
@@ -330,11 +314,9 @@ const Seats = () => {
                 </button>
             );
         }
-
         if (seatType === 'right') {
             return null;
         }
-
         return (
             <button
                 key={`${row}-${col}`}
@@ -369,7 +351,7 @@ const Seats = () => {
                         {generateRowLetters().map((letter, rowIndex) => {
                             const seatNumbers = getSeatNumbers(rowIndex);
                             return (
-                                <div key={`row-${rowIndex}`} className="flex items-center justify-center">
+                                <div key={letter} className="flex items-center justify-center">
                                     <div className="w-5 cursor-pointer">{letter}</div>
                                     <div className="grid gap-2 px-4" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>
                                         {seats[rowIndex].map((seat, colIndex) => (

@@ -17,14 +17,14 @@ const DropTime = () => {
         <div className="inline-block text-left w-full">
             <div>
                 <div className='w-full  border text-white font-bold p-2'>
-                    <div className='flex' onClick={handleToggle}>
-                        <div className='w-3/4'>
+                    <button className='flex w-full' onClick={handleToggle}>
+                        <div className='w-3/4 text-start'>
                             <p>Chọn suất</p>
                         </div>
                         <div className='flex justify-end w-1/4 mt-1 mr-5'>
                             <FontAwesomeIcon icon={faCaretDown} />
                         </div>
-                    </div>
+                    </button>
                     {isOpen && isSelected !== ''  && (
                         <div className="mt-5">
                             <TimeDetail />

@@ -262,6 +262,9 @@ const seatSlice = createSlice({
     clearForm: (state) => {
       state.isAddPrice = false; state.isEditPrice = false; state.name = ''; state.code = ''; state.dateStart = null; state.dateEnd = null; state.normalDay = false; state.weekend = false; state.specialDay = false; state.earlyShow = false; state.price = ''; state.type_id = null; state.isEdit = false;
     },
+    clearText: (state) => {
+      state.name = ''; state.code = ''; state.dateStart = null; state.dateEnd = null; state.normalDay = false; state.weekend = false; state.specialDay = false; state.earlyShow = false; state.price = '';
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -370,5 +373,5 @@ const seatSlice = createSlice({
   }
 });
 
-export const { setIsAddPrice, setEditPrice, setName, setCode, setPrice, setDateEnd, setDateStart, setType_id, clearForm, setDay, setEdit, setError, setId, setSuccess, setEarly, setNormal, setSpecial, setWeekend } = seatSlice.actions;
+export const {clearText, setIsAddPrice, setEditPrice, setName, setCode, setPrice, setDateEnd, setDateStart, setType_id, clearForm, setDay, setEdit, setError, setId, setSuccess, setEarly, setNormal, setSpecial, setWeekend } = seatSlice.actions;
 export default seatSlice.reducer;

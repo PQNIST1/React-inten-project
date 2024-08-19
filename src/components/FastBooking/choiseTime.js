@@ -11,71 +11,57 @@ const ChoiseTime = () => {
     const movieName = useSelector((state) => state.movie.selectedMovieName);
     const showTime = useSelector((state) => state.movie.showtimes);
 
-
     const attributeName = "movieAttribute"; // Tên attribute dùng cho data-e2e
+
     const onChangeAttribute = (event) => {
         const selectedId = parseInt(event.target.value, 10);
         setSelectedValue(selectedId);
         const selectedAttr = showTime.find(attr => attr.id === selectedId);
         dispatch(setSelectedTime(selectedAttr));
     };
+
     const formatTime = (date) => {
-        return format(new Date(date), 'HH:MM');
+        return format(new Date(date), 'HH:mm'); // Sửa lỗi format thời gian từ 'HH:MM' thành 'HH:mm'
     };
+
     useEffect(() => {
         if (movieName) {
             setSelectedValue(""); 
         }
-    },[movieName])
+    }, [movieName]);
+
     return (
         <div className="flex mr-1">
             <FontAwesomeIcon icon={faClock} color="orange" className="h-6 my-auto mx-2" />
 
-            {movieName !== ''  ? (
-                <select
-                    value={selectedValue}
-                    data-e2e={attributeName}
-                    onChange={(event) => onChangeAttribute(event)}
-                    className="p-[9px]  bg-gray-50 w-48 h-full focus: outline-none"
+            <select
+                value={selectedValue}
+                data-e2e={attributeName}
+                onChange={movieName ? onChangeAttribute : () => {}} // Đảm bảo onChange luôn có mặt
+                className="p-[9px] bg-gray-50 w-48 h-full focus:outline-none"
+                disabled={!movieName} // Chỉ disable khi không có movieName
+            >
+                <option
+                    className="font-roboto capitalize"
+                    value=""
+                    data-e2e="default"
+                    disabled
+                    hidden
                 >
+                    Chọn xuất
+                </option>
+                {showTime.map((attribute) => (
                     <option
                         className="font-roboto capitalize"
-                        value=""
-                        data-e2e="default"
-                        disabled
-                        hidden
+                        key={attribute.id}
+                        value={attribute.id}
                     >
-                        Chọn xuất
+                        {formatTime(attribute.startTime)}
                     </option>
-                    {showTime.map((attribute, index) => (
-                        <option
-                            className="font-roboto capitalize"
-                            key={attribute.id}
-                            value={attribute.id}
-                        >
-                            {formatTime(attribute.startTime)}
-                        </option>
-                    ))}
-                </select>
-            ) : (
-                <select
-                    value={''}
-                    className="p-[9px]  bg-gray-50 w-48 h-full focus: outline-none"
-                    style={{ pointerEvents: 'none' }}
-                >
-                    <option
-                        className="font-roboto capitalize"
-                        value=""
-                        data-e2e="default"
-                        disabled
-                        hidden
-                    >
-                        Chọn Xuất
-                    </option>
-
-                </select>
-            )}
+                ))}
+            </select>
         </div>
     );
-}
+};
+
 export default ChoiseTime;

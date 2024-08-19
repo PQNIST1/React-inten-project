@@ -12,14 +12,14 @@ const ShowtimeManager = () => {
     const [movieDuration, setMovieDuration] = useState();
     const [localShowtimes, setLocalShowtimes] = useState(showtimes);
 
-    useEffect(() => {
-        setLocalShowtimes(showtimes);
-        setNumberOfShowtimes(showtimes.length);
-        if (movie) {
-            setMovieDuration(movie.duration);
-        }
-    }, [showtimes, movie]);
 
+    useEffect(() => {
+            setLocalShowtimes(showtimes);
+            setNumberOfShowtimes(showtimes.length);
+            if (movie) {
+                setMovieDuration(movie.duration);
+            }
+    }, [showtimes, movie, dispatch]);
     useEffect(() => {
         if (errors.length === 0) { 
             dispatch(setShowtimes(localShowtimes));

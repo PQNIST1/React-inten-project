@@ -17,49 +17,55 @@ const TimeDetail = () => {
     const movieId = useSelector((state) => state.movie.selectedMovieId);
     const form = useSelector((state) => state.showTime);
     const [datas, setDatas] = useState([]);
-    const [date, setDate] = useState();
-    const [time, setTime] = useState();
+    const [date, setDate] = useState([]);
+    const [time, setTime] = useState([]);
     const [validDates, setValidDates] = useState([]);
     const { show, status } = form;
     const today = new Date();
     const formattedToday = formatDate(today);
 
-    useEffect(()=> {
+    useEffect(() => {
         dispatch(setSelectedTime(''));
         dispatch(setShow([]));
         dispatch(setShowtimes([]));
-    },[dispatch]);
+    }, [dispatch]);
 
     useEffect(() => {
-        if (movieId) { 
+        if (movieId) {
             dispatch(getShowTimeMovie(movieId));
         }
     }, [dispatch, movieId]);
 
     useEffect(() => {
         if (show.data) {
-            setDatas(show.data);
+            const sortedEntries = Object.entries(show.data).sort(([dateA], [dateB]) => {
+                const timestampA = new Date(dateA).getTime();
+                const timestampB = new Date(dateB).getTime();
+                return timestampA - timestampB;
+            });
+            const sortedData = Object.fromEntries(sortedEntries);
+            setDatas(sortedData);
 
         } else {
             setDatas([]);
         }
     }, [show]);
-    
+
     useEffect(() => {
         if (datas && status === 'succeeded') {
             setDate(datas);
             const valid = Object.keys(datas).filter(date => !isPastDate(new Date(date)));
             const times = datas[selectedDate] || [];
             setTime(times);
-            setValidDates(valid.reverse());
+            setValidDates(valid);
         } else {
-            setTime();
-            setValidDates();
+            setTime([]);
+            setValidDates([]);
         }
-    }, [datas,selectedDate, status]);
+    }, [datas, selectedDate, status]);
 
     useEffect(() => {
-        if (validDates && date && status === 'succeeded') {
+        if (validDates && status === 'succeeded') {
             if (!validDates.includes(selectedDate)) {
                 const initialDate = validDates.includes(formattedToday) ? formattedToday : validDates[0] || '';
                 if (selectedDate === '') {
@@ -67,7 +73,13 @@ const TimeDetail = () => {
                 }
             }
         }
-    }, [formattedToday, validDates, selectedDate, dispatch, date, status]);
+    }, [formattedToday, validDates, selectedDate, dispatch, status]);
+
+    useEffect(() => {
+        if (selectedDate !== '' && time.length > 0) {
+            dispatch(setShowtimes(time))
+        }
+    }, [dispatch, time, selectedDate]);
 
     const handleDateSelect = (day) => {
         dispatch(setSelectedDate(day));
@@ -80,10 +92,9 @@ const TimeDetail = () => {
     };
     const selectedDateObject = new Date(selectedDate);
     const displayDate = isToday(selectedDateObject) ? "Hôm nay" : formatDate(selectedDateObject);
-
     return (
         <>
-            {validDates && date && (
+            {validDates.length >  0 && date && (
                 <div className="w-full">
                     <div className="border-l-4 border-blue-800 font-bold h-7 flex mb-4">
                         <h1 className="mr-10 capitalize inline ml-3 text-white my-auto">lịch chiếu</h1>

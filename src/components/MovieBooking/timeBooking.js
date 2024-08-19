@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSelectedTime } from "../../controller/SliceReducer/booking";
+import { setSelectedTime, clearSeats } from "../../controller/SliceReducer/booking";
 import { format } from "date-fns";
+import { clearSelectedSeats } from "../../controller/SliceReducer/seatEdit";
 
 
 const TimeBooking = () => {
@@ -10,6 +11,8 @@ const TimeBooking = () => {
     const selectedTime = useSelector((state) => state.movie.selectedTime);
     const handleClick = (data) => {
         dispatch(setSelectedTime(data));
+        dispatch(clearSelectedSeats());
+        dispatch(clearSeats());
     }
     const formatTime = (date) => {
         return format(new Date(date), 'HH:MM');

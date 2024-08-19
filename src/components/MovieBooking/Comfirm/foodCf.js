@@ -18,8 +18,8 @@ const FoodCf = () => {
             <div className="pl-5">
                 <p className="text-lg font-bold mb-2">Đồ ăn</p>
                 <div className="">
-                {foods.map((food)=>(
-                    <Food data={food}/>
+                {foods.map((food, index)=>(
+                    <Food key={index} data={food}/>
                 ))}
                 </div>
                 <div className="border-t-2 border-dotted flex space-x-20 pt-5 mt-5 ">

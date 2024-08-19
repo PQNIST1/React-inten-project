@@ -11,7 +11,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   useEffect(() => {
     const hash = location.hash; // Lấy hash từ URL
-    const [ query] = hash.split('?'); // Tách phần section và phần query
+    const query = hash.split('?')[1]; // Tách phần section và phần query
     if (query) {
       const queryParams = new URLSearchParams(query); 
       const page = parseInt(queryParams.get('page'), 10) || 1;
@@ -34,7 +34,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="px-3 py-2 ml-0 leading-tight text-gray-500 border border-gray-300 rounded-l-lg  hover:text-blue-700"
+              className="text-tn  w-5 px-3 py-2 ml-0 leading-tight text-gray-500 border border-gray-300 rounded-l-lg  hover:text-blue-700"
             >
               <FontAwesomeIcon icon={faAnglesLeft} />
             </button>
@@ -45,7 +45,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             <Link to={`#${location.hash.split('?')[0].substring(1)}?page=${page}`}>
               <button
                 onClick={() => onPageChange(page)}
-                className={`px-3 py-2 leading-tight ${page === currentPage ? 'text-blue-600  border border-gray-300' : 'text-gray-500  border border-gray-300  hover:text-orange-400'}`}
+                className={`text-center text-tn  w-5 px-3 py-2 leading-tight ${page === currentPage ? 'text-blue-600  border border-gray-300' : 'text-gray-500  border border-gray-300  hover:text-orange-400'}`}
               >
                 {page}
               </button>
@@ -57,7 +57,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="px-3 py-2 leading-tight text-gray-500 border border-gray-300 rounded-r-lg  hover:text-blue-700"
+              className=" w-5 px-3 py-2 leading-tight text-gray-500 border border-gray-300 rounded-r-lg  hover:text-blue-700 text-tn"
             >
               <FontAwesomeIcon icon={faAnglesRight} />
             </button>
