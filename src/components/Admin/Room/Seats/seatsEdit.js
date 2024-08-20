@@ -233,9 +233,7 @@ const SeatEdit = () => {
     };
 
     const handleSaveSeats = () => {
-        // const totalSeats = rows * cols;
-        // const assignedSeats = seats.flat().filter(seat => seat !== null).length;
-        // const assignedPercentage = (assignedSeats / totalSeats) * 100;
+     
 
         const rowsNotEmpty = seats.every(row => row.some(seat => seat !== null));
 
