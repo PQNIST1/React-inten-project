@@ -49,7 +49,7 @@ const QrTicket = ({ booking }) => {
     }
     const jsonString = JSON.stringify(jsonData);
     const encodedData = encodeURIComponent(jsonString);
-    const url = `https://ticket-g82r.onrender.com/?data=${encodedData}`;
+    const url = `https://ticket-cpmn.onrender.com/?data=${encodedData}`;
 
 
     return (
