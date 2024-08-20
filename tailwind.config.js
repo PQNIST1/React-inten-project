@@ -1,8 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  purge: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html', "./node_modules/react-tailwindcss-select/dist/index.esm.js"],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html', "./node_modules/react-tailwindcss-select/dist/index.esm.js"],
   theme: {
     extend: {
       colors: {
