@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Home from './components/home';
-import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './components/Logged/login';
 import Register from './components/Logged/register';
 import MovieDetail from './components/Detail/detail'
