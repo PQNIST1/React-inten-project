@@ -23,18 +23,19 @@ import PrivateRoute from './middleware/infoMiddleware';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
-  const pathname = useLocation();
+  const location = useLocation(); // Đối tượng location không chứa phần hash với HashRouter
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    if (pathname && pathname.hash) {
-      const hash = window.location.hash;
-      const section = hash.split('?')[0].replace('#', '');
-      if (section) {
-        dispatch(setActiveTab(section));
-      }
+    
+    // Lấy phần hash từ window.location.hash
+    const hash = window.location.hash;
+    const section = hash.split('?')[0].replace('#', '');
+    if (section) {
+      dispatch(setActiveTab(section));
     }
-  }, [ dispatch, pathname]);
+  }, [dispatch, location]); // location ở đây không thay đổi nhiều với HashRouter
+
   return null;
 };
 
