@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Home from './components/home';
-import { HashRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Login from './components/Logged/login';
 import Register from './components/Logged/register';
 import MovieDetail from './components/Detail/detail'
@@ -23,19 +23,18 @@ import PrivateRoute from './middleware/infoMiddleware';
 
 const ScrollToTop = () => {
   const dispatch = useDispatch();
-  const location = useLocation(); // Đối tượng location không chứa phần hash với HashRouter
+  const pathname = useLocation();
 
   React.useEffect(() => {
     window.scrollTo(0, 0);
-    
-    // Lấy phần hash từ window.location.hash
-    const hash = window.location.hash;
-    const section = hash.split('?')[0].replace('#', '');
-    if (section) {
-      dispatch(setActiveTab(section));
+    if (pathname && pathname.hash) {
+      const hash = window.location.hash;
+      const section = hash.split('?')[0].replace('#', '');
+      if (section) {
+        dispatch(setActiveTab(section));
+      }
     }
-  }, [dispatch, location]); // location ở đây không thay đổi nhiều với HashRouter
-
+  }, [ dispatch, pathname]);
   return null;
 };
 
