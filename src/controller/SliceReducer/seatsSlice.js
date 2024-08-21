@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from  './img';
 
 export const addSeats = createAsyncThunk('auth/addSeats', async (formData, { dispatch, rejectWithValue }) => {
 
@@ -22,7 +23,7 @@ export const addSeat = createAsyncThunk('auth/addSeat', async (formData, { rejec
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post(`http://localhost:8080/api/v1/seats`, formData, {
+    const response = await axios.post(`${url}seats`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -42,7 +43,7 @@ export const deleteSeatss = createAsyncThunk('auth/deleteSeatss', async (id, { r
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.delete(`http://localhost:8080/api/v1/seats/${id}`, {
+    const response = await axios.delete(`${url}seats/${id}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -78,7 +79,7 @@ export const getSeatss = createAsyncThunk('auth/getSeatss', async (_, { rejectWi
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/seats?size=10000',{
+    const response = await axios.get(`${url}seats?size=10000`,{
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

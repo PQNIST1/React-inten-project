@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import MidMini from "./mdHover";
+import { imageUrl } from  "../../../../controller/SliceReducer/img";
 
 
 const MidImg = ({data, path}) => {
@@ -10,7 +11,7 @@ const MidImg = ({data, path}) => {
         <div onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="relative overflow-hidden h-full w-full">
-            <img className="rounded-lg w-full h-full object-cover" src={`http://localhost:8080${data.image}`} alt="" />
+            <img className="rounded-lg w-full h-full object-cover" src={`${imageUrl}${data.image}`} alt="" />
             <div className="bg-black h-6 -right-2 w-20 absolute bottom-12 opacity-60  skew-x-[25deg]">
             </div>
             <div className="absolute bottom-12 right-5 mb-0 w-10 flex ">

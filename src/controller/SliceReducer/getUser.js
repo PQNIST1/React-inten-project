@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from  './img';
 
 export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithValue }) => {
   const accessToken = localStorage.getItem('accessToken');
@@ -7,7 +8,7 @@ export const getUser = createAsyncThunk('auth/getUser', async (_, { rejectWithVa
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/users/me', {
+    const response = await axios.get(`${url}users/me`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -28,7 +29,7 @@ export const getUsers = createAsyncThunk('auth/getUsers', async (_, { rejectWith
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/users?size=1000', {
+    const response = await axios.get(`${url}users?size=1000`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -48,7 +49,7 @@ export const createUser = createAsyncThunk('auth/createUser', async (formData, {
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/users/create', formData, {
+    const response = await axios.post(`${url}users/create`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

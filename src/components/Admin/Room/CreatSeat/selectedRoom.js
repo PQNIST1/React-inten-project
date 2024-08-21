@@ -16,6 +16,8 @@ const SelectedRoom = () => {
     
         // Duyệt qua từng hàng trong ma trận ghế
         seats.forEach((row, rowIndex) => {
+            let seatNumber = 1; // Biến đếm số ghế có loại trong hàng
+    
             // Duyệt qua từng cột trong hàng hiện tại
             row.forEach((seatTypeCode, columnIndex) => {
                 if (seatTypeCode !== null) {
@@ -26,15 +28,16 @@ const SelectedRoom = () => {
                         // Chuyển đổi chỉ số hàng và cột thành ký tự và số
                         const rowCharIndex = seats.length - rowIndex - 1; // Đảo ngược chỉ số hàng
                         const rowChar = rowLetters[rowCharIndex % rowLetters.length]; // Chọn ký tự hàng
-                        const colNum = columnIndex + 1; // Chọn số cột
     
                         result.push({
-                            name: `${rowChar}${colNum}`, // Ví dụ: "A1", "B2", ...
+                            name: `${rowChar}${seatNumber}`, // Tạo tên ghế như "A1", "A2", "A3", ...
                             row: rowIndex,
                             column: columnIndex,
                             seatType: { id: seatType.object.id },
                             room: { id: room.value },
                         });
+    
+                        seatNumber++; // Tăng số thứ tự ghế
                     }
                 }
             });
@@ -42,6 +45,7 @@ const SelectedRoom = () => {
     
         return result;
     };
+    
     
     
     

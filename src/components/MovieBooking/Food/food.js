@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch,  useSelector } from "react-redux";
 import { addFood, removeFood } from "../../../controller/SliceReducer/booking";
-
+import { imageUrl } from  "../../../controller/SliceReducer/img";
 
 
 const Food = ({ data }) => {
@@ -24,7 +24,7 @@ const Food = ({ data }) => {
     return (
         <div className="flex">
             <div className="flex mb-4 w-3/4">
-                <img src={`http://localhost:8080${data.image}`} alt="" className="h-24 w-44 rounded" />
+                <img src={`${imageUrl}${data.image}`} alt="" className="h-24 w-44 rounded" />
                 <div className="text-sm ml-3 space-y-2">
                     <p className="font-bold">{data.name}</p>
                     <p className="text-sm">{data.detail}</p>

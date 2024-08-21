@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import {url} from  './img';
 
 export const getTickets = createAsyncThunk('auth/getTickets', async (_, { rejectWithValue }) => {
     const accessToken = localStorage.getItem('accessToken');
@@ -8,7 +8,7 @@ export const getTickets = createAsyncThunk('auth/getTickets', async (_, { reject
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/bookings?size=10000`, {
+        const response = await axios.get(`${url}bookings?size=10000`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -28,7 +28,7 @@ export const getMovieReport = createAsyncThunk('auth/getMovieReport', async ( {f
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/reports/movie?fromDate=${fromDate}&toDate=${toDate}`, {
+        const response = await axios.get(`${url}reports/movie?fromDate=${fromDate}&toDate=${toDate}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -48,7 +48,7 @@ export const getDailyReport = createAsyncThunk('auth/getDailyReport', async ( {f
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/reports/daily?fromDate=${fromDate}&toDate=${toDate}`, {
+        const response = await axios.get(`${url}reports/daily?fromDate=${fromDate}&toDate=${toDate}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -68,7 +68,7 @@ export const getMonthReport = createAsyncThunk('auth/getMonthReport', async ( {f
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/reports/monthly?fromDate=${fromDate}&toDate=${toDate}`, {
+        const response = await axios.get(`${url}reports/monthly?fromDate=${fromDate}&toDate=${toDate}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }

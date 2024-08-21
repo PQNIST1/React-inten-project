@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import {url} from  './img';
 
 export const getActor = createAsyncThunk('auth/getActor', async (_, { rejectWithValue }) => {
     const accessToken = localStorage.getItem('accessToken');
@@ -7,7 +8,7 @@ export const getActor = createAsyncThunk('auth/getActor', async (_, { rejectWith
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/casts?size=50',{
+        const response = await axios.get(`${url}casts?size=10000`,{
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             } 
@@ -27,7 +28,7 @@ export const addActor = createAsyncThunk('auth/addActor', async (formData, { rej
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.post('http://localhost:8080/api/v1/casts', formData, {
+        const response = await axios.post(`${url}v1/casts`, formData, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -47,7 +48,7 @@ export const deleteActor = createAsyncThunk('auth/deleteActor', async (id, { rej
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.delete(`http://localhost:8080/api/v1/casts/${id}`, {
+        const response = await axios.delete(`${url}casts/${id}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -67,7 +68,7 @@ export const editActor = createAsyncThunk('auth/updateActor', async ( { id, data
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.put(`http://localhost:8080/api/v1/casts/${id}`, data, {
+        const response = await axios.put(`${url}casts/${id}`, data, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from  './img';
 
 // Tạo một async thunk để gọi API
 export const getMovie = createAsyncThunk('auth/getMovie', async (_, { rejectWithValue }) => {
@@ -8,7 +9,7 @@ export const getMovie = createAsyncThunk('auth/getMovie', async (_, { rejectWith
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movies?size=50',{
+    const response = await axios.get(`${url}movies?size=10000`,{
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -25,7 +26,7 @@ export const getMovie = createAsyncThunk('auth/getMovie', async (_, { rejectWith
 export const getMovieById = createAsyncThunk('auth/getMovieById', async (id, { rejectWithValue }) => {
 
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/movies/${id}`);
+    const response = await axios.get(`${url}movies/${id}`);
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -37,7 +38,7 @@ export const getMovieById = createAsyncThunk('auth/getMovieById', async (id, { r
 
 export const getMovieCurrent = createAsyncThunk('auth/getMovieCurrent', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movies/current?size=50');
+    const response = await axios.get(`${url}movies/current?size=50`);
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -49,7 +50,7 @@ export const getMovieCurrent = createAsyncThunk('auth/getMovieCurrent', async (_
 
 export const getMovieUpcoming = createAsyncThunk('auth/getMovieUpcoming', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movies/upcoming?size=50');
+    const response = await axios.get(`${url}movies/upcoming?size=50`);
     return response.data;
   } catch (error) {
     if (!error.response) {
@@ -66,7 +67,7 @@ export const getMovieGenre = createAsyncThunk('auth/getMovieGenre', async (_, { 
       return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movie-genres?size=50',{
+    const response = await axios.get(`${url}movie-genres?size=50`,{
       headers: {
         'Authorization': `Bearer ${accessToken}`
     }
@@ -86,7 +87,7 @@ export const getMovieCast = createAsyncThunk('auth/getMovieCast', async (_, { re
       return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/movie-casts?size=50',{
+    const response = await axios.get(`${url}-casts?size=50`,{
       headers: {
         'Authorization': `Bearer ${accessToken}`
     }
@@ -106,7 +107,7 @@ export const addMovie = createAsyncThunk('auth/addMovie', async ({ formData, gen
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/movies', formData, {
+    const response = await axios.post(`${url}movies`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -152,7 +153,7 @@ export const deleteMovie = createAsyncThunk('auth/deleteMovie', async (id, { rej
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.delete(`http://localhost:8080/api/v1/movies/${id}`, {
+    const response = await axios.delete(`${url}movies/${id}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -172,7 +173,7 @@ export const addGenreToMovie = createAsyncThunk('auth/addGenreToMovie', async ({
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/movie-genres', {
+    const response = await axios.post(`${url}movie-genres`, {
       movie: {
         id: id
       },
@@ -197,7 +198,7 @@ export const addCastToMovie = createAsyncThunk('auth/addCastToMovie', async ({ i
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/movie-casts', {
+    const response = await axios.post(`${url}movie-casts`, {
       movie: {
         id: id
       },
@@ -223,7 +224,7 @@ export const editMovie = createAsyncThunk('auth/updateMovie', async ({ id, formD
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.put(`http://localhost:8080/api/v1/movies/${id}`, formData, {
+    const response = await axios.put(`${url}movies/${id}`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -269,7 +270,7 @@ export const deleteMovieGenre = createAsyncThunk('auth/deleteMovieGenre', async 
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.delete(`http://localhost:8080/api/v1/movie-genres/${id}`, {
+    const response = await axios.delete(`${url}movie-genres/${id}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -289,7 +290,7 @@ export const deleteMovieCast = createAsyncThunk('auth/deleteMovieCast', async (i
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.delete(`http://localhost:8080/api/v1/movie-casts/${id}`, {
+    const response = await axios.delete(`${url}movie-casts/${id}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
