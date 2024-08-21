@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import {url} from  './img';
 
 
 export const getSpecialDay = createAsyncThunk('auth/getSpecialDay', async (_, { rejectWithValue }) => {
@@ -8,7 +9,7 @@ export const getSpecialDay = createAsyncThunk('auth/getSpecialDay', async (_, { 
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/special-days', {
+        const response = await axios.get(`${url}special-days`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -29,7 +30,7 @@ export const addSpecialDay = createAsyncThunk('auth/addSpecialDay', async (data,
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.post('http://localhost:8080/api/v1/special-days', data, {
+        const response = await axios.post(`${url}special-days`, data, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -49,7 +50,7 @@ export const deleteSpecialDay = createAsyncThunk('auth/deleteSpecialDay', async 
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.delete(`http://localhost:8080/api/v1/special-days/${id}`, {
+        const response = await axios.delete(`${url}special-days/${id}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -69,7 +70,7 @@ export const editDate = createAsyncThunk('auth/updateDate', async ( { id, data }
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.put(`http://localhost:8080/api/v1/special-days/${id}`, data, {
+        const response = await axios.put(`${url}special-days/${id}`, data, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }

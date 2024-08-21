@@ -5,6 +5,7 @@ import FoodBill from "../Food/foodBill";
 import { formatDay } from "../../../controller/SliceReducer/img";
 import { useSelector } from "react-redux";
 import { format } from 'date-fns'
+import { imageUrl } from  "../../../controller/SliceReducer/img";
 
 const MovieBill = ({ date, time, name, img, sseats, dseats, vseats, food, active }) => {
     const vip = useSelector(state => state.movie.vipPrice);
@@ -17,7 +18,7 @@ const MovieBill = ({ date, time, name, img, sseats, dseats, vseats, food, active
         <div className="space-y-5">
 
             <div className=" flex">
-                <img src={`http://localhost:8080${img}`} alt="" className="h-52 w-40 object-cover rounded" />
+                <img src={`${imageUrl}${img}`} alt="" className="h-52 w-40 object-cover rounded" />
                 <div className="capitalize ml-3">
                     <div className="flex">
                         <p className="text-lg font-bold">{name}</p>

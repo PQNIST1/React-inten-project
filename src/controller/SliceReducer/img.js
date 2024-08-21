@@ -80,3 +80,6 @@ export const formatDay = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('vi-VN');
 };
+
+export const url = 'http://localhost:8080/api/v1/';
+export const imageUrl = 'http://localhost:8080';

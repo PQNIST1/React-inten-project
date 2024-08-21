@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import {url} from  './img';
 
 export const getRoom = createAsyncThunk('auth/getRoom', async (_, { rejectWithValue }) => {
     const accessToken = localStorage.getItem('accessToken');
@@ -7,7 +8,7 @@ export const getRoom = createAsyncThunk('auth/getRoom', async (_, { rejectWithVa
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get('http://localhost:8080/api/v1/rooms?size=50',{
+        const response = await axios.get(`${url}rooms?size=50`,{
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -27,7 +28,7 @@ export const addRoom = createAsyncThunk('auth/addRoom', async (formData, { rejec
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.post('http://localhost:8080/api/v1/rooms', formData, {
+        const response = await axios.post(`${url}rooms`, formData, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -47,7 +48,7 @@ export const deleteRoom = createAsyncThunk('auth/deleteRoom', async (id, { rejec
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.delete(`http://localhost:8080/api/v1/rooms/${id}`, {
+        const response = await axios.delete(`${url}rooms/${id}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -67,7 +68,7 @@ export const editRoom = createAsyncThunk('auth/updateRoom', async ( { id, data }
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.put(`http://localhost:8080/api/v1/rooms/${id}`, data, {
+        const response = await axios.put(`${url}rooms/${id}`, data, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }

@@ -2,11 +2,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-
+import {url} from  './img';
 
 export const logginUser = createAsyncThunk('auth/logginUser', async (userData, { rejectWithValue, fulfillWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/auths/login', userData);
+    const response = await axios.post(`${url}auths/login`, userData);
     const accessToken = response.data.data.accessToken;
     localStorage.setItem('accessToken', accessToken);
     return response.data;
@@ -21,7 +21,7 @@ export const logginUser = createAsyncThunk('auth/logginUser', async (userData, {
 
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue, fulfillWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/users/register', userData);
+    const response = await axios.post(`${url}users/register`, userData);
     const accessToken = response.data.data.accessToken;
     localStorage.setItem('accessToken', accessToken);
     return response.data;
@@ -39,7 +39,7 @@ export const updatePassword = createAsyncThunk('auth/updatePassword', async (for
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.patch('http://localhost:8080/api/v1/users/change-password', formData, {
+    const response = await axios.patch(`${url}users/change-password`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -59,7 +59,7 @@ export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { reject
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/auths/logout', {
+    const response = await axios.post(`${url}auths/logout`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

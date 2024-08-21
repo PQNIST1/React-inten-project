@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from  './img';
 
 
 export const getSeatRoom = createAsyncThunk('auth/getSeatRoom', async ( id, { rejectWithValue }) => {
@@ -8,7 +9,7 @@ export const getSeatRoom = createAsyncThunk('auth/getSeatRoom', async ( id, { re
       return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get(`http://localhost:8080/api/v1/rooms/${id}/seats`,{
+    const response = await axios.get(`${url}rooms/${id}/seats`,{
       headers: {
         'Authorization': `Bearer ${accessToken}`
     }

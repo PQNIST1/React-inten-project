@@ -1,6 +1,7 @@
 // features/formSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from  './img';
 
 // Async thunk để gửi dữ liệu form lên server
 export const addFood = createAsyncThunk('auth/addFood', async (formData, { rejectWithValue }) => {
@@ -9,7 +10,7 @@ export const addFood = createAsyncThunk('auth/addFood', async (formData, { rejec
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/foods', formData, {
+    const response = await axios.post(`${url}foods`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -29,7 +30,7 @@ export const deleteFood = createAsyncThunk('auth/deleteFood', async (id, { rejec
       return rejectWithValue('No access token found');
   }
   try {
-      const response = await axios.delete(`http://localhost:8080/api/v1/foods/${id}`, {
+      const response = await axios.delete(`${url}foods/${id}`, {
           headers: {
               'Authorization': `Bearer ${accessToken}`
           }
@@ -49,7 +50,7 @@ export const editFood = createAsyncThunk('auth/updateFood', async ( { id, data }
       return rejectWithValue('No access token found');
   }
   try {
-      const response = await axios.put(`http://localhost:8080/api/v1/foods/${id}`, data, {
+      const response = await axios.put(`${url}foods/${id}`, data, {
           headers: {
               'Authorization': `Bearer ${accessToken}`
           }

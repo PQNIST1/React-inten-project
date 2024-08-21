@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+import {url} from  './img';
 
 
 
@@ -12,7 +12,7 @@ export const getSeatType = createAsyncThunk('auth/getSeatType', async (_, { reje
       return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/seat-types',{
+    const response = await axios.get(`${url}seat-types`,{
       headers: {
         'Authorization': `Bearer ${accessToken}`
     }
@@ -33,7 +33,7 @@ export const addSeatType = createAsyncThunk('auth/addSeatType', async (data,{ re
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/seat-types', data, {
+    const response = await axios.post(`${url}seat-types`, data, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -53,7 +53,7 @@ export const deleteSeatType = createAsyncThunk('auth/deleteSeatType', async (id,
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.delete(`http://localhost:8080/api/v1/seat-types/${id}`, {
+    const response = await axios.delete(`${url}seat-types/${id}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -73,7 +73,7 @@ export const deleteSeatTypePrice = createAsyncThunk('auth/deleteSeatTypePrice', 
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.delete(`http://localhost:8080/api/v1/seat-prices/${id}`, {
+    const response = await axios.delete(`${url}seat-prices/${id}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -94,7 +94,7 @@ export const addSeatTypePrice = createAsyncThunk('auth/addSeatTypePrice', async 
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.post('http://localhost:8080/api/v1/seat-prices', formData, {
+    const response = await axios.post(`${url}seat-prices`, formData, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -114,7 +114,7 @@ export const getSeatTypePrice = createAsyncThunk('auth/getSeatTypePrice', async 
       return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/seat-prices',{
+    const response = await axios.get(`${url}seat-prices?size=20`,{
       headers: {
         'Authorization': `Bearer ${accessToken}`
     }
@@ -136,7 +136,7 @@ export const editSeatType = createAsyncThunk('auth/updateSeatType', async ({ typ
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.put(`http://localhost:8080/api/v1/seat-types/${type_id}`, data, {
+    const response = await axios.put(`${url}seat-types/${type_id}`, data, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -157,7 +157,7 @@ export const editSeatTypePrice = createAsyncThunk('auth/updateSeatTypePrice', as
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.put(`http://localhost:8080/api/v1/seat-prices/${id}`, data, {
+    const response = await axios.put(`${url}seat-prices/${id}`, data, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

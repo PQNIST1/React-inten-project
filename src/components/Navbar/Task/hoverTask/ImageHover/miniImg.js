@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import HoverMini from "./hoverMini";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { imageUrl } from  "../../../../../controller/SliceReducer/img";
 
 
 const MiniImg = ({data}) => {
@@ -10,7 +11,7 @@ const MiniImg = ({data}) => {
         <div onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="relative overflow-hidden h-52">
-            <img className="rounded w-full h-full object-cover" src={`http://localhost:8080${data.image}`} alt="" />
+            <img className="rounded w-full h-full object-cover" src={`${imageUrl}${data.image}`} alt="" />
             <div className="bg-black h-5 -right-2 w-16 absolute bottom-10 opacity-60  skew-x-[25deg]">
 
             </div>

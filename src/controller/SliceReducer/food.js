@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from  './img';
 
 // Tạo một async thunk để gọi API
 export const getFood = createAsyncThunk('auth/getFood', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('http://localhost:8080/api/v1/foods?size=50');
+    const response = await axios.get(`${url}foods?size=100`);
     return response.data;
   } catch (error) {
     if (!error.response) {

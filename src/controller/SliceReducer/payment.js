@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
+import {url} from  './img';
 
 
 export const addBooking = createAsyncThunk('auth/addBooking', async (formData, { rejectWithValue }) => {
@@ -9,7 +9,7 @@ export const addBooking = createAsyncThunk('auth/addBooking', async (formData, {
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.post('http://localhost:8080/api/v1/bookings', formData, {
+        const response = await axios.post(`${url}bookings`, formData, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -29,7 +29,7 @@ export const addBookingAdmin = createAsyncThunk('auth/addBookingAdmin', async ({
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.post(`http://localhost:8080/api/v1/bookings/direct-payment?phone=${phone}&method=${method}`, formData, {
+        const response = await axios.post(`${url}bookings/direct-payment?phone=${phone}&method=${method}`, formData, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -51,7 +51,7 @@ export const getBookingUser = createAsyncThunk('auth/getBookingUser', async (_, 
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/bookings/User`, {
+        const response = await axios.get(`${url}bookings/User`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -71,7 +71,7 @@ export const getBooking = createAsyncThunk('auth/getBooking', async (id, { rejec
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/bookings/${id}`, {
+        const response = await axios.get(`${url}bookings/${id}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -91,7 +91,7 @@ export const getBookingReturn = createAsyncThunk('auth/getBookingReturn', async 
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/bookings/return?${search}`, {
+        const response = await axios.get(`${url}bookings/return?${search}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -107,7 +107,7 @@ export const getBookingReturn = createAsyncThunk('auth/getBookingReturn', async 
 
 export const getBookingSeats = createAsyncThunk('auth/getBookingSeats', async (id, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/showtimes/${id}/seats`);
+        const response = await axios.get(`${url}showtimes/${id}/seats`);
         return response.data;
     } catch (error) {
         if (!error.response) {
@@ -119,7 +119,7 @@ export const getBookingSeats = createAsyncThunk('auth/getBookingSeats', async (i
 
 export const getBookingPrice = createAsyncThunk('auth/getBookingPrice', async (id, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/showtimes/${id}/prices`);
+        const response = await axios.get(`${url}showtimes/${id}/prices`);
         return response.data;
     } catch (error) {
         if (!error.response) {

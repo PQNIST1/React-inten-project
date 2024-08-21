@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios";
+import {url} from  './img';
 
 
 
@@ -10,7 +11,7 @@ export const getCategory = createAsyncThunk('auth/getCategory', async (_, { reje
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.get(`http://localhost:8080/api/v1/genres?size=50`,{
+        const response = await axios.get(`${url}genres?size=50`,{
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -31,7 +32,7 @@ export const addCategory = createAsyncThunk('auth/addCategory', async (formData,
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.post('http://localhost:8080/api/v1/genres', formData, {
+        const response = await axios.post(`${url}genres`, formData, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -51,7 +52,7 @@ export const deleteCategory = createAsyncThunk('auth/deleteCategory', async (id,
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.delete(`http://localhost:8080/api/v1/genres/${id}`, {
+        const response = await axios.delete(`${url}genres/${id}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -72,7 +73,7 @@ export const editCategory = createAsyncThunk('auth/updateCategory', async ( { id
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.put(`http://localhost:8080/api/v1/genres/${id}`, data, {
+        const response = await axios.put(`${url}genres/${id}`, data, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }

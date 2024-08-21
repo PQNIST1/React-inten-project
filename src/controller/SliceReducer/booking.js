@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {url} from  './img';
 
 
 export const getReturn = createAsyncThunk('auth/getReturn', async (id, { rejectWithValue }) => {
@@ -8,7 +9,7 @@ export const getReturn = createAsyncThunk('auth/getReturn', async (id, { rejectW
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.patch(`http://localhost:8080/api/v1/bookings/${id}`, null, {
+    const response = await axios.patch(`${url}bookings/${id}`, null, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

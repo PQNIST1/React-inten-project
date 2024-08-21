@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { openModal } from "../../controller/SliceReducer/modal";
-
+import { imageUrl } from  "../../controller/SliceReducer/img";
 
 const TrailerDetail = ({ data }) => {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ const TrailerDetail = ({ data }) => {
     <div className="cursor-pointer relative h-512 w-full mt-3">
       <div className="absolute bg-black opacity-50 h-full w-full"></div>
       <img
-        src={`http://localhost:8080${data.image}`}
+        src={`${imageUrl}${data.image}`}
         alt="Video thumbnail"
         className="w-1/2 h-full object-cover m-auto"
       />

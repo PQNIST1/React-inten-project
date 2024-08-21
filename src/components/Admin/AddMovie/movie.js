@@ -7,7 +7,7 @@ import { setName, deleteMovie, setError, setSuccess, setEdit, clearForm, setId, 
 import { normalizeStringForURL } from "../../../data/tranformData";
 import { Link } from "react-router-dom";
 import { splitDateTime, formatDate } from "../../../controller/SliceReducer/img";
-
+import { imageUrl } from  "../../../controller/SliceReducer/img";
 
 const Movie = ({ data, pp }) => {
     const date = formatDate(data.releaseDate);
@@ -109,7 +109,7 @@ const Movie = ({ data, pp }) => {
                 <div className="w-full  relative overflow-hidden">
                     <div className=" flex">
                         <Link to={pathname}>
-                            <img src={`http://localhost:8080${data.image}`} alt="" className="h-32 rounded" />
+                            <img src={`${imageUrl}${data.image}`} alt="" className="h-32 rounded" />
                         </Link>
                         <div className="capitalize ml-3  w-1/2">
                             <div className="flex">
