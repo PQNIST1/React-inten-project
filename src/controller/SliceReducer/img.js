@@ -81,5 +81,5 @@ export const formatDay = (dateString) => {
     return date.toLocaleDateString('vi-VN');
 };
 
-export const url = 'http://localhost:8080/api/v1/';
-export const imageUrl = 'http://localhost:8080';
+export const url = 'https://cinema-ticket-booking-backend.onrender.com/api/v1/';
+export const imageUrl = 'https://cinema-ticket-booking-backend.onrender.com';
