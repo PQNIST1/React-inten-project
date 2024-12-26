@@ -92,23 +92,6 @@ const logginSlice = createSlice({
     },
     setSuccess: (state) => { state.success = false },
     setError: (state) => { state.error = null },
-    // checkAccessTokenExpiration(state) {
-    //   const token = localStorage.getItem('accessToken');
-    //   if (token) {
-    //     const decodedToken = jwtDecode(token);
-    //     const expirationDate = new Date(0);
-    //     expirationDate.setUTCSeconds(decodedToken.exp);
-    //     if (state.isLogged && expirationDate) {
-    //       const currentTime = new Date();
-    //       if (currentTime >= new Date(expirationDate)) {
-    //         localStorage.removeItem('accessToken');
-    //         window.location.href = '/';
-    //         dispatch(logoutUser());
-    //       }
-    //     }
-    //   }
-
-    // },
   },
   extraReducers: (builder) => {
     builder
