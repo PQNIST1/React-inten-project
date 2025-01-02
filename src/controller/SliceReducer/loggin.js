@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import {url} from  './img';
+import {url} from './img';
 
 export const logginUser = createAsyncThunk('auth/logginUser', async (userData, { rejectWithValue, fulfillWithValue }) => {
   try {
