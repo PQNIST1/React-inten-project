@@ -28,7 +28,7 @@ export const addActor = createAsyncThunk('auth/addActor', async (formData, { rej
         return rejectWithValue('No access token found');
     }
     try {
-        const response = await axios.post(`${url}v1/casts`, formData, {
+        const response = await axios.post(`${url}casts`, formData, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
