@@ -33,7 +33,7 @@ const Nav = () => {
 
 
     return (
-        <div className="flex w-10/12 mx-auto pt-3  text-gray-400 font-sans">
+        <div className="flex w-10/12 mx-auto pt-3 text-gray-400 font-sans justify-evenly">
             <Logo />
             <Ticket />
             <Tasks />

@@ -31,14 +31,14 @@ const ChoiseTime = () => {
     }, [movieName]);
 
     return (
-        <div className="flex mr-1">
+        <div className="flex-[3] flex items-center justify-center">
             <FontAwesomeIcon icon={faClock} color="orange" className="h-6 my-auto mx-2" />
 
             <select
                 value={selectedValue}
                 data-e2e={attributeName}
                 onChange={movieName ? onChangeAttribute : () => {}} // Đảm bảo onChange luôn có mặt
-                className="p-[9px] bg-gray-50 w-48 h-full focus:outline-none"
+                className="px-[9px] bg-gray-50 w-full h-full focus:outline-none"
                 disabled={!movieName} // Chỉ disable khi không có movieName
             >
                 <option

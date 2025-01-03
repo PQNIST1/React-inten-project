@@ -37,14 +37,14 @@ const ChoiseMovie = () => {
     };
 
     return (
-        <div className="flex">
+        <div className="flex-[4] flex items-center justify-center">
             <FontAwesomeIcon icon={faFilm} color="orange" className="h-6 my-auto mx-2" />
             {data && (
                 <select
                     value={selectedValue ? selectedValue.name : ""}
                     data-e2e={attributeName}
                     onChange={onChangeAttribute}
-                    className="p-[9px] bg-gray-50 w-96 h-full focus:outline-none"
+                    className="px-[9px] bg-gray-50 w-full h-full focus:outline-none"
                 >
                     <option
                         className="font-roboto capitalize"

@@ -37,11 +37,16 @@
   }
 }
 body {
-  background-color:  rgb(15 23 42);
+  background-color: rgb(15 23 42);
   overflow: auto;
   height: 100vh;
   width: 100%;
 }
+
+.container {
+  max-width: fit-content;
+}
+
 ::-webkit-scrollbar {
   display: none;
 }
@@ -71,15 +76,15 @@ body {
   justify-content: center;
 }
 .list {
-  overflow:over;
+  overflow: over;
 }
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s;
-    -webkit-text-fill-color: #fff !important;
+  transition: background-color 5000s ease-in-out 0s;
+  -webkit-text-fill-color: #fff !important;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -114,13 +119,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   background: transparent;
 }
 
-
 .custom {
   background-color: transparent;
 }
 .custom p {
- 
-  width:  120px;
+  width: 120px;
 }
 
 .fade-in {
@@ -142,7 +145,3 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   transform: translateY(0);
   opacity: 1;
 }
-
-
-
-

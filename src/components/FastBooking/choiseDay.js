@@ -65,13 +65,13 @@ const ChoiseDay = () => {
     });
 
     return (
-        <div className="flex">
+        <div className="flex-[3] flex items-center justify-center">
             <FontAwesomeIcon icon={faCalendarDays} color="orange" className="h-6 my-auto mx-2" />
             <select
                 value={selectedValue}
                 data-e2e={attributeName}
                 onChange={onChangeAttribute}
-                className="p-[9px] bg-gray-50 w-52 h-full focus:outline-none"
+                className="px-[9px] bg-gray-50 w-full h-full focus:outline-none"
                 disabled={validDates.length === 0}
             >
                 <option
