@@ -114,8 +114,8 @@ const SeatEdit = () => {
     useEffect(() => {
         if (id.object) {
             dispatch(getSeatRoom(id.object.id));
-            dispatch(setSeat([]));
-            dispatch(setCol({ rows: 0, cols: 0 }));
+            // dispatch(setSeat([]));
+            // dispatch(setCol({ rows: 0, cols: 0 }));
             if (showtime.data) {
                 const exists = showtime.data.content.some(item => item.object.room.id === id.object.id);
                 setExist(exists);

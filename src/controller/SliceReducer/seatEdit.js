@@ -206,6 +206,11 @@ const seatsEditSlice = createSlice({
     editSeats: (state) => {
       state.isSaved = false;
     },
+    resetSeatss: (state) => {
+      state.seats = [];
+      state.cols = 0;
+      state.rows = 0;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -224,5 +229,5 @@ const seatsEditSlice = createSlice({
     }
 });
 
-export const { setAlert, setSeat, toggleBookingSeat, setCol, setDimensions, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats } = seatsEditSlice.actions;
+export const { resetSeatss, setAlert, setSeat, toggleBookingSeat, setCol, setDimensions, toggleSelectSeat, setSeatsType, clearSelectedSeats, resetSeats, saveSeats, editSeats } = seatsEditSlice.actions;
 export default seatsEditSlice.reducer;

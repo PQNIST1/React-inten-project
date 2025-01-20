@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 import LargeHover from "./largeHover";
-import { imageUrl } from  "../../../controller/SliceReducer/img";
 
 
 
@@ -15,7 +14,7 @@ const LargeImg = ({ data }) => {
         <div onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="relative overflow-hidden h-96">
-            <img className="rounded-lg w-full h-full object-fill" src={`${imageUrl}${data.image}`} alt="" />
+            <img className="rounded-lg w-full h-full object-fill" src={`${data.image}`} alt="" />
             <div className="bg-black h-6 -right-2 w-20 absolute bottom-12 opacity-60  skew-x-[25deg]">
             </div>
             <div className="absolute bottom-12 right-5 mb-0 w-10 flex ">

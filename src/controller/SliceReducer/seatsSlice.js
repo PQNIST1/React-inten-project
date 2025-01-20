@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import {url} from  './img';
+import { url } from './img';
 
 export const addSeats = createAsyncThunk('auth/addSeats', async (formData, { dispatch, rejectWithValue }) => {
 
@@ -16,6 +16,26 @@ export const addSeats = createAsyncThunk('auth/addSeats', async (formData, { dis
   }
 });
 
+// export const addSeats = createAsyncThunk('auth/addSeats', async (formData, room, { rejectWithValue }) => {
+//   const accessToken = localStorage.getItem('accessToken');
+//   if (!accessToken) {
+//     return rejectWithValue('No access token found');
+//   }
+//   console.log(room);
+//   try {
+//     const response = await axios.post(`${url}seats/room/${room}`, formData, {
+//       headers: {
+//         'Authorization': `Bearer ${accessToken}`
+//       }
+//     });
+//     return response.data;
+//   } catch (error) {
+//     if (!error.response) {
+//       throw error;
+//     }
+//     return rejectWithValue(error.response.data);
+//   }
+// });
 
 export const addSeat = createAsyncThunk('auth/addSeat', async (formData, { rejectWithValue }) => {
   const accessToken = localStorage.getItem('accessToken');
@@ -79,7 +99,7 @@ export const getSeatss = createAsyncThunk('auth/getSeatss', async (_, { rejectWi
     return rejectWithValue('No access token found');
   }
   try {
-    const response = await axios.get(`${url}seats?size=10000`,{
+    const response = await axios.get(`${url}seats?size=10000`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }

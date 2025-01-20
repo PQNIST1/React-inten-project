@@ -3,14 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteRoom, setError, setCode, setEdit, setId, setName, setSuccess, clearForm } from "../../../controller/SliceReducer/addRoom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { Link } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { splitDateTime } from "../../../controller/SliceReducer/img";
 import { normalizeStringForURL } from "../../../data/tranformData";
 import { getShowTime } from "../../../controller/SliceReducer/addShowTime";
+import { resetSeatss, setCol, setSeat } from '../../../controller/SliceReducer/seatEdit';
+
 
 
 const Room = ({ data, pp }) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const form = useSelector((state) => state.room);
     const { isEdit, id } = form;
     const [exist, setExist] = useState();
@@ -25,7 +28,7 @@ const Room = ({ data, pp }) => {
             const exists = showtime.data.content.some(item => item.object.room.id === data.id);
             setExist(exists);
         }
-    },[showtime, exist, data]);
+    }, [showtime, exist, data]);
 
 
     const handleDelete = (id) => {
@@ -52,13 +55,23 @@ const Room = ({ data, pp }) => {
             dispatch(setName(data.name));
             dispatch(setCode(data.code));
         }
-
     }
-    const pathname = `/room/seat/${normalizeStringForURL(data.name)}`;
+    const handleGoNext = () => {
+        dispatch(resetSeatss());
+        dispatch(setSeat([]));
+        dispatch(setCol({ rows: 0, cols: 0 })); // Gọi hành động reset
+        const pathname = `/room/seat/${normalizeStringForURL(data.name)}`; // Tạo URL động
+        navigate(pathname); // Chuyển hướng tới trang mới
+    };
     return (
         <tr className=" transition-all duration-500  text-gray-400">
 
-            <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium hover:text-orange-400  "><Link to={pathname}>{data.name}</Link></td>
+            <td
+                className="p-5 whitespace-nowrap text-sm leading-6 font-medium hover:text-orange-400 cursor-pointer"
+                onClick={handleGoNext}
+            >
+                {data.name}
+            </td>
             <td className="p-5 whitespace-nowrap text-sm leading-6 font-medium ">{data.code}</td>
             <td className="p-5 whitespace-nowrap  leading-6 font-medium text-tn"><div>
                 <p>{pp.createdBy.name}</p>

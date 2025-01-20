@@ -36,6 +36,13 @@ const SelectedRoom = () => {
                             seatType: { id: seatType.object.id },
                             room: { id: room.value },
                         });
+
+                        // result.push({
+                        //     name: `${rowChar}${seatNumber}`, // Tạo tên ghế như "A1", "A2", "A3", ...
+                        //     row: rowIndex,
+                        //     column: columnIndex,
+                        //     type: { id: seatType.object.id },
+                        // });
     
                         seatNumber++; // Tăng số thứ tự ghế
                     }

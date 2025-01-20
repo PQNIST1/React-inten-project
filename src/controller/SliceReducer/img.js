@@ -82,4 +82,3 @@ export const formatDay = (dateString) => {
 };
 
 export const url = `${process.env.REACT_APP_BASE_ENDPOINT}/api/v1/`;
-export const imageUrl = `${process.env.REACT_APP_BASE_ENDPOINT}`;
