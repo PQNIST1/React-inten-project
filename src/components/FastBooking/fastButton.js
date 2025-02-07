@@ -17,8 +17,8 @@ const FastButton = () => {
     }
 
     return (
-        <div>
-                <button onClick={handleNext} className="w-40 h-full bg-blue-700 rounded capitalize text-white hover:bg-blue-600">đặt vé nhanh</button>
+        <div className=" flex items-center justify-center">
+            <button onClick={handleNext} className="w-36 h-full bg-blue-700 rounded capitalize text-white hover:bg-blue-600">đặt vé nhanh</button>
         </div>
     )
 }

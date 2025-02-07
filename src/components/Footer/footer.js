@@ -10,7 +10,7 @@ const Footer = () => {
     return (
         <footer>
             <div className="w-full h-96" style={{ backgroundImage: `url(https://i.imgur.com/4wpUhOR.jpeg)` }}>
-                <div className="w-5/6 flex m-auto py-14 px-10">
+                <div className="max-w-screen-xl flex m-auto py-14 px-10">
                     <div className=" w-60">
                         <a href="/">
                             <img src="https://i.imgur.com/utVCQHK.png" alt="" className="h-28" />
