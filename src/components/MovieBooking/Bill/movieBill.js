@@ -21,7 +21,7 @@ const MovieBill = ({ date, time, name, img, sseats, dseats, vseats, food, active
                 <img src={`${img}`} alt="" className="h-52 w-40 object-cover rounded" />
                 <div className="capitalize ml-3">
                     <div className="flex">
-                        <p className="text-lg font-bold">{name}</p>
+                        <p className="xl:text-lg lg:text-[16px] font-bold">{name}</p>
                         <span className="ml-5  bg-orange-500 text-white font-bold rounded h-7 px-2">T18</span>
                     </div>
                 </div>

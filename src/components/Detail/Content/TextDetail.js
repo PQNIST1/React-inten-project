@@ -30,7 +30,7 @@ const TextDetail = ({ data }) => {
     }, [genre, cast])
     const date = formatDate(data.releaseDate);
     return (
-        <div className="pt-7 pl-5  space-y-2 w-2/3">
+        <div className="pt-7 pl-5  xl:ml-72 lg:ml-60 space-y-2 w-2/3">
             <div className="flex">
                 <div className="w-3/4">
                     <h1 className="capitalize text-2xl font-bold text-white">{data.name}</h1>

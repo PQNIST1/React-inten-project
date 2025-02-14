@@ -7,7 +7,7 @@ const DropSelect = () => {
         <div className="">
             <div className="bg-black absolute h-full w-full rounded top-0 opacity-50  ">
             </div>
-            <div className="absolute bg-transparent top-1/4 mt-10  left-1/3 flex text-white ml-2">
+            <div className="absolute bg-transparent xl:top-1/4 mt-10  xl:left-1/3 lg:top-1/4 lg:left-1/4 flex text-white ml-2">
                 <button className="rounded-full border-2 border-orange-500 h-10 w-10">
                     <FontAwesomeIcon icon={faCheck} />
                 </button>
